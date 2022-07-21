@@ -1,31 +1,28 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
+  <div class="fullscreen bg-blue text-white text-center flex flex-center">
     <div>
-      <div style="font-size: 30vh">
+      <div class="text-h1">
         404
       </div>
 
-      <div class="text-h2" style="opacity:.4">
-        Oops. Nothing here...
+      <div class="text-h2 q-my-lg">
+        Not Found
       </div>
 
-      <q-btn
-        class="q-mt-xl"
-        color="white"
-        text-color="blue"
-        unelevated
-        to="/"
-        label="Go Home"
-        no-caps
-      />
+      <q-btn color="white" text-color="blue" label="Go Back" no-caps @click="router.go(-1)" />
     </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
-  name: 'ErrorNotFound'
+  name: 'ErrorNotFound',
+  setup() {
+    const router = useRouter();
+    return { router }
+  }
 })
 </script>
