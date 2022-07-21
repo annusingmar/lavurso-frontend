@@ -9,24 +9,24 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref } from "vue";
 
-import TheHeader from 'src/components/TheHeader.vue';
-import TheSidebar from 'src/components/TheSidebar.vue';
+import TheHeader from "src/components/TheHeader.vue";
+import TheSidebar from "src/components/TheSidebar.vue";
 
 export default {
   components: {
     TheHeader,
-    TheSidebar
+    TheSidebar,
   },
   setup() {
-    const leftDrawerOpen = ref(false)
+    const leftDrawerOpen = ref(false);
 
     const toggleLeftDrawer = () => {
-      leftDrawerOpen.value = !leftDrawerOpen.value
-    }
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    };
 
-    return { leftDrawerOpen, toggleLeftDrawer }
-  }
-}
+    return { leftDrawerOpen, toggleLeftDrawer };
+  },
+};
 </script>

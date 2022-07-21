@@ -12,27 +12,27 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'DrawerListItem',
+  name: "DrawerListItem",
   props: {
     title: {
       type: String,
-      required: true
+      required: true,
     },
     to: {
       type: String,
-      default: ''
+      default: "",
     },
     icon: {
       type: String,
-      default: ''
+      default: "",
     },
     separator: {
       type: Boolean,
       default: false,
-    }
-  }
-})
+    },
+  },
+});
 </script>
