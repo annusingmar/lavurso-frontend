@@ -8,6 +8,11 @@ const routes = [
         path: "admin/users",
         component: () => import("pages/Admin/UsersList.vue"),
       },
+      {
+        path: "admin/users/:id",
+        component: () => import("pages/Admin/UserEdit.vue"),
+        props: true,
+      },
     ],
   },
 

@@ -1,5 +1,12 @@
 <template>
-  <q-drawer show-if-above :model-value="open" side="left" bordered elevated>
+  <q-drawer
+    show-if-above
+    :model-value="open"
+    @update:model-value="drawerStateChange"
+    side="left"
+    bordered
+    elevated
+  >
     <q-img src="~assets/beach.jpg" style="height: 200px">
       <div class="absolute-bottom row items-end">
         <div class="col">
@@ -55,7 +62,7 @@ export default {
     DrawerListItem,
   },
   props: ["open"],
-  setup() {
+  setup(props, context) {
     const userStoreRef = storeToRefs(useUserStore());
 
     const userName = userStoreRef.name;
@@ -105,6 +112,12 @@ export default {
         separator: false,
       },
       {
+        title: "Classes",
+        icon: "class",
+        to: "/admin/classes",
+        separator: false,
+      },
+      {
         title: "Grades",
         icon: "tag",
         to: "/admin/grades",
@@ -118,6 +131,10 @@ export default {
       },
     ];
 
+    const drawerStateChange = (val) => {
+      context.emit("setLeftDrawer", val);
+    };
+
     return {
       userName,
       userDisplayRole: userStoreRef.roleName,
@@ -125,6 +142,7 @@ export default {
       menuItems,
       teacherMenuItems,
       adminMenuItems,
+      drawerStateChange,
     };
   },
 };

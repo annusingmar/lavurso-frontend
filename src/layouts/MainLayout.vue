@@ -1,7 +1,10 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <TheHeader @toggle-left-drawer="toggleLeftDrawer"></TheHeader>
-    <TheSidebar :open="leftDrawerOpen"></TheSidebar>
+    <TheSidebar
+      :open="leftDrawerOpen"
+      @set-left-drawer="setLeftDrawer"
+    ></TheSidebar>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -26,7 +29,11 @@ export default {
       leftDrawerOpen.value = !leftDrawerOpen.value;
     };
 
-    return { leftDrawerOpen, toggleLeftDrawer };
+    const setLeftDrawer = (val) => {
+      leftDrawerOpen.value = val;
+    };
+
+    return { leftDrawerOpen, toggleLeftDrawer, setLeftDrawer };
   },
 };
 </script>

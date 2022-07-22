@@ -1,7 +1,7 @@
 <template>
   <q-page>
-    <div class="row q-mx-xl q-my-xl flex-center">
-      <div class="col">
+    <div class="row q-mx-xl q-my-xl flex-center" style="height: 75vh">
+      <div class="col-xl-8 col-md-8 col-sm-12 col-xs-12">
         <q-table
           title="Users"
           :rows="users.list"
@@ -20,7 +20,11 @@
 
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
-              <q-btn flat icon="mode_edit" @click="editButton(props)"></q-btn>
+              <q-btn
+                flat
+                icon="mode_edit"
+                @click="editUser(props.row.id)"
+              ></q-btn>
             </q-td>
           </template>
         </q-table>
@@ -33,11 +37,13 @@
 import { ref, reactive } from "vue";
 import { api } from "boot/axios";
 import { useQuasar } from "quasar";
+import { useRouter } from "vue-router";
 
 export default {
   name: "UsersList",
   setup() {
     const $q = useQuasar();
+    const router = useRouter();
 
     const getRoleName = (val) => {
       switch (val) {
@@ -98,19 +104,18 @@ export default {
       .catch((error) => {
         console.log(error);
         $q.notify({
-          color: "negative",
+          type: "negative",
           position: "top",
           message: "Loading of data failed",
-          icon: "report_problem",
           timeout: 0,
         });
       });
 
     const filter = ref("");
 
-    const editButton = (props) => console.log(props.row.id);
+    const editUser = (id) => router.push("/admin/users/" + id);
 
-    return { columns, users, filter, loading, editButton };
+    return { columns, users, filter, loading, editUser };
   },
 };
 </script>
