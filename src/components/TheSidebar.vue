@@ -1,12 +1,14 @@
 <template>
   <q-drawer show-if-above :model-value="open" side="left" bordered elevated>
     <q-img src="~assets/beach.jpg" style="height: 200px">
-      <div class="absolute-bottom row justify-between" style="height: 75px">
-        <div>
+      <div class="absolute-bottom row items-end">
+        <div class="col">
           <div class="text-weight-bold">{{ userName }}</div>
           <div>{{ userDisplayRole }}</div>
         </div>
-        <q-btn color="primary" text-color="white">Log out</q-btn>
+        <div class="col-auto">
+          <q-btn color="primary" text-color="white">Log out</q-btn>
+        </div>
       </div>
     </q-img>
     <q-list>
