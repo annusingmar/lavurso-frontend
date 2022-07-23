@@ -47,7 +47,6 @@
             <div class="row justify-end q-mt-sm q-gutter-sm">
               <q-btn
                 :loading="updateLoading"
-                :disabled="disable"
                 type="submit"
                 color="primary"
                 label="Update"
@@ -64,26 +63,28 @@
 <script>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { toRefs, ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 
 export default {
-  props: ["id"],
-  setup(props) {
+  emits: ["refreshUser"],
+  props: ["serverUser"],
+  setup(props, context) {
     const $q = useQuasar();
-    const { id } = toRefs(props);
-    const disable = ref(false);
     const userData = reactive({ user: {} });
-    const serverUserData = reactive({ user: {} });
     const updateLoading = ref(false);
     const hidePwd = ref(true);
 
     const resetData = () => {
       userData.user = {
-        name: serverUserData.user.name,
-        email: serverUserData.user.email,
+        name: props.serverUser.user.name,
+        email: props.serverUser.user.email,
         password: null,
       };
     };
+
+    watch(props.serverUser, () => {
+      resetData();
+    });
 
     const validateEmail = (email) => {
       const re =
@@ -95,7 +96,7 @@ export default {
     const updateUser = () => {
       updateLoading.value = true;
       api
-        .patch("/users/" + id.value, {
+        .patch("/users/" + props.serverUser.user.id, {
           name: userData.user.name,
           email: userData.user.email,
           password:
@@ -105,8 +106,6 @@ export default {
         })
         .then(() => {
           updateLoading.value = false;
-          serverUserData.user = userData.user;
-          userData.user.password = null;
           $q.notify({
             type: "positive",
             position: "top",
@@ -116,7 +115,6 @@ export default {
         })
         .catch((error) => {
           updateLoading.value = false;
-          userData.user.password = null;
           $q.notify({
             type: "negative",
             position: "top",
@@ -124,24 +122,8 @@ export default {
             timeout: 6000,
           });
         });
+      context.emit("refreshUser");
     };
-
-    api
-      .get("/users/" + id.value)
-      .then((response) => {
-        serverUserData.user = response.data.user;
-        resetData();
-      })
-      .catch((error) => {
-        disable.value = true;
-        $q.notify({
-          color: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          icon: "report_problem",
-          timeout: 0,
-        });
-      });
 
     return {
       userData,
@@ -150,7 +132,6 @@ export default {
       updateLoading,
       validateEmail,
       hidePwd,
-      disable,
     };
   },
 };
