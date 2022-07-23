@@ -11,11 +11,23 @@
           :loading="loading"
         >
           <template v-slot:top-right>
-            <q-input v-model="filter" placeholder="Search">
-              <template v-slot:append>
-                <q-icon name="search"></q-icon>
-              </template>
-            </q-input>
+            <div class="row items-end justify-between">
+              <div class="col">
+                <q-input v-model="filter" placeholder="Search">
+                  <template v-slot:append>
+                    <q-icon name="search"></q-icon>
+                  </template>
+                </q-input>
+              </div>
+              <div class="col-auto q-ml-lg">
+                <q-btn
+                  color="primary"
+                  label="Create User"
+                  to="/admin/users/new"
+                >
+                </q-btn>
+              </div>
+            </div>
           </template>
 
           <template v-slot:body-cell-actions="props">
