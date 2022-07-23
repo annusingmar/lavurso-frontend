@@ -33,9 +33,17 @@
             <q-input
               filled
               label="Password"
-              type="password"
+              :type="hidePwd ? 'password' : 'text'"
               v-model="userData.user.password"
-            ></q-input>
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="hidePwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="hidePwd = !hidePwd"
+                ></q-icon>
+              </template>
+            </q-input>
             <div class="row justify-end q-mt-sm q-gutter-sm">
               <q-btn
                 :loading="updateLoading"
@@ -66,6 +74,7 @@ export default {
     const userData = reactive({ user: {} });
     const serverUserData = reactive({ user: {} });
     const updateLoading = ref(false);
+    const hidePwd = ref(true);
 
     const resetData = () => {
       userData.user = {
@@ -133,7 +142,14 @@ export default {
         });
       });
 
-    return { userData, resetData, updateUser, updateLoading, validateEmail };
+    return {
+      userData,
+      resetData,
+      updateUser,
+      updateLoading,
+      validateEmail,
+      hidePwd,
+    };
   },
 };
 </script>
