@@ -47,6 +47,7 @@
             <div class="row justify-end q-mt-sm q-gutter-sm">
               <q-btn
                 :loading="updateLoading"
+                :disabled="disable"
                 type="submit"
                 color="primary"
                 label="Update"
@@ -70,7 +71,7 @@ export default {
   setup(props) {
     const $q = useQuasar();
     const { id } = toRefs(props);
-    const loading = ref(true);
+    const disable = ref(false);
     const userData = reactive({ user: {} });
     const serverUserData = reactive({ user: {} });
     const updateLoading = ref(false);
@@ -130,9 +131,9 @@ export default {
       .then((response) => {
         serverUserData.user = response.data.user;
         resetData();
-        loading.value = false;
       })
       .catch((error) => {
+        disable.value = true;
         $q.notify({
           color: "negative",
           position: "top",
@@ -149,6 +150,7 @@ export default {
       updateLoading,
       validateEmail,
       hidePwd,
+      disable,
     };
   },
 };
