@@ -2,6 +2,11 @@
   <q-page>
     <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
       <q-tab name="general" label="General"></q-tab>
+      <q-tab
+        name="parents"
+        label="Parents"
+        v-if="user.user.role === 'student'"
+      ></q-tab>
     </q-tabs>
 
     <q-separator />
@@ -12,6 +17,9 @@
           :server-user="user"
           @refresh-user="getUserFromAPI"
         ></UserEditGeneral>
+      </q-tab-panel>
+      <q-tab-panel name="parents" v-if="user.user.role === 'student'">
+        <UserEditParents :id="user.user.id"></UserEditParents>
       </q-tab-panel>
     </q-tab-panels>
 
@@ -26,16 +34,17 @@ import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 
 import UserEditGeneral from "./UserEditGeneral.vue";
+import UserEditParents from "./UserEditParents.vue";
 
 export default {
   props: ["id"],
-  components: { UserEditGeneral },
+  components: { UserEditGeneral, UserEditParents },
   setup(props) {
     const $q = useQuasar();
     const router = useRouter();
     const tab = ref("general");
     const user = reactive({ user: {} });
-    const loading = ref(false);
+    const loading = ref(true);
 
     const getUserFromAPI = () => {
       loading.value = true;
