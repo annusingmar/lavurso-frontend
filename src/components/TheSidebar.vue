@@ -72,7 +72,7 @@ export default {
       {
         title: "Home",
         icon: "home",
-        to: "/",
+        to: "/home",
         separator: false,
       },
       {
