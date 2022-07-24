@@ -19,7 +19,7 @@
             <div class="col-auto">
               <q-icon left name="chat_bubble_outline"></q-icon>
             </div>
-            <div class="col-auto">XX</div>
+            <div class="col-auto">{{ msg.message_count }}</div>
           </div>
         </q-item-section>
       </div>
