@@ -2,6 +2,7 @@
   <q-page>
     <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
       <q-tab name="general" label="General"></q-tab>
+      <q-tab name="sessions" label="Sessions"></q-tab>
       <q-tab
         name="parents"
         label="Parents"
@@ -17,6 +18,9 @@
           :server-user="user"
           @refresh-user="getUserFromAPI"
         ></UserEditGeneral>
+      </q-tab-panel>
+      <q-tab-panel name="sessions">
+        <UserEditSessions :id="user.user.id"></UserEditSessions>
       </q-tab-panel>
       <q-tab-panel name="parents" v-if="user.user.role === 'student'">
         <UserEditParents :id="user.user.id"></UserEditParents>
@@ -35,10 +39,11 @@ import { useRouter } from "vue-router";
 
 import UserEditGeneral from "./UserEditGeneral.vue";
 import UserEditParents from "./UserEditParents.vue";
+import UserEditSessions from "./UserEditSessions.vue";
 
 export default {
   props: ["id"],
-  components: { UserEditGeneral, UserEditParents },
+  components: { UserEditGeneral, UserEditParents, UserEditSessions },
   setup(props) {
     const $q = useQuasar();
     const router = useRouter();
