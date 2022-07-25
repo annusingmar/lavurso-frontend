@@ -1,8 +1,8 @@
 <template>
-  <q-item clickable v-ripple class="q-mb-sm">
+  <q-item clickable v-ripple class="q-mb-sm" :to="'/messages/' + msg.id">
     <div class="row justify-between items-center" style="width: 100%">
-      <div class="col-xl-2 col-md-2 col-sm-12 col-xs-12">
-        <q-item-section>
+      <div>
+        <q-item-section avatar>
           <!-- <q-badge color="red" style="max-width: 5em" class="q-mb-sm"
                       >UNREAD</q-badge
                     > -->
@@ -10,10 +10,10 @@
           <q-item-label caption>{{ formatDate }}</q-item-label>
         </q-item-section>
       </div>
-      <div class="col-xl-9 col-md-9 col-sm-12 col-xs-12">
-        <q-item-section>{{ msg.title }} </q-item-section>
+      <div>
+        <q-item-section main>{{ msg.title }} </q-item-section>
       </div>
-      <div class="col-xl-1 col-md-1 col-sm-12 col-xs-12">
+      <div>
         <q-item-section side>
           <div class="row">
             <div class="col-auto">
