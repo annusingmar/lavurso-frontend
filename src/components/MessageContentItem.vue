@@ -10,6 +10,7 @@
             color="negative"
             label="Delete"
             class="q-mt-sm"
+            :loading="deleteMessageLoading"
             @click="deleteMessagePrompt"
           ></q-btn>
         </q-card-section>
@@ -25,7 +26,7 @@
 
 <script>
 import { useQuasar } from "quasar";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
 import { api } from "src/boot/axios";
@@ -36,12 +37,14 @@ export default {
   setup(props, context) {
     const $q = useQuasar();
     const { id } = storeToRefs(useUserStore());
+    const deleteMessageLoading = ref(false);
 
     const createdAt = computed(() => {
       return new Date(props.msg.created_at).toLocaleString("et");
     });
 
     const deleteMessage = () => {
+      deleteMessageLoading.value = true;
       api
         .delete("/messages/" + props.msg.id)
         .then((response) => {
@@ -60,6 +63,7 @@ export default {
             timeout: 6000,
           });
         });
+      deleteMessageLoading.value = false;
       context.emit("refreshMessages");
     };
 
@@ -74,7 +78,7 @@ export default {
       });
     };
 
-    return { createdAt, id, deleteMessagePrompt };
+    return { createdAt, id, deleteMessageLoading, deleteMessagePrompt };
   },
 };
 </script>
