@@ -24,6 +24,42 @@
             ></MessageContentItem>
           </div>
         </q-card-section>
+        <q-card-section v-if="!thread.content.locked">
+          <div class="row justify-end" v-if="!showReplyBox">
+            <q-btn
+              color="primary"
+              label="Reply"
+              @click="toggleReplyBox"
+            ></q-btn>
+          </div>
+          <div v-else>
+            <q-editor
+              ref="editorRef"
+              @paste="onPaste"
+              v-model="userReply"
+              :toolbar="[
+                ['bold', 'italic', 'strike', 'underline'],
+                ['undo', 'redo'],
+              ]"
+              min-height="5rem"
+            ></q-editor>
+            <div class="row justify-end">
+              <q-btn
+                color="primary"
+                label="Send"
+                icon-right="send"
+                :loading="sendLoading"
+                @click="sendMessage"
+                class="q-mt-md"
+              ></q-btn>
+            </div>
+          </div>
+        </q-card-section>
+        <q-card-section v-else>
+          <div class="row justify-center">
+            <div class="subtitle-1">Thread locked.</div>
+          </div>
+        </q-card-section>
       </q-card>
     </div>
   </div>
@@ -43,13 +79,16 @@ export default {
   props: ["id"],
   setup(props) {
     const $q = useQuasar();
+    const router = useRouter();
     const { userID } = storeToRefs(useUserStore());
+
+    const showReplyBox = ref(false);
+    const editorRef = ref(null);
+    const userReply = ref("");
+
     const thread = reactive({ content: {} });
     const messages = reactive({ list: [] });
     const loading = ref(true);
-    const deleteLoading = ref(false);
-    const router = useRouter();
-
     const getThread = () => {
       $q.loading.show();
       api
@@ -71,6 +110,7 @@ export default {
         });
     };
 
+    const deleteLoading = ref(false);
     const deleteThread = () => {
       deleteLoading.value = true;
       api
@@ -106,6 +146,59 @@ export default {
       });
     };
 
+    const toggleReplyBox = () => {
+      showReplyBox.value = !showReplyBox.value;
+    };
+
+    const onPaste = (event) => {
+      if (event.target.nodeName === "INPUT") return;
+      let text, onPasteStripFormattingIEPaste;
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.originalEvent && event.originalEvent.clipboardData.getData) {
+        text = event.originalEvent.clipboardData.getData("text/plain");
+        editorRef.value.runCmd("insertText", text);
+      } else if (event.clipboardData && event.clipboardData.getData) {
+        text = event.clipboardData.getData("text/plain");
+        editorRef.value.runCmd("insertText", text);
+      } else if (window.clipboardData && window.clipboardData.getData) {
+        if (!onPasteStripFormattingIEPaste) {
+          onPasteStripFormattingIEPaste = true;
+          editorRef.value.runCmd("ms-pasteTextOnly", text);
+        }
+        onPasteStripFormattingIEPaste = false;
+      }
+    };
+
+    const sendLoading = ref(false);
+    const sendMessage = () => {
+      sendLoading.value = true;
+      api
+        .post("/threads/" + props.id + "/messages", {
+          body: userReply.value,
+        })
+        .then((response) => {
+          $q.notify({
+            type: "positive",
+            position: "top",
+            message: "Sending message succeeded!",
+            timeout: 3000,
+          });
+          userReply.value = "";
+          showReplyBox.value = false;
+        })
+        .catch((error) => {
+          $q.notify({
+            type: "negative",
+            position: "top",
+            message: "Sending message failed",
+            timeout: 6000,
+          });
+        });
+      sendLoading.value = false;
+      getThread();
+    };
+
     getThread();
 
     return {
@@ -114,8 +207,15 @@ export default {
       loading,
       userID,
       deleteLoading,
+      showReplyBox,
+      userReply,
+      editorRef,
+      sendLoading,
       getThread,
       deleteThreadPrompt,
+      toggleReplyBox,
+      sendMessage,
+      onPaste,
     };
   },
   components: { MessageContentItem, MessageContentItem },

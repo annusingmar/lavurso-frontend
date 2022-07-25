@@ -6,7 +6,7 @@
           <div class="text-subtitle2">{{ msg.user.name }}</div>
           <div class="text-caption">{{ createdAt }}</div>
           <q-btn
-            v-if="msg.user.id === id && msg.thread_id"
+            v-if="msg.user.id === id && msg.type !== 'thread_start'"
             color="negative"
             label="Delete"
             class="q-mt-sm"
