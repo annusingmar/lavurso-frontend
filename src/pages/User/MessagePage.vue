@@ -37,12 +37,16 @@
               ref="editorRef"
               @paste="onPaste"
               v-model="userReply"
+              :class="{ editorError }"
               :toolbar="[
                 ['bold', 'italic', 'strike', 'underline'],
                 ['undo', 'redo'],
               ]"
               min-height="5rem"
             ></q-editor>
+            <div class="text-subtitle2 q-mt-sm" v-if="editorError">
+              Message content cannot be empty
+            </div>
             <div class="row justify-end">
               <q-btn
                 color="primary"
@@ -170,8 +174,13 @@ export default {
       }
     };
 
+    const editorError = ref(false);
     const sendLoading = ref(false);
     const sendMessage = () => {
+      if (userReply.value.trim() === "") {
+        editorError.value = true;
+        return;
+      }
       sendLoading.value = true;
       api
         .post("/threads/" + props.id + "/messages", {
@@ -211,6 +220,7 @@ export default {
       userReply,
       editorRef,
       sendLoading,
+      editorError,
       getThread,
       deleteThreadPrompt,
       toggleReplyBox,
@@ -221,3 +231,11 @@ export default {
   components: { MessageContentItem, MessageContentItem },
 };
 </script>
+
+<style scoped>
+.editorError {
+  border: 2px solid;
+  border-color: red;
+  border-radius: 5px;
+}
+</style>
