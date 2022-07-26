@@ -1,16 +1,17 @@
 <template>
-  <div class="row flex-center q-col-gutter-sm" style="height: 75vh">
+  <div class="row flex-center" style="height: 90vh">
     <div class="col-10">
       <q-card>
         <q-card-section>
           <div class="row justify-between">
             <div class="text-h4">Messages</div>
-            <div class="q-ml-md">
+            <div class="row q-gutter-x-sm">
               <q-btn
                 label="refresh"
                 @click="getMessages"
                 :loading="loading"
               ></q-btn>
+              <q-btn label="new" color="primary" to="/messages/new"></q-btn>
             </div>
           </div>
         </q-card-section>

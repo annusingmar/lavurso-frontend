@@ -9,6 +9,10 @@ const routes = [
         component: () => import("pages/User/MessageList.vue"),
       },
       {
+        path: "messages/new",
+        component: () => import("pages/User/MessageNew.vue"),
+      },
+      {
         path: "messages/:id",
         component: () => import("pages/User/MessagePage.vue"),
         props: true,
