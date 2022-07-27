@@ -105,12 +105,16 @@ export default {
         })
         .catch((error) => {
           $q.loading.hide();
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading of data failed",
-            timeout: 0,
-          });
+          if (error.response && error.response.status == 404) {
+            router.replace("/notFound");
+          } else {
+            $q.notify({
+              type: "negative",
+              position: "top",
+              message: "Loading of data failed",
+              timeout: 0,
+            });
+          }
         });
     };
 

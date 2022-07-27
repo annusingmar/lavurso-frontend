@@ -1,11 +1,15 @@
 <template>
-  <q-item clickable v-ripple class="q-mb-sm" :to="'/messages/' + msg.id">
+  <q-item clickable v-ripple :to="'/messages/' + msg.id">
     <div class="row justify-between items-center" style="width: 100%">
       <div>
         <q-item-section avatar>
-          <!-- <q-badge color="red" style="max-width: 5em" class="q-mb-sm"
-                      >UNREAD</q-badge
-                    > -->
+          <q-badge
+            color="red"
+            style="max-width: 5em"
+            class="q-mb-sm"
+            v-if="!msg.read"
+            >UNREAD</q-badge
+          >
           <q-item-label>{{ msg.user.name }}</q-item-label>
           <q-item-label caption>{{ formatDate }}</q-item-label>
         </q-item-section>
