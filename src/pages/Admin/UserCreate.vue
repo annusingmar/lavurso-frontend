@@ -118,45 +118,43 @@ export default {
       user.role = null;
     };
 
-    const createUser = () => {
+    const createUser = async () => {
       createLoading.value = true;
-      api
-        .post("/users", {
+      try {
+        await api.post("/users", {
           name: user.name,
           email: user.email,
           password: user.password,
           role: user.role.value,
-        })
-        .then(() => {
-          createLoading.value = false;
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Updating user succeeded!",
-            timeout: 3000,
-          });
-          router.replace("/admin/users");
-        })
-        .catch((error) => {
-          createLoading.value = false;
-          user.password = "";
-          if (error.response && error.response.status == 409) {
-            (user.email = ""),
-              $q.notify({
-                type: "negative",
-                position: "top",
-                message: "Email already exists",
-                timeout: 6000,
-              });
-          } else {
+        });
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Creating user succeeded!",
+          timeout: 3000,
+        });
+        router.replace("/admin/users");
+      } catch (error) {
+        user.password = "";
+        if (error.response && error.response.status == 409) {
+          (user.email = ""),
             $q.notify({
               type: "negative",
               position: "top",
-              message: "Creating user failed",
+              message: "Email already exists",
               timeout: 6000,
             });
-          }
-        });
+        } else {
+          $q.notify({
+            type: "negative",
+            position: "top",
+            message: "Creating user failed",
+            timeout: 6000,
+          });
+        }
+      } finally {
+        createLoading.value = false;
+      }
     };
 
     return {

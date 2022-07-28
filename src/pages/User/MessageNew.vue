@@ -127,45 +127,41 @@ export default {
     };
 
     const foundUsers = ref(null);
-    const getUsersResult = (search) => {
-      api
-        .get("/users/search", {
+    const getUsersResult = async (search) => {
+      try {
+        const response = await api.get("/users/search", {
           params: {
             name: search,
           },
-        })
-        .then((response) => {
-          foundUsers.value =
-            response.data.result !== null
-              ? response.data.result.filter((u) => u.id !== id.value)
-              : [];
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading of data failed",
-            timeout: 0,
-          });
         });
+        foundUsers.value =
+          response.data.result !== null
+            ? response.data.result.filter((u) => u.id !== id.value)
+            : [];
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Loading of data failed",
+          timeout: 0,
+        });
+      }
     };
 
     const userGroups = ref(null);
-    const getUserGroups = () => {
-      return api
-        .get("/users/" + id.value + "/groups")
-        .then((response) => {
-          userGroups.value =
-            response.data.groups !== null ? response.data.groups : [];
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading of data failed",
-            timeout: 0,
-          });
+    const getUserGroups = async () => {
+      try {
+        const response = await api.get("/users/" + id.value + "/groups");
+        userGroups.value =
+          response.data.groups !== null ? response.data.groups : [];
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Loading of data failed",
+          timeout: 0,
         });
+      }
     };
 
     const onPaste = (event) => {
@@ -198,7 +194,7 @@ export default {
     const chosenUsers = ref([]);
     const chosenGroups = ref([]);
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
       editorError.value = false;
       if (!titleRef.value.validate()) {
         return;
@@ -212,31 +208,30 @@ export default {
       chosenUsers.value.forEach((u) => userIDs.push(u.id));
       chosenGroups.value.forEach((g) => groupIDs.push(g.id));
       sendLoading.value = true;
-      api
-        .post("/threads", {
+      try {
+        const response = await api.post("/threads", {
           title: title.value,
           body: message.value,
           user_ids: userIDs,
           group_ids: groupIDs,
-        })
-        .then((response) => {
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Sending message succeeded!",
-            timeout: 3000,
-          });
-          router.replace("/messages/" + response.data.thread.id);
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Sending message failed",
-            timeout: 6000,
-          });
         });
-      sendLoading.value = false;
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Sending message succeeded!",
+          timeout: 3000,
+        });
+        router.replace("/messages/" + response.data.thread.id);
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Sending message failed",
+          timeout: 6000,
+        });
+      } finally {
+        sendLoading.value = false;
+      }
     };
 
     return {

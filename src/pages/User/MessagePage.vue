@@ -93,54 +93,50 @@ export default {
     const thread = reactive({ content: {} });
     const messages = ref([]);
     const loading = ref(true);
-    const getThread = () => {
+    const getThread = async () => {
       $q.loading.show();
-      api
-        .get("/threads/" + props.id)
-        .then((response) => {
-          thread.content = response.data.thread;
-          messages.value = response.data.messages;
-          loading.value = false;
-          $q.loading.hide();
-        })
-        .catch((error) => {
-          $q.loading.hide();
-          if (error.response && error.response.status == 404) {
-            router.replace("/notFound");
-          } else {
-            $q.notify({
-              type: "negative",
-              position: "top",
-              message: "Loading of data failed",
-              timeout: 0,
-            });
-          }
-        });
-    };
-
-    const deleteLoading = ref(false);
-    const deleteThread = () => {
-      deleteLoading.value = true;
-      api
-        .delete("/threads/" + props.id)
-        .then((response) => {
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Deleting thread succeeded!",
-            timeout: 3000,
-          });
-          router.replace("/messages");
-        })
-        .catch((error) => {
+      try {
+        const response = await api.get("/threads/" + props.id);
+        thread.content = response.data.thread;
+        messages.value = response.data.messages;
+        loading.value = false;
+      } catch (error) {
+        if (error.response && error.response.status == 404) {
+          router.replace("/notFound");
+        } else {
           $q.notify({
             type: "negative",
             position: "top",
-            message: "Deleting thread failed",
-            timeout: 6000,
+            message: "Loading of data failed",
+            timeout: 0,
           });
-          deleteLoading.value = false;
+        }
+      } finally {
+        $q.loading.hide();
+      }
+    };
+
+    const deleteLoading = ref(false);
+    const deleteThread = async () => {
+      deleteLoading.value = true;
+      try {
+        await api.delete("/threads/" + props.id);
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Deleting thread succeeded!",
+          timeout: 3000,
         });
+        router.replace("/messages");
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Deleting thread failed",
+          timeout: 6000,
+        });
+        deleteLoading.value = false;
+      }
     };
 
     const deleteThreadPrompt = () => {
@@ -180,36 +176,35 @@ export default {
 
     const editorError = ref(false);
     const sendLoading = ref(false);
-    const sendMessage = () => {
+    const sendMessage = async () => {
       if (userReply.value.trim() === "") {
         editorError.value = true;
         return;
       }
       sendLoading.value = true;
-      api
-        .post("/threads/" + props.id + "/messages", {
+      try {
+        await api.post("/threads/" + props.id + "/messages", {
           body: userReply.value,
-        })
-        .then((response) => {
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Sending message succeeded!",
-            timeout: 3000,
-          });
-          userReply.value = "";
-          showReplyBox.value = false;
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Sending message failed",
-            timeout: 6000,
-          });
         });
-      sendLoading.value = false;
-      getThread();
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Sending message succeeded!",
+          timeout: 3000,
+        });
+        userReply.value = "";
+        showReplyBox.value = false;
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Sending message failed",
+          timeout: 6000,
+        });
+      } finally {
+        sendLoading.value = false;
+        getThread();
+      }
     };
 
     getThread();

@@ -74,46 +74,42 @@ export default {
     const chosenParent = ref(null);
     const addingLoading = ref(false);
 
-    const getAllParents = () => {
-      return api
-        .get("/users")
-        .then((response) => {
-          allParents.value = [];
-          allParents.value = response.data.users.filter((user) => {
-            if (user.role === "parent" && !studentParents.value) {
-              return true;
-            } else if (user.role === "parent") {
-              return !studentParents.value.some((sp) => sp.id == user.id);
-            } else {
-              return false;
-            }
-          });
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading of data failed",
-            timeout: 0,
-          });
+    const getAllParents = async () => {
+      try {
+        const response = await api.get("/users");
+        allParents.value = [];
+        allParents.value = response.data.users.filter((user) => {
+          if (user.role === "parent" && !studentParents.value) {
+            return true;
+          } else if (user.role === "parent") {
+            return !studentParents.value.some((sp) => sp.id == user.id);
+          } else {
+            return false;
+          }
         });
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Loading of data failed",
+          timeout: 0,
+        });
+      }
     };
 
-    const getStudentParents = () => {
-      api
-        .get("/students/" + props.id + "/parents")
-        .then((response) => {
-          studentParents.value =
-            response.data.parents !== null ? response.data.parents : [];
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading of data failed",
-            timeout: 0,
-          });
+    const getStudentParents = async () => {
+      try {
+        const response = await api.get("/students/" + props.id + "/parents");
+        studentParents.value =
+          response.data.parents !== null ? response.data.parents : [];
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Loading of data failed",
+          timeout: 0,
         });
+      }
     };
 
     const filter = async (val, update) => {
@@ -132,60 +128,60 @@ export default {
       }
     };
 
-    const addParent = () => {
+    const addParent = async () => {
       addingLoading.value = true;
-      api
-        .put("/students/" + props.id + "/parents", {
+      try {
+        const response = await api.put("/students/" + props.id + "/parents", {
           parent_id: chosenParent.value.id,
-        })
-        .then(() => {
-          addingLoading.value = false;
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Parent added successfully",
-            timeout: 5000,
-          });
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Adding parent failed",
-            timeout: 0,
-          });
         });
-      getStudentParents();
-      chosenParent.value = null;
-      allParents.value = null;
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Parent added successfully",
+          timeout: 5000,
+        });
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Adding parent failed",
+          timeout: 0,
+        });
+      } finally {
+        chosenParent.value = null;
+        allParents.value = null;
+        await getStudentParents();
+        addingLoading.value = false;
+      }
     };
 
-    const removeParent = (pid) => {
-      api
-        .delete("/students/" + props.id + "/parents", {
-          data: {
-            parent_id: pid,
-          },
-        })
-        .then(() => {
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Parent removed successfully",
-            timeout: 5000,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Removing parent failed",
-            timeout: 0,
-          });
+    const removeParent = async (pid) => {
+      try {
+        const response = await api.delete(
+          "/students/" + props.id + "/parents",
+          {
+            data: {
+              parent_id: pid,
+            },
+          }
+        );
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Parent removed successfully",
+          timeout: 5000,
         });
-      getStudentParents();
-      allParents.value = null;
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Removing parent failed",
+          timeout: 0,
+        });
+      } finally {
+        allParents.value = null;
+        await getStudentParents();
+      }
     };
 
     getStudentParents();

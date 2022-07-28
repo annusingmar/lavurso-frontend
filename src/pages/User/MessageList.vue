@@ -33,7 +33,7 @@
 <script>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
 import MessageListItem from "src/components/MessageListItem.vue";
@@ -45,23 +45,22 @@ export default {
     const loading = ref(true);
     const messages = ref([]);
     const { id } = storeToRefs(useUserStore());
-    const getMessages = () => {
+
+    const getMessages = async () => {
       loading.value = true;
-      api
-        .get("/users/" + id.value + "/threads")
-        .then((response) => {
-          messages.value =
-            response.data.threads !== null ? response.data.threads : [];
-          loading.value = false;
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading of data failed",
-            timeout: 0,
-          });
+      try {
+        const response = await api.get("/users/" + id.value + "/threads");
+        messages.value =
+          response.data.threads !== null ? response.data.threads : [];
+        loading.value = false;
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Loading of data failed",
+          timeout: 0,
         });
+      }
     };
     getMessages();
     return { messages, getMessages, loading };

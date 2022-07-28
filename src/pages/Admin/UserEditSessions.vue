@@ -98,69 +98,64 @@ export default {
       { name: "actions", label: "Action" },
     ];
 
-    const getUserSessions = () => {
-      sessions.value = [];
+    const getUserSessions = async () => {
       loading.value = true;
-      api
-        .get("/users/" + props.id + "/sessions")
-        .then((response) => {
-          response.data.sessions !== null
-            ? (sessions.value = response.data.sessions)
-            : (sessions.value = []);
-          loading.value = false;
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading of data failed",
-            timeout: 0,
-          });
+      try {
+        const response = await api.get("/users/" + props.id + "/sessions");
+        response.data.sessions !== null
+          ? (sessions.value = response.data.sessions)
+          : (sessions.value = []);
+        loading.value = false;
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Loading of data failed",
+          timeout: 0,
         });
+      }
     };
 
-    const removeUserSession = (id) => {
-      api
-        .delete("/sessions/" + id)
-        .then((response) => {
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Deleting session succeeded!",
-            timeout: 3000,
-          });
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Deleting session failed",
-            timeout: 6000,
-          });
+    const removeUserSession = async (id) => {
+      try {
+        await api.delete("/sessions/" + id);
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Deleting session succeeded!",
+          timeout: 3000,
         });
-      getUserSessions();
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Deleting session failed",
+          timeout: 6000,
+        });
+      } finally {
+        await getUserSessions();
+      }
     };
 
-    const removeAllSessions = () => {
-      api
-        .delete("/users/" + props.id + "/sessions")
-        .then((response) => {
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Deleting sessions succeeded!",
-            timeout: 3000,
-          });
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Deleting sessions failed",
-            timeout: 6000,
-          });
+    const removeAllSessions = async () => {
+      try {
+        await api.delete("/users/" + props.id + "/sessions");
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Deleting sessions succeeded!",
+          timeout: 3000,
         });
-      getUserSessions();
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Deleting sessions failed",
+          timeout: 6000,
+        });
+      } finally {
+        await getUserSessions();
+      }
     };
 
     const removeUserSessionPrompt = (id) => {

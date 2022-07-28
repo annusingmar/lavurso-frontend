@@ -51,27 +51,24 @@ export default {
     const user = reactive({ user: {} });
     const loading = ref(true);
 
-    const getUserFromAPI = () => {
+    const getUserFromAPI = async () => {
       loading.value = true;
-      api
-        .get("/users/" + props.id)
-        .then((response) => {
-          user.user = response.data.user;
-          loading.value = false;
-        })
-        .catch((error) => {
-          if (error.response && error.response.status == 404) {
-            router.replace("/notFound");
-          } else {
-            $q.notify({
-              color: "negative",
-              position: "top",
-              message: "Loading of data failed",
-              icon: "report_problem",
-              timeout: 0,
-            });
-          }
-        });
+      try {
+        const response = await api.get("/users/" + props.id);
+        user.user = response.data.user;
+        loading.value = false;
+      } catch (error) {
+        if (error.response && error.response.status == 404) {
+          router.replace("/notFound");
+        } else {
+          $q.notify({
+            type: "negative",
+            position: "top",
+            message: "Loading data failed",
+            timeout: 0,
+          });
+        }
+      }
     };
     getUserFromAPI();
 

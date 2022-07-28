@@ -43,28 +43,27 @@ export default {
       return new Date(props.msg.created_at).toLocaleString("et");
     });
 
-    const deleteMessage = () => {
+    const deleteMessage = async () => {
       deleteMessageLoading.value = true;
-      api
-        .delete("/messages/" + props.msg.id)
-        .then((response) => {
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Deleting message succeeded!",
-            timeout: 3000,
-          });
-        })
-        .catch((error) => {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Deleting message failed",
-            timeout: 6000,
-          });
+      try {
+        await api.delete("/messages/" + props.msg.id);
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Deleting message succeeded!",
+          timeout: 3000,
         });
-      deleteMessageLoading.value = false;
-      context.emit("refreshMessages");
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Deleting message failed",
+          timeout: 6000,
+        });
+      } finally {
+        deleteMessageLoading.value = false;
+        context.emit("refreshMessages");
+      }
     };
 
     const deleteMessagePrompt = (id) => {

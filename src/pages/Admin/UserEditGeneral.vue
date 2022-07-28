@@ -93,36 +93,34 @@ export default {
       return re.test(email) || "Invalid email";
     };
 
-    const updateUser = () => {
+    const updateUser = async () => {
       updateLoading.value = true;
-      api
-        .patch("/users/" + props.serverUser.user.id, {
+      try {
+        await api.patch("/users/" + props.serverUser.user.id, {
           name: userData.user.name,
           email: userData.user.email,
           password:
             userData.user.password && userData.user.password.length > 0
               ? userData.user.password
               : null,
-        })
-        .then(() => {
-          updateLoading.value = false;
-          $q.notify({
-            type: "positive",
-            position: "top",
-            message: "Updating user succeeded!",
-            timeout: 3000,
-          });
-        })
-        .catch((error) => {
-          updateLoading.value = false;
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Updating user failed",
-            timeout: 6000,
-          });
         });
-      context.emit("refreshUser");
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Updating user succeeded!",
+          timeout: 3000,
+        });
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Updating user failed",
+          timeout: 6000,
+        });
+      } finally {
+        updateLoading.value = false;
+        context.emit("refreshUser");
+      }
     };
 
     return {
