@@ -34,6 +34,7 @@ import { api } from "src/boot/axios";
 export default {
   name: "MessageContentItem",
   props: ["msg"],
+  emits: ["refreshThread"],
   setup(props, context) {
     const $q = useQuasar();
     const { id } = storeToRefs(useUserStore());
@@ -62,7 +63,7 @@ export default {
         });
       } finally {
         deleteMessageLoading.value = false;
-        context.emit("refreshMessages");
+        context.emit("refreshThread");
       }
     };
 
