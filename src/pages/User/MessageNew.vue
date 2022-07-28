@@ -33,7 +33,7 @@
         </q-card-section>
         <q-card-section>
           <div class="row q-gutter-x-md">
-            <div class="col">
+            <div class="col-sm-grow col-xs-12">
               <q-select
                 filled
                 multiple
@@ -48,6 +48,22 @@
                 option-value="id"
                 hint="Minimum 4 characters"
                 @filter="usersFilter"
+              ></q-select>
+            </div>
+            <div class="col-sm-grow col-xs-12">
+              <q-select
+                filled
+                multiple
+                use-chips
+                use-input
+                input-debounce="200"
+                stack-label
+                label="Groups"
+                v-model="chosenGroups"
+                :options="filteredGroups"
+                option-label="name"
+                option-value="id"
+                @filter="groupsFilter"
               ></q-select>
             </div>
           </div>
@@ -93,6 +109,23 @@ export default {
       update();
     };
 
+    const filteredGroups = ref(null);
+    const groupsFilter = async (val, update) => {
+      if (userGroups.value !== null) {
+        update(() => {
+          const v = val.toLowerCase();
+          filteredGroups.value = userGroups.value.filter(
+            (g) => g.name.toLowerCase().indexOf(v) > -1
+          );
+        });
+      } else {
+        await getUserGroups();
+        update(() => {
+          filteredGroups.value = userGroups.value;
+        });
+      }
+    };
+
     const foundUsers = ref(null);
     const getUsersResult = (search) => {
       api
@@ -106,6 +139,24 @@ export default {
             response.data.result == null
               ? []
               : response.data.result.filter((u) => u.id !== id.value);
+        })
+        .catch((error) => {
+          $q.notify({
+            type: "negative",
+            position: "top",
+            message: "Loading of data failed",
+            timeout: 0,
+          });
+        });
+    };
+
+    const userGroups = ref(null);
+    const getUserGroups = () => {
+      return api
+        .get("/users/" + id.value + "/groups")
+        .then((response) => {
+          userGroups.value =
+            response.data.groups == null ? [] : response.data.groups;
         })
         .catch((error) => {
           $q.notify({
@@ -145,6 +196,7 @@ export default {
     const title = ref("");
     const message = ref("");
     const chosenUsers = ref([]);
+    const chosenGroups = ref([]);
 
     const sendMessage = () => {
       editorError.value = false;
@@ -156,13 +208,16 @@ export default {
       }
 
       const userIDs = [];
+      const groupIDs = [];
       chosenUsers.value.forEach((u) => userIDs.push(u.id));
+      chosenGroups.value.forEach((g) => groupIDs.push(g.id));
       sendLoading.value = true;
       api
         .post("/threads", {
           title: title.value,
           body: message.value,
           user_ids: userIDs,
+          group_ids: groupIDs,
         })
         .then((response) => {
           $q.notify({
@@ -193,6 +248,9 @@ export default {
       chosenUsers,
       editorError,
       sendLoading,
+      chosenGroups,
+      filteredGroups,
+      groupsFilter,
       usersFilter,
       onPaste,
       sendMessage,

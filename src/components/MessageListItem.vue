@@ -38,7 +38,6 @@ export default {
   name: "MessageListItem",
   props: ["msg"],
   setup(props) {
-    console.log(props.msg);
     const formatDate = computed(() => {
       return new Date(props.msg.created_at).toLocaleString("et");
     });
