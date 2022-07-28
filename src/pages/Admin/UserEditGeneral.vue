@@ -1,6 +1,6 @@
 <template>
   <div class="row flex-center" style="height: 75vh">
-    <div class="col-xl-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="col-md-6 col-sm-12">
       <q-card>
         <q-card-section>
           <div class="text-h4">Edit User</div>

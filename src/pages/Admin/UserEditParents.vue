@@ -1,6 +1,9 @@
 <template>
-  <div class="row flex-center" style="height: 75vh">
-    <div class="col-xl-3 col-md-3 col-sm-6 col-xs-6" style="min-width: 300px">
+  <div
+    class="row flex-center q-col-gutter-md"
+    style="height: 75vh; align-content: center"
+  >
+    <div class="col-md-4 col-sm-12">
       <q-card>
         <q-card-section>
           <div class="text-h4">Parents</div>
@@ -25,7 +28,7 @@
         </q-card-section>
       </q-card>
     </div>
-    <div class="col-xl-3 col-md-3 col-sm-6 col-xs-6" style="min-width: 300px">
+    <div class="col-md-4 col-sm-12">
       <q-card>
         <q-card-section>
           <div class="text-h4">Add Parent</div>

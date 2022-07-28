@@ -32,7 +32,7 @@
           </div>
         </q-card-section>
         <q-card-section>
-          <div class="row q-gutter-x-md">
+          <div class="row q-col-gutter-x-md">
             <div class="col-sm col-xs-12">
               <q-select
                 filled
