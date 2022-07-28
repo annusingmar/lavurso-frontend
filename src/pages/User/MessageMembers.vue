@@ -50,10 +50,23 @@ export default {
       loading.value = true;
       try {
         const response = await api.get("/threads/" + props.id + "/members");
-        users.value = response.data.users !== null ? response.data.users : [];
+        thread.content = response.data.thread;
+
+        // if the users array in response is not null
+        // sort the array so that thread creator is first
+        // otherwise return empty array
+        users.value =
+          response.data.users !== null
+            ? response.data.users.sort((u1, u2) =>
+                u1.id === thread.content.user.id
+                  ? -1
+                  : u2.id === thread.content.user.id
+                  ? 1
+                  : 0
+              )
+            : [];
         groups.value =
           response.data.groups !== null ? response.data.groups : [];
-        thread.content = response.data.thread;
         $q.loading.hide();
         loading.value = false;
       } catch (error) {
