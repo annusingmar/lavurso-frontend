@@ -16,9 +16,9 @@
           </div>
         </q-card-section>
         <q-card-section>
-          <q-list separator v-if="messages.list">
+          <q-list separator v-if="messages.length > 0">
             <MessageListItem
-              v-for="msg in messages.list"
+              v-for="msg in messages"
               :key="msg.id"
               :msg="msg"
             ></MessageListItem>
@@ -43,14 +43,15 @@ export default {
   setup() {
     const $q = useQuasar();
     const loading = ref(true);
-    const messages = reactive({ list: [] });
+    const messages = ref([]);
     const { id } = storeToRefs(useUserStore());
     const getMessages = () => {
       loading.value = true;
       api
         .get("/users/" + id.value + "/threads")
         .then((response) => {
-          messages.list = response.data.threads;
+          messages.value =
+            response.data.threads !== null ? response.data.threads : [];
           loading.value = false;
         })
         .catch((error) => {

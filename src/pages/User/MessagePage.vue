@@ -17,7 +17,7 @@
         <q-card-section>
           <div class="q-gutter-y-md">
             <MessageContentItem
-              v-for="msg in messages.list"
+              v-for="msg in messages"
               :key="msg.id"
               :msg="msg"
               @refresh-messages="getThread"
@@ -91,7 +91,7 @@ export default {
     const userReply = ref("");
 
     const thread = reactive({ content: {} });
-    const messages = reactive({ list: [] });
+    const messages = ref([]);
     const loading = ref(true);
     const getThread = () => {
       $q.loading.show();
@@ -99,7 +99,7 @@ export default {
         .get("/threads/" + props.id)
         .then((response) => {
           thread.content = response.data.thread;
-          messages.list = response.data.messages;
+          messages.value = response.data.messages;
           loading.value = false;
           $q.loading.hide();
         })

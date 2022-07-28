@@ -4,7 +4,7 @@
       <div class="col-xl-8 col-md-8 col-sm-12 col-xs-12">
         <q-table
           title="Sessions"
-          :rows="sessions.list"
+          :rows="sessions"
           :columns="columns"
           row-key="id"
           :loading="loading"
@@ -48,7 +48,7 @@ export default {
   setup(props) {
     const $q = useQuasar();
 
-    const sessions = reactive({ list: [] });
+    const sessions = ref([]);
     const loading = ref(true);
 
     const columns = [
@@ -99,14 +99,14 @@ export default {
     ];
 
     const getUserSessions = () => {
-      sessions.list = [];
+      sessions.value = [];
       loading.value = true;
       api
         .get("/users/" + props.id + "/sessions")
         .then((response) => {
           response.data.sessions !== null
-            ? (sessions.list = response.data.sessions)
-            : (sessions.list = []);
+            ? (sessions.value = response.data.sessions)
+            : (sessions.value = []);
           loading.value = false;
         })
         .catch((error) => {

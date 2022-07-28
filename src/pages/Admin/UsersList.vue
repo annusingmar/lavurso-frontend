@@ -4,7 +4,7 @@
       <div class="col-xl-8 col-md-8 col-sm-12 col-xs-12">
         <q-table
           title="Users"
-          :rows="users.list"
+          :rows="users"
           :columns="columns"
           row-key="id"
           :filter="filter"
@@ -103,14 +103,14 @@ export default {
       { name: "actions", label: "Action" },
     ];
 
-    const users = reactive({ list: [] });
+    const users = ref([]);
 
     const loading = ref(true);
 
     api
       .get("/users")
       .then((response) => {
-        users.list = response.data.users;
+        users.value = response.data.users;
         loading.value = false;
       })
       .catch((error) => {

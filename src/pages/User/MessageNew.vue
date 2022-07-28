@@ -33,7 +33,7 @@
         </q-card-section>
         <q-card-section>
           <div class="row q-gutter-x-md">
-            <div class="col-sm-grow col-xs-12">
+            <div class="col-sm col-xs-12">
               <q-select
                 filled
                 multiple
@@ -50,7 +50,7 @@
                 @filter="usersFilter"
               ></q-select>
             </div>
-            <div class="col-sm-grow col-xs-12">
+            <div class="col-sm col-xs-12">
               <q-select
                 filled
                 multiple
@@ -136,9 +136,9 @@ export default {
         })
         .then((response) => {
           foundUsers.value =
-            response.data.result == null
-              ? []
-              : response.data.result.filter((u) => u.id !== id.value);
+            response.data.result !== null
+              ? response.data.result.filter((u) => u.id !== id.value)
+              : [];
         })
         .catch((error) => {
           $q.notify({
@@ -156,7 +156,7 @@ export default {
         .get("/users/" + id.value + "/groups")
         .then((response) => {
           userGroups.value =
-            response.data.groups == null ? [] : response.data.groups;
+            response.data.groups !== null ? response.data.groups : [];
         })
         .catch((error) => {
           $q.notify({

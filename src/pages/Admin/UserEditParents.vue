@@ -6,8 +6,8 @@
           <div class="text-h4">Parents</div>
         </q-card-section>
         <q-card-section>
-          <q-list bordered separator v-if="studentParents.list">
-            <q-item v-for="parent in studentParents.list" :key="parent.id">
+          <q-list bordered separator v-if="studentParents.length > 0">
+            <q-item v-for="parent in studentParents" :key="parent.id">
               <q-item-section>{{ parent.name }}</q-item-section>
               <q-item-section side>
                 <q-btn
@@ -68,8 +68,8 @@ export default {
   name: "UserEditParents",
   setup(props) {
     const $q = useQuasar();
-    const allParents = reactive({ list: null });
-    const studentParents = reactive({ list: [] });
+    const allParents = ref(null);
+    const studentParents = ref([]);
     const filteredParents = ref(null);
     const chosenParent = ref(null);
     const addingLoading = ref(false);
@@ -78,12 +78,12 @@ export default {
       return api
         .get("/users")
         .then((response) => {
-          allParents.list = [];
-          allParents.list = response.data.users.filter((user) => {
-            if (user.role === "parent" && !studentParents.list) {
+          allParents.value = [];
+          allParents.value = response.data.users.filter((user) => {
+            if (user.role === "parent" && !studentParents.value) {
               return true;
             } else if (user.role === "parent") {
-              return !studentParents.list.some((sp) => sp.id == user.id);
+              return !studentParents.value.some((sp) => sp.id == user.id);
             } else {
               return false;
             }
@@ -103,7 +103,8 @@ export default {
       api
         .get("/students/" + props.id + "/parents")
         .then((response) => {
-          studentParents.list = response.data.parents;
+          studentParents.value =
+            response.data.parents !== null ? response.data.parents : [];
         })
         .catch((error) => {
           $q.notify({
@@ -116,17 +117,17 @@ export default {
     };
 
     const filter = async (val, update) => {
-      if (allParents.list !== null) {
+      if (allParents.value !== null) {
         update(() => {
           const v = val.toLowerCase();
-          filteredParents.value = allParents.list.filter(
+          filteredParents.value = allParents.value.filter(
             (p) => p.name.toLowerCase().indexOf(v) > -1
           );
         });
       } else {
         await getAllParents();
         update(() => {
-          filteredParents.value = allParents.list;
+          filteredParents.value = allParents.value;
         });
       }
     };
@@ -156,7 +157,7 @@ export default {
         });
       getStudentParents();
       chosenParent.value = null;
-      allParents.list = null;
+      allParents.value = null;
     };
 
     const removeParent = (pid) => {
@@ -184,7 +185,7 @@ export default {
           });
         });
       getStudentParents();
-      allParents.list = null;
+      allParents.value = null;
     };
 
     getStudentParents();
