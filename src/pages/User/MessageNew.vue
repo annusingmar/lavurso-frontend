@@ -43,7 +43,7 @@
                 stack-label
                 label="Users"
                 v-model="chosenUsers"
-                :options="foundUsers"
+                :options="availableUsers"
                 option-label="name"
                 option-value="id"
                 hint="Minimum 4 characters"
@@ -105,36 +105,36 @@ export default {
         abort();
         return;
       }
-      await getUsersResult(val);
+      await getUsers(val);
       update();
     };
 
     const filteredGroups = ref(null);
     const groupsFilter = async (val, update) => {
-      if (userGroups.value !== null) {
+      if (availableGroups.value !== null) {
         update(() => {
           const v = val.toLowerCase();
-          filteredGroups.value = userGroups.value.filter(
+          filteredGroups.value = availableGroups.value.filter(
             (g) => g.name.toLowerCase().indexOf(v) > -1
           );
         });
       } else {
-        await getUserGroups();
+        await getGroups();
         update(() => {
-          filteredGroups.value = userGroups.value;
+          filteredGroups.value = availableGroups.value;
         });
       }
     };
 
-    const foundUsers = ref(null);
-    const getUsersResult = async (search) => {
+    const availableUsers = ref(null);
+    const getUsers = async (search) => {
       try {
         const response = await api.get("/users/search", {
           params: {
             name: search,
           },
         });
-        foundUsers.value =
+        availableUsers.value =
           response.data.result !== null
             ? response.data.result.filter((u) => u.id !== id.value)
             : [];
@@ -148,11 +148,11 @@ export default {
       }
     };
 
-    const userGroups = ref(null);
-    const getUserGroups = async () => {
+    const availableGroups = ref(null);
+    const getGroups = async () => {
       try {
         const response = await api.get("/users/" + id.value + "/groups");
-        userGroups.value =
+        availableGroups.value =
           response.data.groups !== null ? response.data.groups : [];
       } catch (error) {
         $q.notify({
@@ -239,7 +239,7 @@ export default {
       message,
       editorRef,
       titleRef,
-      foundUsers,
+      availableUsers,
       chosenUsers,
       editorError,
       sendLoading,

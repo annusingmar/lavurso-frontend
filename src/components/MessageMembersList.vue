@@ -1,66 +1,71 @@
 <template>
-  <div class="row">
-    <div class="col-sm col-xs-12">
-      <q-card-section>
-        <div class="text-h6">Users</div>
-        <q-list bordered separator v-if="users.length > 0">
-          <q-item v-for="user in users" :key="user.id">
-            <q-item-section>{{ user.name }}</q-item-section>
-            <q-item-section side v-if="isUserThreadCreator">
-              <q-checkbox
-                v-model="removedUserIDs"
-                :val="user.id"
-                :disable="user.id === userID"
-                color="red"
-              ></q-checkbox>
-            </q-item-section>
-          </q-item>
-        </q-list>
-        <div v-else-if="!loading">No users in thread.</div>
-        <div
-          class="row justify-end q-mt-sm"
-          v-if="isUserThreadCreator && removedUserIDs.length > 0"
-        >
-          <div>{{ removedUserIDs.length }} selected</div>
-        </div>
-      </q-card-section>
-    </div>
-    <div class="col-sm col-xs-12">
-      <q-card-section>
-        <div class="text-h6">Groups</div>
-        <q-list bordered separator v-if="groups.length > 0">
-          <q-item v-for="group in groups" :key="group.id">
-            <q-item-section>{{ group.name }}</q-item-section>
-            <q-item-section side v-if="isUserThreadCreator">
-              <q-checkbox
-                v-model="removedGroupIDs"
-                :val="group.id"
-                color="red"
-              ></q-checkbox>
-            </q-item-section>
-          </q-item>
-        </q-list>
-        <div v-else-if="!loading">No groups in thread.</div>
-        <div
-          class="row justify-end q-mt-sm"
-          v-if="isUserThreadCreator && removedGroupIDs.length > 0"
-        >
-          <div>{{ removedGroupIDs.length }} selected</div>
-        </div>
-      </q-card-section>
-    </div>
-  </div>
-  <div class="row justify-end" v-if="isUserThreadCreator">
+  <q-card>
     <q-card-section>
-      <q-btn
-        color="negative"
-        label="remove selected"
-        :loading="removeLoading"
-        :disabled="!atLeastOneRemoved"
-        @click="removeMembersPrompt"
-      ></q-btn>
+      <div class="text-h4">Members</div>
     </q-card-section>
-  </div>
+    <div class="row">
+      <div class="col-sm col-xs-12">
+        <q-card-section>
+          <div class="text-h6">Users</div>
+          <q-list bordered separator v-if="users.length > 0">
+            <q-item v-for="user in users" :key="user.id">
+              <q-item-section>{{ user.name }}</q-item-section>
+              <q-item-section side v-if="isUserThreadCreator">
+                <q-checkbox
+                  v-model="removedUserIDs"
+                  :val="user.id"
+                  :disable="user.id === userID"
+                  color="red"
+                ></q-checkbox>
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <div v-else-if="!loading">No users in thread.</div>
+          <div
+            class="row justify-end q-mt-sm"
+            v-if="isUserThreadCreator && removedUserIDs.length > 0"
+          >
+            <div>{{ removedUserIDs.length }} selected</div>
+          </div>
+        </q-card-section>
+      </div>
+      <div class="col-sm col-xs-12">
+        <q-card-section>
+          <div class="text-h6">Groups</div>
+          <q-list bordered separator v-if="groups.length > 0">
+            <q-item v-for="group in groups" :key="group.id">
+              <q-item-section>{{ group.name }}</q-item-section>
+              <q-item-section side v-if="isUserThreadCreator">
+                <q-checkbox
+                  v-model="removedGroupIDs"
+                  :val="group.id"
+                  color="red"
+                ></q-checkbox>
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <div v-else-if="!loading">No groups in thread.</div>
+          <div
+            class="row justify-end q-mt-sm"
+            v-if="isUserThreadCreator && removedGroupIDs.length > 0"
+          >
+            <div>{{ removedGroupIDs.length }} selected</div>
+          </div>
+        </q-card-section>
+      </div>
+    </div>
+    <div class="row justify-end" v-if="isUserThreadCreator">
+      <q-card-section>
+        <q-btn
+          color="negative"
+          label="remove selected"
+          :loading="removeLoading"
+          :disabled="!atLeastOneRemoved"
+          @click="removeMembersPrompt"
+        ></q-btn>
+      </q-card-section>
+    </div>
+  </q-card>
 </template>
 
 <script>

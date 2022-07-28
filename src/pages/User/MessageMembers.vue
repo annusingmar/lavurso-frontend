@@ -1,19 +1,26 @@
 <template>
-  <div class="row flex-center" style="height: 90vh">
+  <div
+    class="row flex-center q-col-gutter-md"
+    style="height: 90vh; align-content: center"
+  >
     <div class="col-10">
-      <q-card>
-        <q-card-section>
-          <div class="text-h4">Members</div>
-        </q-card-section>
-        <MessageMembersList
-          :userID="userID"
-          :users="users"
-          :thread="thread"
-          :groups="groups"
-          :loading="loading"
-          @refresh-members="getMembers"
-        ></MessageMembersList>
-      </q-card>
+      <MessageMembersList
+        :userID="userID"
+        :users="users"
+        :thread="thread"
+        :groups="groups"
+        :loading="loading"
+        @refresh-members="getMembers"
+      ></MessageMembersList>
+    </div>
+    <div class="col-10" v-if="isUserThreadCreator">
+      <MessageMembersAdd
+        :userID="userID"
+        :users="users"
+        :thread="thread"
+        :groups="groups"
+        @refresh-members="getMembers"
+      ></MessageMembersAdd>
     </div>
   </div>
 </template>
@@ -23,8 +30,9 @@ import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import MessageMembersList from "src/components/MessageMembersList.vue";
+import MessageMembersAdd from "../../components/MessageMembersAdd.vue";
 
 export default {
   name: "MessageMembers",
@@ -57,16 +65,23 @@ export default {
         });
       }
     };
+
+    const isUserThreadCreator = computed(
+      () => thread.content.user && thread.content.user.id === userStore.id.value
+    );
+
     getMembers();
+
     return {
       users,
       groups,
       thread,
       loading,
       userID: userStore.id,
+      isUserThreadCreator,
       getMembers,
     };
   },
-  components: { MessageMembersList },
+  components: { MessageMembersList, MessageMembersAdd },
 };
 </script>
