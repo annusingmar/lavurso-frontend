@@ -1,7 +1,12 @@
 <template>
   <q-card-section>
-    <div class="row q-gutter-x-sm">
+    <div class="row q-gutter-x-md">
       <div class="text-h4">{{ thread.content.title }}</div>
+      <q-btn
+        color="info"
+        label="members"
+        :to="'/messages/' + thread.content.id + '/members'"
+      ></q-btn>
       <q-btn
         v-if="userID === thread.content.user.id && !thread.content.locked"
         color="warning"

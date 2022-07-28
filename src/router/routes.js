@@ -18,6 +18,11 @@ const routes = [
         props: true,
       },
       {
+        path: "messages/:id/members",
+        component: () => import("pages/User/MessageMembers.vue"),
+        props: true,
+      },
+      {
         path: "admin/users",
         component: () => import("pages/Admin/UsersList.vue"),
       },
