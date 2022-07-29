@@ -5,6 +5,9 @@
         <q-card-section>
           <div class="text-subtitle2">{{ msg.user.name }}</div>
           <div class="text-caption">{{ createdAt }}</div>
+          <div class="text-caption" v-if="hasBeenEdited">
+            Edited {{ updatedAt }}
+          </div>
           <div class="row q-col-gutter-x-sm" v-if="msg.user.id === id">
             <div class="col-sm-6 col-xs-12" v-if="msg.type !== 'thread_start'">
               <q-btn
@@ -61,7 +64,7 @@
 </template>
 
 <script>
-import { useQuasar } from "quasar";
+import { useQuasar, date } from "quasar";
 import { computed, ref } from "vue";
 import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
@@ -78,7 +81,18 @@ export default {
     const deleteMessageLoading = ref(false);
 
     const createdAt = computed(() => {
-      return new Date(props.msg.created_at).toLocaleString("et");
+      return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
+    });
+
+    const updatedAt = computed(() => {
+      return date.formatDate(props.msg.updated_at, "DD. MMM YYYY HH:mm");
+    });
+
+    const hasBeenEdited = computed(() => {
+      return (
+        new Date(props.msg.updated_at).getTime() !==
+        new Date(props.msg.created_at).getTime()
+      );
     });
 
     // deleting message
@@ -167,6 +181,7 @@ export default {
 
     return {
       createdAt,
+      updatedAt,
       id,
       deleteMessageLoading,
       messageEditorVisible,
@@ -174,6 +189,7 @@ export default {
       editorRef,
       saveLoading,
       saveButtonDisable,
+      hasBeenEdited,
       updateMessage,
       deleteMessagePrompt,
       toggleMessageEditor,

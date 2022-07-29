@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { date } from "quasar";
 import { computed } from "vue";
 
 export default {
@@ -39,7 +40,7 @@ export default {
   props: ["msg"],
   setup(props) {
     const formatDate = computed(() => {
-      return new Date(props.msg.created_at).toLocaleString("et");
+      return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
     });
     return {
       formatDate,
