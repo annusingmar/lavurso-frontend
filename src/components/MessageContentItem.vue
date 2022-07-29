@@ -5,19 +5,55 @@
         <q-card-section>
           <div class="text-subtitle2">{{ msg.user.name }}</div>
           <div class="text-caption">{{ createdAt }}</div>
-          <q-btn
-            v-if="msg.user.id === id && msg.type !== 'thread_start'"
-            color="negative"
-            label="Delete"
-            class="q-mt-sm"
-            :loading="deleteMessageLoading"
-            @click="deleteMessagePrompt"
-          ></q-btn>
+          <div class="row q-col-gutter-x-sm" v-if="msg.user.id === id">
+            <div class="col-sm-6 col-xs-12" v-if="msg.type !== 'thread_start'">
+              <q-btn
+                color="negative"
+                label="Delete"
+                class="q-mt-sm"
+                size="sm"
+                :loading="deleteMessageLoading"
+                @click="deleteMessagePrompt"
+              ></q-btn>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+              <q-btn
+                color="secondary"
+                label="edit"
+                class="q-mt-sm"
+                size="sm"
+                @click="toggleMessageEditor"
+              ></q-btn>
+            </div>
+          </div>
         </q-card-section>
       </div>
       <div class="col-grow">
-        <q-card-section>
+        <q-card-section v-if="!messageEditorVisible">
           <div v-html="msg.body"></div>
+        </q-card-section>
+        <q-card-section v-else>
+          <q-editor
+            ref="editorRef"
+            @paste="onPaste"
+            v-model="editorMessage"
+            :toolbar="[
+              ['bold', 'italic', 'strike', 'underline'],
+              ['undo', 'redo'],
+            ]"
+            min-height="5rem"
+          ></q-editor>
+          <div class="row justify-end q-mt-sm">
+            <q-btn
+              color="primary"
+              :loading="saveLoading"
+              :disabled="saveButtonDisable"
+              icon-right="save"
+              label="save"
+              @click="updateMessage"
+            >
+            </q-btn>
+          </div>
         </q-card-section>
       </div>
     </div>
@@ -43,6 +79,8 @@ export default {
     const createdAt = computed(() => {
       return new Date(props.msg.created_at).toLocaleString("et");
     });
+
+    // deleting message
 
     const deleteMessage = async () => {
       deleteMessageLoading.value = true;
@@ -78,7 +116,84 @@ export default {
       });
     };
 
-    return { createdAt, id, deleteMessageLoading, deleteMessagePrompt };
+    // editing message
+
+    const onPaste = (event) => {
+      if (event.target.nodeName === "INPUT") return;
+      let text, onPasteStripFormattingIEPaste;
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.originalEvent && event.originalEvent.clipboardData.getData) {
+        text = event.originalEvent.clipboardData.getData("text/plain");
+        editorRef.value.runCmd("insertText", text);
+      } else if (event.clipboardData && event.clipboardData.getData) {
+        text = event.clipboardData.getData("text/plain");
+        editorRef.value.runCmd("insertText", text);
+      } else if (window.clipboardData && window.clipboardData.getData) {
+        if (!onPasteStripFormattingIEPaste) {
+          onPasteStripFormattingIEPaste = true;
+          editorRef.value.runCmd("ms-pasteTextOnly", text);
+        }
+        onPasteStripFormattingIEPaste = false;
+      }
+    };
+
+    const messageEditorVisible = ref(false);
+    const editorMessage = ref("");
+    const editorRef = ref(null);
+    const saveLoading = ref(false);
+
+    const toggleMessageEditor = () => {
+      editorMessage.value = props.msg.body;
+      messageEditorVisible.value = !messageEditorVisible.value;
+    };
+
+    const saveButtonDisable = computed(() =>
+      editorMessage.value.trim() === "" || editorMessage.value.trim() === "<br>"
+        ? true
+        : false
+    );
+
+    const updateMessage = async () => {
+      saveLoading.value = true;
+      try {
+        await api.put("/messages/" + props.msg.id, {
+          body: editorMessage.value,
+        });
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Saving message succeeded!",
+          timeout: 3000,
+        });
+        messageEditorVisible.value = false;
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Saving message failed",
+          timeout: 6000,
+        });
+      } finally {
+        saveLoading.value = false;
+        context.emit("refreshThread");
+      }
+    };
+
+    return {
+      createdAt,
+      id,
+      deleteMessageLoading,
+      messageEditorVisible,
+      editorMessage,
+      editorRef,
+      saveLoading,
+      saveButtonDisable,
+      updateMessage,
+      deleteMessagePrompt,
+      toggleMessageEditor,
+      onPaste,
+    };
   },
 };
 </script>
