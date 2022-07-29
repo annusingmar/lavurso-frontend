@@ -66,6 +66,7 @@ import { computed, ref } from "vue";
 import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
 import { api } from "src/boot/axios";
+import { onEditorPaste } from "src/composables/editor";
 
 export default {
   name: "MessageContentItem",
@@ -119,23 +120,7 @@ export default {
     // editing message
 
     const onPaste = (event) => {
-      if (event.target.nodeName === "INPUT") return;
-      let text, onPasteStripFormattingIEPaste;
-      event.preventDefault();
-      event.stopPropagation();
-      if (event.originalEvent && event.originalEvent.clipboardData.getData) {
-        text = event.originalEvent.clipboardData.getData("text/plain");
-        editorRef.value.runCmd("insertText", text);
-      } else if (event.clipboardData && event.clipboardData.getData) {
-        text = event.clipboardData.getData("text/plain");
-        editorRef.value.runCmd("insertText", text);
-      } else if (window.clipboardData && window.clipboardData.getData) {
-        if (!onPasteStripFormattingIEPaste) {
-          onPasteStripFormattingIEPaste = true;
-          editorRef.value.runCmd("ms-pasteTextOnly", text);
-        }
-        onPasteStripFormattingIEPaste = false;
-      }
+      onEditorPaste(event, editorRef);
     };
 
     const messageEditorVisible = ref(false);

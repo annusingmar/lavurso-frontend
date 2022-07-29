@@ -7,22 +7,19 @@
       ref="editorRef"
       @paste="onPaste"
       v-model="userReply"
-      :class="{ editorError }"
       :toolbar="[
         ['bold', 'italic', 'strike', 'underline'],
         ['undo', 'redo'],
       ]"
       min-height="5rem"
     ></q-editor>
-    <div class="text-subtitle2 q-mt-sm" v-if="editorError">
-      Message content cannot be empty
-    </div>
     <div class="row justify-end">
       <q-btn
         color="primary"
         label="Send"
         icon-right="send"
         :loading="sendLoading"
+        :disabled="replyButtonDisable"
         @click="sendMessage"
         class="q-mt-md"
       ></q-btn>
@@ -33,7 +30,8 @@
 <script>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { onEditorPaste } from "src/composables/editor";
 
 export default {
   name: "MessagePageReply",
@@ -51,32 +49,17 @@ export default {
     };
 
     const onPaste = (event) => {
-      if (event.target.nodeName === "INPUT") return;
-      let text, onPasteStripFormattingIEPaste;
-      event.preventDefault();
-      event.stopPropagation();
-      if (event.originalEvent && event.originalEvent.clipboardData.getData) {
-        text = event.originalEvent.clipboardData.getData("text/plain");
-        editorRef.value.runCmd("insertText", text);
-      } else if (event.clipboardData && event.clipboardData.getData) {
-        text = event.clipboardData.getData("text/plain");
-        editorRef.value.runCmd("insertText", text);
-      } else if (window.clipboardData && window.clipboardData.getData) {
-        if (!onPasteStripFormattingIEPaste) {
-          onPasteStripFormattingIEPaste = true;
-          editorRef.value.runCmd("ms-pasteTextOnly", text);
-        }
-        onPasteStripFormattingIEPaste = false;
-      }
+      onEditorPaste(event, editorRef);
     };
 
-    const editorError = ref(false);
+    const replyButtonDisable = computed(() =>
+      userReply.value.trim() === "" || userReply.value.trim() === "<br>"
+        ? true
+        : false
+    );
+
     const sendLoading = ref(false);
     const sendMessage = async () => {
-      if (userReply.value.trim() === "") {
-        editorError.value = true;
-        return;
-      }
       sendLoading.value = true;
       try {
         await api.post("/threads/" + props.id + "/messages", {
@@ -106,9 +89,9 @@ export default {
     return {
       showReplyBox,
       editorRef,
-      editorError,
       sendLoading,
       userReply,
+      replyButtonDisable,
       toggleReplyBox,
       onPaste,
       sendMessage,

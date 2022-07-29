@@ -92,6 +92,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
+import { onEditorPaste } from "src/composables/editor";
 
 export default {
   name: "MessageNew",
@@ -165,23 +166,7 @@ export default {
     };
 
     const onPaste = (event) => {
-      if (event.target.nodeName === "INPUT") return;
-      let text, onPasteStripFormattingIEPaste;
-      event.preventDefault();
-      event.stopPropagation();
-      if (event.originalEvent && event.originalEvent.clipboardData.getData) {
-        text = event.originalEvent.clipboardData.getData("text/plain");
-        editorRef.value.runCmd("insertText", text);
-      } else if (event.clipboardData && event.clipboardData.getData) {
-        text = event.clipboardData.getData("text/plain");
-        editorRef.value.runCmd("insertText", text);
-      } else if (window.clipboardData && window.clipboardData.getData) {
-        if (!onPasteStripFormattingIEPaste) {
-          onPasteStripFormattingIEPaste = true;
-          editorRef.value.runCmd("ms-pasteTextOnly", text);
-        }
-        onPasteStripFormattingIEPaste = false;
-      }
+      onEditorPaste(event, editorRef);
     };
 
     const editorRef = ref(null);
