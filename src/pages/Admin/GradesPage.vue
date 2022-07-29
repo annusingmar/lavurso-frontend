@@ -32,6 +32,7 @@
                   v-model="scope.value"
                   :rules="[
                     (val) => (val && val.length > 0) || 'Must not be empty',
+                    (val) => val.length < 4 || 'Must be less than 4 characters',
                   ]"
                   @keyup.enter.stop
                 ></q-input>
@@ -108,8 +109,10 @@ export default {
       }
     };
     const validateIdentifier = (val) => {
-      if (val && val.length > 0) {
-        return true;
+      if (val) {
+        if (val.length > 0 && val.length < 0) {
+          return true;
+        }
       }
       return false;
     };

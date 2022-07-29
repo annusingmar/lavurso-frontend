@@ -15,7 +15,10 @@
               autocapitalize="off"
               autocomplete="off"
               spellcheck="false"
-              :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
+              :rules="[
+                (val) => (val && val.length > 0) || 'Must not be empty',
+                (val) => val.length < 4 || 'Must be less than 4 characters',
+              ]"
             ></q-input>
             <q-input
               filled
