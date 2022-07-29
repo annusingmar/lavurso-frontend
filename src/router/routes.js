@@ -44,6 +44,10 @@ const routes = [
         path: "admin/grades/new",
         component: () => import("pages/Admin/GradesNew.vue"),
       },
+      {
+        path: "admin/subjects",
+        component: () => import("pages/Admin/SubjectsPage.vue"),
+      },
     ],
   },
 

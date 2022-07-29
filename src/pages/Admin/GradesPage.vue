@@ -110,7 +110,7 @@ export default {
     };
     const validateIdentifier = (val) => {
       if (val) {
-        if (val.length > 0 && val.length < 0) {
+        if (val.length > 0 && val.length < 4) {
           return true;
         }
       }
