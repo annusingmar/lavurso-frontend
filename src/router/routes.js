@@ -36,6 +36,11 @@ const routes = [
         component: () => import("pages/Admin/UserEdit.vue"),
         props: true,
       },
+      {
+        path: "admin/grades",
+        component: () => import("pages/Admin/GradesPage.vue"),
+        props: true,
+      },
     ],
   },
 

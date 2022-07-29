@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { api } from "boot/axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
@@ -61,16 +61,12 @@ export default {
       switch (val) {
         case "admin":
           return "Administrator";
-          break;
         case "teacher":
           return "Teacher";
-          break;
         case "parent":
           return "Parent";
-          break;
         case "student":
           return "Student";
-          break;
       }
     };
 
