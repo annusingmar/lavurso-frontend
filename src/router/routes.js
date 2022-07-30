@@ -48,6 +48,15 @@ const routes = [
         path: "admin/subjects",
         component: () => import("pages/Admin/SubjectsPage.vue"),
       },
+      {
+        path: "admin/groups",
+        component: () => import("pages/Admin/GroupsPage.vue"),
+      },
+      {
+        path: "admin/groups/:id",
+        component: () => import("pages/Admin/GroupEdit.vue"),
+        props: true,
+      },
     ],
   },
 

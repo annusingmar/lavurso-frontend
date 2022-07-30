@@ -150,7 +150,6 @@ export default {
           isValid: (val) => val && val.length > 0,
         },
         cancel: true,
-        persistent: true,
       }).onOk((data) => {
         newSubject(data);
       });

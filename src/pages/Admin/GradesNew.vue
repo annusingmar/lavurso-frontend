@@ -1,6 +1,6 @@
 <template>
   <div class="row flex-center" style="height: 90vh">
-    <div class="col-md-6 col-sm-12 q-gutter-x-md">
+    <div class="col-md-6 col-sm-12">
       <q-card>
         <q-card-section>
           <div class="text-h4">Create Grade</div>

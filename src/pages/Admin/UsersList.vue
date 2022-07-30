@@ -9,6 +9,7 @@
           row-key="id"
           :filter="filter"
           :loading="loading"
+          :pagination="{ rowsPerPage: 10 }"
         >
           <template v-slot:top-right>
             <div class="row items-end justify-between">
