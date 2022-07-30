@@ -48,7 +48,13 @@
         option-value="id"
         @filter="classesFilter"
       ></q-select>
-      <q-btn color="primary" label="add" :disable="!atLeastOneChosen"></q-btn>
+      <q-btn
+        color="primary"
+        label="add"
+        :disable="!atLeastOneChosen"
+        :loading="addLoading"
+        @click="addMembers"
+      ></q-btn>
     </q-card-section>
   </q-card>
 </template>
@@ -161,6 +167,46 @@ export default {
         chosenUsers.value.length > 0
     );
 
+    const addLoading = ref(false);
+    const addMembers = async () => {
+      const sendRoles = [];
+      const userIDs = [];
+      const classIDs = [];
+
+      chosenClasses.value.forEach((c) => classIDs.push(c.id));
+      chosenUsers.value.forEach((u) => userIDs.push(u.id));
+      chosenRoles.value.forEach((r) => sendRoles.push(r.value));
+
+      addLoading.value = true;
+
+      try {
+        await api.post("/groups/" + props.group.content.id + "/users", {
+          user_ids: userIDs,
+          roles: sendRoles,
+          class_ids: classIDs,
+        });
+        $q.notify({
+          type: "positive",
+          position: "top",
+          message: "Users successfully added",
+          timeout: 3000,
+        });
+      } catch (error) {
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Adding users failed",
+          timeout: 6000,
+        });
+      } finally {
+        chosenClasses.value = [];
+        chosenRoles.value = [];
+        chosenUsers.value = [];
+        addLoading.value = false;
+        context.emit("refreshGroup");
+      }
+    };
+
     return {
       roles,
       chosenRoles,
@@ -169,8 +215,10 @@ export default {
       availableUsers,
       filteredClasses,
       atLeastOneChosen,
+      addLoading,
       usersFilter,
       classesFilter,
+      addMembers,
     };
   },
 };
