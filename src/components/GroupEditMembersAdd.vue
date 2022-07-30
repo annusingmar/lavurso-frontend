@@ -1,7 +1,7 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h4">Add Users</div>
+      <div class="text-h4">Add Members</div>
       <q-separator></q-separator>
       <div class="text-caption">
         Selecting one or more roles/classes will add all users currently part of

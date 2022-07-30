@@ -1,7 +1,7 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h4">Group Users</div>
+      <div class="text-h4">Group Members</div>
     </q-card-section>
     <q-card-section>
       <q-table

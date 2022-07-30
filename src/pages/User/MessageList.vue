@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="row flex-center" style="min-height: 90vh">
+    <div class="row flex-center q-py-lg" style="min-height: 90vh">
       <div class="col-10">
         <q-card>
           <q-card-section>
