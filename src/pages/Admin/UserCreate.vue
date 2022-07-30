@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="row flex-center" style="min-height: 90vh">
-      <div class="col-md-6 col-sm-12 q-gutter-x-md">
+      <div class="col-md-6 col-sm-10 q-gutter-x-md">
         <q-card>
           <q-card-section>
             <div class="text-h4">Create User</div>

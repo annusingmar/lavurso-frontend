@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="row flex-center" style="min-height: 90vh">
-      <div class="col-md-6 col-sm-12">
+      <div class="col-md-6 col-sm-10">
         <q-card>
           <q-card-section>
             <div class="text-h4">Create Grade</div>
