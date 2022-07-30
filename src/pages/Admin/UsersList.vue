@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="row flex-center" style="min-height: 90vh">
-      <div class="col-xl-8 col-sm-10">
+      <div class="col-xl-8 col-sm-10" style="min-width: 0px">
         <q-table
           title="Users"
           :rows="users"
