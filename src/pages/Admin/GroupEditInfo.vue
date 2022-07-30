@@ -1,38 +1,42 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="row q-gutter-x-md">
-        <div class="text-h4">Edit Group</div>
-        <q-btn
-          :loading="deleteLoading"
-          color="negative"
-          label="delete"
-          @click="deleteGroupPrompt"
-        ></q-btn>
-      </div>
-    </q-card-section>
-    <q-card-section>
-      <q-input
-        filled
-        label="Name"
-        v-model.trim="inputGroupName"
-        ref="nameField"
-        autocorrect="off"
-        autocapitalize="off"
-        autocomplete="off"
-        spellcheck="false"
-        :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
-      ></q-input>
-      <div class="row justify-end">
-        <q-btn
-          :loading="updateLoading"
-          color="primary"
-          label="update"
-          @click="updateGroup"
-        ></q-btn>
-      </div>
-    </q-card-section>
-  </q-card>
+  <div class="row flex-center" style="min-height: 75vh">
+    <div class="col-md-6 col-sm-12">
+      <q-card>
+        <q-card-section>
+          <div class="row q-gutter-x-md">
+            <div class="text-h4">Edit Group</div>
+            <q-btn
+              :loading="deleteLoading"
+              color="negative"
+              label="delete"
+              @click="deleteGroupPrompt"
+            ></q-btn>
+          </div>
+        </q-card-section>
+        <q-card-section>
+          <q-input
+            filled
+            label="Name"
+            v-model.trim="inputGroupName"
+            ref="nameField"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="off"
+            spellcheck="false"
+            :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
+          ></q-input>
+          <div class="row justify-end">
+            <q-btn
+              :loading="updateLoading"
+              color="primary"
+              label="update"
+              @click="updateGroup"
+            ></q-btn>
+          </div>
+        </q-card-section>
+      </q-card>
+    </div>
+  </div>
 </template>
 
 <script>
