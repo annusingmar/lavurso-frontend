@@ -1,33 +1,35 @@
 <template>
-  <div class="row flex-center" style="height: 90vh">
-    <div class="col-xl-8 col-sm-10">
-      <q-table
-        title="Groups"
-        :rows="groups"
-        :columns="columns"
-        :loading="loading"
-        :pagination="{ rowsPerPage: 10 }"
-        row-key="id"
-      >
-        <template v-slot:top-right>
-          <div class="row items-end">
-            <q-btn color="primary" label="new group" @click="newGroupDialog">
-            </q-btn>
-          </div>
-        </template>
+  <q-page>
+    <div class="row flex-center" style="min-height: 90vh">
+      <div class="col-xl-8 col-sm-10">
+        <q-table
+          title="Groups"
+          :rows="groups"
+          :columns="columns"
+          :loading="loading"
+          :pagination="{ rowsPerPage: 10 }"
+          row-key="id"
+        >
+          <template v-slot:top-right>
+            <div class="row items-end">
+              <q-btn color="primary" label="new group" @click="newGroupDialog">
+              </q-btn>
+            </div>
+          </template>
 
-        <template v-slot:body-cell-actions="props">
-          <q-td :props="props">
-            <q-btn
-              flat
-              icon="mode_edit"
-              @click="editGroup(props.row.id)"
-            ></q-btn>
-          </q-td>
-        </template>
-      </q-table>
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <q-btn
+                flat
+                icon="mode_edit"
+                @click="editGroup(props.row.id)"
+              ></q-btn>
+            </q-td>
+          </template>
+        </q-table>
+      </div>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>

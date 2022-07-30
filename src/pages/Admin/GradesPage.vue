@@ -1,66 +1,69 @@
 <template>
-  <div class="row flex-center" style="height: 90vh">
-    <div class="col-xl-8 col-sm-10">
-      <q-table
-        title="Grades"
-        :rows="grades"
-        :columns="columns"
-        :loading="loading"
-        :pagination="{ rowsPerPage: 10 }"
-        row-key="id"
-      >
-        <template v-slot:top-right>
-          <div class="row items-end">
-            <q-btn color="primary" label="new grade" to="/admin/grades/new">
-            </q-btn>
-          </div>
-        </template>
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <q-td key="identifier" :props="props">
-              {{ props.row.identifier }}
-              <q-popup-edit
-                :model-value="props.row.identifier"
-                buttons
-                :validate="validateIdentifier"
-                @save="saveIdentifier(props.row.id, $event)"
-                v-slot="scope"
-              >
-                <q-input
-                  dense
-                  autofocus
-                  v-model="scope.value"
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Must not be empty',
-                    (val) => val.length < 4 || 'Must be less than 4 characters',
-                  ]"
-                  @keyup.enter.stop
-                ></q-input>
-              </q-popup-edit>
-            </q-td>
-            <q-td key="value" :props="props">
-              {{ props.row.value }}
-              <q-popup-edit
-                :model-value="props.row.value"
-                buttons
-                :validate="validateValue"
-                @save="saveValue(props.row.id, $event)"
-                v-slot="scope"
-              >
-                <q-input
-                  dense
-                  autofocus
-                  v-model="scope.value"
-                  :rules="[(val) => (val && val > 0) || 'Must be over 0']"
-                  @keyup.enter.stop
-                ></q-input>
-              </q-popup-edit>
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
+  <q-page>
+    <div class="row flex-center" style="min-height: 90vh">
+      <div class="col-xl-8 col-sm-10">
+        <q-table
+          title="Grades"
+          :rows="grades"
+          :columns="columns"
+          :loading="loading"
+          :pagination="{ rowsPerPage: 10 }"
+          row-key="id"
+        >
+          <template v-slot:top-right>
+            <div class="row items-end">
+              <q-btn color="primary" label="new grade" to="/admin/grades/new">
+              </q-btn>
+            </div>
+          </template>
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="identifier" :props="props">
+                {{ props.row.identifier }}
+                <q-popup-edit
+                  :model-value="props.row.identifier"
+                  buttons
+                  :validate="validateIdentifier"
+                  @save="saveIdentifier(props.row.id, $event)"
+                  v-slot="scope"
+                >
+                  <q-input
+                    dense
+                    autofocus
+                    v-model="scope.value"
+                    :rules="[
+                      (val) => (val && val.length > 0) || 'Must not be empty',
+                      (val) =>
+                        val.length < 4 || 'Must be less than 4 characters',
+                    ]"
+                    @keyup.enter.stop
+                  ></q-input>
+                </q-popup-edit>
+              </q-td>
+              <q-td key="value" :props="props">
+                {{ props.row.value }}
+                <q-popup-edit
+                  :model-value="props.row.value"
+                  buttons
+                  :validate="validateValue"
+                  @save="saveValue(props.row.id, $event)"
+                  v-slot="scope"
+                >
+                  <q-input
+                    dense
+                    autofocus
+                    v-model="scope.value"
+                    :rules="[(val) => (val && val > 0) || 'Must be over 0']"
+                    @keyup.enter.stop
+                  ></q-input>
+                </q-popup-edit>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+      </div>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>

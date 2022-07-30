@@ -1,7 +1,7 @@
 <template>
   <div
     class="row flex-center q-col-gutter-md"
-    style="height: 75vh; align-content: center"
+    style="min-height: 75vh; align-content: center"
   >
     <div class="col-md-4 col-sm-12">
       <q-card>

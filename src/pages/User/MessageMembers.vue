@@ -1,28 +1,30 @@
 <template>
-  <div
-    class="row flex-center q-col-gutter-md"
-    style="height: 90vh; align-content: center"
-  >
-    <div class="col-10">
-      <MessageMembersList
-        :userID="userID"
-        :users="users"
-        :thread="thread"
-        :groups="groups"
-        :loading="loading"
-        @refresh-members="getMembers"
-      ></MessageMembersList>
+  <q-page>
+    <div
+      class="row flex-center q-col-gutter-md"
+      style="min-height: 90vh; align-content: center"
+    >
+      <div class="col-10">
+        <MessageMembersList
+          :userID="userID"
+          :users="users"
+          :thread="thread"
+          :groups="groups"
+          :loading="loading"
+          @refresh-members="getMembers"
+        ></MessageMembersList>
+      </div>
+      <div class="col-10" v-if="isUserThreadCreator">
+        <MessageMembersAdd
+          :userID="userID"
+          :users="users"
+          :thread="thread"
+          :groups="groups"
+          @refresh-members="getMembers"
+        ></MessageMembersAdd>
+      </div>
     </div>
-    <div class="col-10" v-if="isUserThreadCreator">
-      <MessageMembersAdd
-        :userID="userID"
-        :users="users"
-        :thread="thread"
-        :groups="groups"
-        @refresh-members="getMembers"
-      ></MessageMembersAdd>
-    </div>
-  </div>
+  </q-page>
 </template>
 
 <script>

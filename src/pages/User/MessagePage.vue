@@ -1,35 +1,37 @@
 <template>
-  <div class="row flex-center" style="height: 90vh">
-    <div class="col-10">
-      <q-card v-if="!loading">
-        <MessagePageThread
-          :thread="thread"
-          @refresh-thread="getThread"
-        ></MessagePageThread>
-        <q-card-section>
-          <div class="q-gutter-y-md">
-            <MessageContentItem
-              v-for="msg in messages"
-              :key="msg.id"
-              :msg="msg"
-              @refresh-thread="getThread"
-            ></MessageContentItem>
-          </div>
-        </q-card-section>
-        <q-card-section v-if="!thread.content.locked">
-          <MessagePageReply
+  <q-page>
+    <div class="row flex-center" style="min-height: 90vh">
+      <div class="col-10">
+        <q-card v-if="!loading">
+          <MessagePageThread
+            :thread="thread"
             @refresh-thread="getThread"
-            :id="thread.content.id"
-          ></MessagePageReply>
-        </q-card-section>
-        <q-card-section v-else>
-          <div class="row justify-center">
-            <div class="subtitle-1">Thread locked.</div>
-          </div>
-        </q-card-section>
-      </q-card>
+          ></MessagePageThread>
+          <q-card-section>
+            <div class="q-gutter-y-md">
+              <MessageContentItem
+                v-for="msg in messages"
+                :key="msg.id"
+                :msg="msg"
+                @refresh-thread="getThread"
+              ></MessageContentItem>
+            </div>
+          </q-card-section>
+          <q-card-section v-if="!thread.content.locked">
+            <MessagePageReply
+              @refresh-thread="getThread"
+              :id="thread.content.id"
+            ></MessagePageReply>
+          </q-card-section>
+          <q-card-section v-else>
+            <div class="row justify-center">
+              <div class="subtitle-1">Thread locked.</div>
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>

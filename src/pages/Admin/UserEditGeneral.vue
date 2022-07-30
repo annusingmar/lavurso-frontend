@@ -1,5 +1,5 @@
 <template>
-  <div class="row flex-center" style="height: 75vh">
+  <div class="row flex-center" style="min-height: 75vh">
     <div class="col-md-6 col-sm-12">
       <q-card>
         <q-card-section>

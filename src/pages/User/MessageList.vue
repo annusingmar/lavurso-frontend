@@ -1,33 +1,35 @@
 <template>
-  <div class="row flex-center" style="height: 90vh">
-    <div class="col-10">
-      <q-card>
-        <q-card-section>
-          <div class="row justify-between">
-            <div class="text-h4">Messages</div>
-            <div class="row q-gutter-x-sm">
-              <q-btn
-                label="refresh"
-                @click="getMessages"
-                :loading="loading"
-              ></q-btn>
-              <q-btn label="new" color="primary" to="/messages/new"></q-btn>
+  <q-page>
+    <div class="row flex-center" style="min-height: 90vh">
+      <div class="col-10">
+        <q-card>
+          <q-card-section>
+            <div class="row justify-between">
+              <div class="text-h4">Messages</div>
+              <div class="row q-gutter-x-sm">
+                <q-btn
+                  label="refresh"
+                  @click="getMessages"
+                  :loading="loading"
+                ></q-btn>
+                <q-btn label="new" color="primary" to="/messages/new"></q-btn>
+              </div>
             </div>
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <q-list separator v-if="messages.length > 0">
-            <MessageListItem
-              v-for="msg in messages"
-              :key="msg.id"
-              :msg="msg"
-            ></MessageListItem>
-          </q-list>
-          <div v-else>No messages found.</div>
-        </q-card-section>
-      </q-card>
+          </q-card-section>
+          <q-card-section>
+            <q-list separator v-if="messages.length > 0">
+              <MessageListItem
+                v-for="msg in messages"
+                :key="msg.id"
+                :msg="msg"
+              ></MessageListItem>
+            </q-list>
+            <div v-else>No messages found.</div>
+          </q-card-section>
+        </q-card>
+      </div>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="row flex-center" style="height: 90vh">
+    <div class="row flex-center" style="min-height: 90vh">
       <div class="col-xl-8 col-sm-10">
         <q-table
           title="Users"

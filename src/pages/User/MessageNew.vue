@@ -1,88 +1,90 @@
 <template>
-  <div class="row flex-center" style="height: 90vh">
-    <div class="col-10">
-      <q-card>
-        <q-card-section>
-          <div class="text-h4">New Message</div>
-        </q-card-section>
-        <q-card-section>
-          <q-input
-            square
-            outlined
-            v-model="title"
-            label="Title"
-            ref="titleRef"
-            :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
-            lazy-rules="ondemand"
-          ></q-input>
-          <q-editor
-            ref="editorRef"
-            @paste="onPaste"
-            v-model="message"
-            :class="{ editorError }"
-            class="q-mt-sm"
-            :toolbar="[
-              ['bold', 'italic', 'strike', 'underline'],
-              ['undo', 'redo'],
-            ]"
-            min-height="10rem"
-          ></q-editor>
-          <div class="text-subtitle2 q-mt-sm" v-if="editorError">
-            Message content cannot be empty
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <div class="row q-col-gutter-x-md">
-            <div class="col-sm col-xs-12">
-              <q-select
-                filled
-                multiple
-                use-chips
-                use-input
-                input-debounce="200"
-                stack-label
-                label="Users"
-                v-model="chosenUsers"
-                :options="availableUsers"
-                option-label="name"
-                option-value="id"
-                hint="Minimum 4 characters"
-                @filter="usersFilter"
-              ></q-select>
+  <q-page>
+    <div class="row flex-center" style="min-height: 90vh">
+      <div class="col-10">
+        <q-card>
+          <q-card-section>
+            <div class="text-h4">New Message</div>
+          </q-card-section>
+          <q-card-section>
+            <q-input
+              square
+              outlined
+              v-model="title"
+              label="Title"
+              ref="titleRef"
+              :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
+              lazy-rules="ondemand"
+            ></q-input>
+            <q-editor
+              ref="editorRef"
+              @paste="onPaste"
+              v-model="message"
+              :class="{ editorError }"
+              class="q-mt-sm"
+              :toolbar="[
+                ['bold', 'italic', 'strike', 'underline'],
+                ['undo', 'redo'],
+              ]"
+              min-height="10rem"
+            ></q-editor>
+            <div class="text-subtitle2 q-mt-sm" v-if="editorError">
+              Message content cannot be empty
             </div>
-            <div class="col-sm col-xs-12">
-              <q-select
-                filled
-                multiple
-                use-chips
-                use-input
-                input-debounce="200"
-                stack-label
-                label="Groups"
-                v-model="chosenGroups"
-                :options="filteredGroups"
-                option-label="name"
-                option-value="id"
-                @filter="groupsFilter"
-              ></q-select>
+          </q-card-section>
+          <q-card-section>
+            <div class="row q-col-gutter-x-md">
+              <div class="col-sm col-xs-12">
+                <q-select
+                  filled
+                  multiple
+                  use-chips
+                  use-input
+                  input-debounce="200"
+                  stack-label
+                  label="Users"
+                  v-model="chosenUsers"
+                  :options="availableUsers"
+                  option-label="name"
+                  option-value="id"
+                  hint="Minimum 4 characters"
+                  @filter="usersFilter"
+                ></q-select>
+              </div>
+              <div class="col-sm col-xs-12">
+                <q-select
+                  filled
+                  multiple
+                  use-chips
+                  use-input
+                  input-debounce="200"
+                  stack-label
+                  label="Groups"
+                  v-model="chosenGroups"
+                  :options="filteredGroups"
+                  option-label="name"
+                  option-value="id"
+                  @filter="groupsFilter"
+                ></q-select>
+              </div>
             </div>
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <div class="row justify-end">
-            <q-btn
-              color="primary"
-              label="Send"
-              icon-right="send"
-              :loading="sendLoading"
-              @click="sendMessage"
-              class="q-mt-md"
-            ></q-btn>
-          </div>
-        </q-card-section>
-      </q-card>
+          </q-card-section>
+          <q-card-section>
+            <div class="row justify-end">
+              <q-btn
+                color="primary"
+                label="Send"
+                icon-right="send"
+                :loading="sendLoading"
+                @click="sendMessage"
+                class="q-mt-md"
+              ></q-btn>
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
