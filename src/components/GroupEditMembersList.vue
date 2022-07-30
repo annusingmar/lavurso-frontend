@@ -19,6 +19,7 @@
           color="negative"
           label="remove selected"
           :loading="removeLoading"
+          :disable="selectedUsers.length === 0"
           @click="removeUsersPrompt"
         ></q-btn>
       </div>
@@ -99,6 +100,7 @@ export default {
         });
       } finally {
         removeLoading.value = false;
+        selectedUsers.value = [];
         context.emit("refreshGroup");
       }
     };

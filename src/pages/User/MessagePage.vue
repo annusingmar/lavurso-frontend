@@ -31,6 +31,8 @@
         </q-card>
       </div>
     </div>
+
+    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>
 
@@ -55,12 +57,11 @@ export default {
     const messages = ref([]);
     const loading = ref(true);
     const getThread = async () => {
-      $q.loading.show();
+      loading.value = true;
       try {
         const response = await api.get("/threads/" + props.id);
         thread.content = response.data.thread;
         messages.value = response.data.messages;
-        loading.value = false;
       } catch (error) {
         if (error.response && error.response.status == 404) {
           router.replace("/notFound");
@@ -73,7 +74,7 @@ export default {
           });
         }
       } finally {
-        $q.loading.hide();
+        loading.value = false;
       }
     };
 

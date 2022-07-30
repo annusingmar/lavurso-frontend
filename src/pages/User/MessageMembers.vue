@@ -24,6 +24,8 @@
         ></MessageMembersAdd>
       </div>
     </div>
+
+    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>
 
@@ -48,7 +50,6 @@ export default {
     const thread = reactive({ content: {} });
     const loading = ref(true);
     const getMembers = async () => {
-      $q.loading.show();
       loading.value = true;
       try {
         const response = await api.get("/threads/" + props.id + "/members");
@@ -69,7 +70,6 @@ export default {
             : [];
         groups.value =
           response.data.groups !== null ? response.data.groups : [];
-        $q.loading.hide();
         loading.value = false;
       } catch (error) {
         $q.notify({
