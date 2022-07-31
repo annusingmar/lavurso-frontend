@@ -51,6 +51,7 @@
           <q-btn
             @click="addParent"
             :loading="addingLoading"
+            :disable="chosenParent === null"
             color="primary"
             label="Add"
           ></q-btn>
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 
 import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";

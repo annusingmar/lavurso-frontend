@@ -57,6 +57,15 @@ const routes = [
         component: () => import("pages/Admin/GroupEdit.vue"),
         props: true,
       },
+      {
+        path: "admin/classes",
+        component: () => import("pages/Admin/ClassesPage.vue"),
+      },
+      {
+        path: "admin/classes/:id",
+        component: () => import("pages/Admin/ClassDetails.vue"),
+        props: true,
+      },
     ],
   },
 
