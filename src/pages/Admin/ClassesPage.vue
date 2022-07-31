@@ -21,6 +21,11 @@
             <q-td :props="props">
               <q-btn
                 flat
+                icon="people"
+                @click="showMembers(props.row.id)"
+              ></q-btn>
+              <q-btn
+                flat
                 icon="mode_edit"
                 @click="editClass(props.row.id)"
               ></q-btn>
@@ -29,6 +34,20 @@
         </q-table>
       </div>
     </div>
+
+    <q-dialog v-model="dialog">
+      <q-card>
+        <q-card-section>
+          <div class="text-h4">Class Students</div>
+        </q-card-section>
+        <q-card-section>
+          <ClassMembersTable :id="showClassID"></ClassMembersTable>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="close" color="primary" v-close-popup></q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -37,13 +56,13 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import ClassMembersTable from "src/components/ClassMembersTable.vue";
 
 export default {
   name: "ClassesPage",
   setup() {
     const $q = useQuasar();
     const router = useRouter();
-
     const columns = [
       {
         name: "name",
@@ -63,7 +82,6 @@ export default {
       },
       { name: "actions", label: "Action" },
     ];
-
     const loading = ref(true);
     const classes = ref([]);
     const getClasses = async () => {
@@ -83,17 +101,24 @@ export default {
         });
       }
     };
-
     const editClass = (id) => router.push("/admin/classes/" + id);
-
+    const showClassID = ref(null);
+    const dialog = ref(false);
+    const showMembers = (id) => {
+      showClassID.value = id;
+      dialog.value = true;
+    };
     getClasses();
-
     return {
       columns,
       classes,
       loading,
+      showClassID,
+      dialog,
+      showMembers,
       editClass,
     };
   },
+  components: { ClassMembersTable },
 };
 </script>
