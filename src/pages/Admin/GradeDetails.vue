@@ -96,7 +96,7 @@ export default {
       value.value = grade.content.value;
     };
 
-    watch(grade, () => resetData());
+    watch(grade, resetData);
 
     if (!isCreate.value) {
       getGrade();

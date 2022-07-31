@@ -8,6 +8,11 @@
         label="Parents"
         v-if="user.user.role === 'student'"
       ></q-tab>
+      <q-tab
+        name="class"
+        label="Class"
+        v-if="user.user.role === 'student'"
+      ></q-tab>
     </q-tabs>
 
     <q-separator />
@@ -25,6 +30,9 @@
       <q-tab-panel name="parents" v-if="user.user.role === 'student'">
         <UserEditParents :id="user.user.id"></UserEditParents>
       </q-tab-panel>
+      <q-tab-panel name="class" v-if="user.user.role === 'student'">
+        <UserEditClass :id="user.user.id"></UserEditClass>
+      </q-tab-panel>
     </q-tab-panels>
 
     <q-inner-loading :showing="loading"></q-inner-loading>
@@ -40,10 +48,16 @@ import { useRouter } from "vue-router";
 import UserEditGeneral from "./UserEditGeneral.vue";
 import UserEditParents from "./UserEditParents.vue";
 import UserEditSessions from "./UserEditSessions.vue";
+import UserEditClass from "./UserEditClass.vue";
 
 export default {
   props: ["id"],
-  components: { UserEditGeneral, UserEditParents, UserEditSessions },
+  components: {
+    UserEditGeneral,
+    UserEditParents,
+    UserEditSessions,
+    UserEditClass,
+  },
   setup(props) {
     const $q = useQuasar();
     const router = useRouter();

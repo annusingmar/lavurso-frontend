@@ -82,9 +82,7 @@ export default {
       };
     };
 
-    watch(props.serverUser, () => {
-      resetData();
-    });
+    watch(props.serverUser, resetData);
 
     const validateEmail = (email) => {
       const re =

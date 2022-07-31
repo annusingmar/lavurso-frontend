@@ -58,7 +58,7 @@ export default {
       inputGroupName.value = props.group.content.name;
     };
 
-    watch(props.group, () => resetData());
+    watch(props.group, resetData);
 
     const nameField = ref(null);
 

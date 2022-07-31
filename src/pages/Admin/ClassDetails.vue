@@ -136,7 +136,7 @@ export default {
       teacher.value = classs.content.teacher;
     };
 
-    watch(classs, () => resetData());
+    watch(classs, resetData);
 
     if (!isCreate.value) {
       getClass();
