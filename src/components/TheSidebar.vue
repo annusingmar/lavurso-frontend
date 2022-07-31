@@ -91,9 +91,9 @@ export default {
 
     const teacherMenuItems = [
       {
-        title: "Journals",
+        title: userStoreRef.role.value === "admin" ? "Journals" : "My Journals",
         icon: "library_books",
-        to: "/admin/journals",
+        to: "/teacher/journals",
         separator: true,
       },
     ];
