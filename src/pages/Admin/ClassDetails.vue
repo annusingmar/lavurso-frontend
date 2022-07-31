@@ -90,6 +90,7 @@ export default {
           position: "top",
           message: "Loading of data failed",
           timeout: 0,
+          actions: [{ label: "Dismiss", color: "white" }],
         });
       }
     };
@@ -123,6 +124,7 @@ export default {
           position: "top",
           message: "Loading of data failed",
           timeout: 0,
+          actions: [{ label: "Dismiss", color: "white" }],
         });
       }
     };
@@ -172,7 +174,7 @@ export default {
           type: "negative",
           position: "top",
           message:
-            (isCreate.value ? "Creating" : "Updating") + " grade failed!",
+            (isCreate.value ? "Creating" : "Updating") + " class failed!",
           timeout: 6000,
         });
         submitLoading.value = false;

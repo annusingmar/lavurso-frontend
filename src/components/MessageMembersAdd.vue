@@ -112,6 +112,7 @@ export default {
           position: "top",
           message: "Loading of data failed",
           timeout: 0,
+          actions: [{ label: "Dismiss", color: "white" }],
         });
       }
     };
@@ -132,6 +133,7 @@ export default {
           position: "top",
           message: "Loading of data failed",
           timeout: 0,
+          actions: [{ label: "Dismiss", color: "white" }],
         });
       }
     };

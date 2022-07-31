@@ -97,6 +97,7 @@ export default {
           position: "top",
           message: "Loading of data failed",
           timeout: 0,
+          actions: [{ label: "Dismiss", color: "white" }],
         });
       }
     };
@@ -112,6 +113,7 @@ export default {
           position: "top",
           message: "Loading of data failed",
           timeout: 0,
+          actions: [{ label: "Dismiss", color: "white" }],
         });
       }
     };
@@ -150,6 +152,7 @@ export default {
           position: "top",
           message: "Adding parent failed",
           timeout: 0,
+          actions: [{ label: "Dismiss", color: "white" }],
         });
       } finally {
         chosenParent.value = null;
@@ -181,6 +184,7 @@ export default {
           position: "top",
           message: "Removing parent failed",
           timeout: 0,
+          actions: [{ label: "Dismiss", color: "white" }],
         });
       } finally {
         allParents.value = null;

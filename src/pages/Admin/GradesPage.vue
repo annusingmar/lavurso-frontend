@@ -12,53 +12,18 @@
         >
           <template v-slot:top-right>
             <div class="row items-end">
-              <q-btn color="primary" label="new grade" to="/admin/grades/new">
+              <q-btn color="primary" label="new grade" to="/admin/grades/0">
               </q-btn>
             </div>
           </template>
-          <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td key="identifier" :props="props">
-                {{ props.row.identifier }}
-                <q-popup-edit
-                  :model-value="props.row.identifier"
-                  buttons
-                  :validate="validateIdentifier"
-                  @save="saveIdentifier(props.row.id, $event)"
-                  v-slot="scope"
-                >
-                  <q-input
-                    dense
-                    autofocus
-                    v-model="scope.value"
-                    :rules="[
-                      (val) => (val && val.length > 0) || 'Must not be empty',
-                      (val) =>
-                        val.length < 4 || 'Must be less than 4 characters',
-                    ]"
-                    @keyup.enter.stop
-                  ></q-input>
-                </q-popup-edit>
-              </q-td>
-              <q-td key="value" :props="props">
-                {{ props.row.value }}
-                <q-popup-edit
-                  :model-value="props.row.value"
-                  buttons
-                  :validate="validateValue"
-                  @save="saveValue(props.row.id, $event)"
-                  v-slot="scope"
-                >
-                  <q-input
-                    dense
-                    autofocus
-                    v-model="scope.value"
-                    :rules="[(val) => (val && val > 0) || 'Must be over 0']"
-                    @keyup.enter.stop
-                  ></q-input>
-                </q-popup-edit>
-              </q-td>
-            </q-tr>
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <q-btn
+                flat
+                icon="mode_edit"
+                @click="editGrade(props.row.id)"
+              ></q-btn>
+            </q-td>
           </template>
         </q-table>
       </div>
@@ -70,11 +35,14 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   name: "GradesPages",
   setup() {
     const $q = useQuasar();
+    const router = useRouter();
+
     const columns = [
       {
         name: "identifier",
@@ -92,6 +60,7 @@ export default {
         field: (row) => row.value,
         sortable: false,
       },
+      { name: "actions", label: "Action" },
     ];
     const loading = ref(true);
     const grades = ref([]);
@@ -108,72 +77,19 @@ export default {
           position: "top",
           message: "Loading of data failed",
           timeout: 0,
+          actions: [{ label: "Dismiss", color: "white" }],
         });
       }
     };
-    const validateIdentifier = (val) => {
-      if (val) {
-        if (val.length > 0 && val.length < 4) {
-          return true;
-        }
-      }
-      return false;
-    };
-    const validateValue = (val) => {
-      if (val && val > 0) {
-        return true;
-      }
-      return false;
-    };
-    const notifySuccess = () => {
-      $q.notify({
-        type: "positive",
-        position: "top",
-        message: "Grade changed successfully",
-        timeout: 3000,
-      });
-    };
-    const notifyFailure = () => {
-      $q.notify({
-        type: "negative",
-        position: "top",
-        message: "Changing grade failed",
-        timeout: 6000,
-      });
-    };
-    const saveIdentifier = async (id, val) => {
-      try {
-        await api.patch("/grades/" + id, {
-          identifier: val,
-        });
-        notifySuccess();
-      } catch (error) {
-        notifyFailure();
-      } finally {
-        await getGrades();
-      }
-    };
-    const saveValue = async (id, val) => {
-      try {
-        await api.patch("/grades/" + id, {
-          value: Number(val),
-        });
-        notifySuccess();
-      } catch (error) {
-        notifyFailure();
-      } finally {
-        await getGrades();
-      }
-    };
+
+    const editGrade = (id) => router.push("/admin/grades/" + id);
+
     getGrades();
     return {
       columns,
       loading,
       grades,
-      validateIdentifier,
-      validateValue,
-      saveIdentifier,
-      saveValue,
+      editGrade,
     };
   },
 };

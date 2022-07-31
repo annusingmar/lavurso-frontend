@@ -66,6 +66,7 @@ export default {
             position: "top",
             message: "Loading data failed",
             timeout: 0,
+            actions: [{ label: "Dismiss", color: "white" }],
           });
         }
       }
