@@ -6,6 +6,11 @@
           <q-card-section>
             <div class="row justify-between">
               <div class="text-h4">Journals</div>
+              <q-btn
+                label="new"
+                to="/teacher/journals/new"
+                color="primary"
+              ></q-btn>
             </div>
           </q-card-section>
           <q-card-section>

@@ -146,17 +146,15 @@ export default {
     const submitLoading = ref(false);
     const submitClass = async () => {
       submitLoading.value = true;
+      const data = {
+        name: name.value,
+        teacher_id: teacher.value.id,
+      };
       try {
         if (!isCreate.value) {
-          await api.patch("/classes/" + props.id, {
-            name: name.value,
-            teacher_id: teacher.value.id,
-          });
+          await api.patch("/classes/" + props.id, data);
         } else {
-          await api.post("/classes/", {
-            name: name.value,
-            teacher_id: teacher.value.id,
-          });
+          await api.post("/classes/", data);
         }
         $q.notify({
           type: "positive",

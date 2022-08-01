@@ -51,6 +51,7 @@ import UserEditSessions from "./UserEditSessions.vue";
 import UserEditClass from "./UserEditClass.vue";
 
 export default {
+  name: "UserEdit",
   props: ["id"],
   components: {
     UserEditGeneral,
