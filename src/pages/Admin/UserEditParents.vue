@@ -137,7 +137,7 @@ export default {
     const addParent = async () => {
       addingLoading.value = true;
       try {
-        const response = await api.put("/students/" + props.id + "/parents", {
+        await api.put("/students/" + props.id + "/parents", {
           parent_id: chosenParent.value.id,
         });
         $q.notify({
@@ -164,14 +164,11 @@ export default {
 
     const removeParent = async (pid) => {
       try {
-        const response = await api.delete(
-          "/students/" + props.id + "/parents",
-          {
-            data: {
-              parent_id: pid,
-            },
-          }
-        );
+        await api.delete("/students/" + props.id + "/parents", {
+          data: {
+            parent_id: pid,
+          },
+        });
         $q.notify({
           type: "positive",
           position: "top",

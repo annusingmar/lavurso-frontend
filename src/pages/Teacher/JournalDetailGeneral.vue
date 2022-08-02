@@ -26,6 +26,7 @@
               label="Subject"
               v-model="journal.content.subject"
               :options="subjects"
+              :disable="!isCreate"
               :rules="[(val) => val || 'Must be chosen']"
               option-value="id"
               option-label="name"
@@ -117,8 +118,10 @@ export default {
       submitLoading.value = true;
       let data = {
         name: journal.content.name,
-        subject_id: journal.content.subject.id,
       };
+      if (props.isCreate) {
+        data.subject_id = journal.content.subject.id;
+      }
       if (!props.isCreate && userRole.value === "admin") {
         data.teacher_id = journal.content.teacher.id;
       }
@@ -188,7 +191,9 @@ export default {
       update();
     };
 
-    getSubjects();
+    if (props.isCreate) {
+      getSubjects();
+    }
 
     return {
       journal,

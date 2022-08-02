@@ -10,7 +10,9 @@
 
     <q-tab-panels v-model="tab" animated keep-alive>
       <q-tab-panel name="courses"> </q-tab-panel>
-      <q-tab-panel name="students"> </q-tab-panel>
+      <q-tab-panel name="students">
+        <JournalDetailStudents :id="journal.content.id"></JournalDetailStudents>
+      </q-tab-panel>
       <q-tab-panel name="general">
         <JournalDetailGeneral
           :isCreate="false"
@@ -29,6 +31,7 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { reactive, ref } from "vue";
 import JournalDetailGeneral from "./JournalDetailGeneral.vue";
+import JournalDetailStudents from "./JournalDetailStudents.vue";
 
 export default {
   name: "JournalDetail",
@@ -61,6 +64,6 @@ export default {
     getJournal();
     return { tab, journal, loading, getJournal };
   },
-  components: { JournalDetailGeneral },
+  components: { JournalDetailGeneral, JournalDetailStudents },
 };
 </script>
