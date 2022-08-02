@@ -1,5 +1,8 @@
 <template>
-  <div class="row flex-center q-col-gutter-md" style="min-height: 75vh">
+  <div
+    class="row flex-center q-col-gutter-md"
+    style="min-height: 75vh; align-content: center"
+  >
     <div class="col-md-5 col-sm-10">
       <JournalStudentsList
         :students="students"
