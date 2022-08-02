@@ -8,8 +8,10 @@
 
     <q-separator />
 
-    <q-tab-panels v-model="tab" animated keep-alive>
-      <q-tab-panel name="courses"> </q-tab-panel>
+    <q-tab-panels v-model="tab" animated keep-alive v-if="!loading">
+      <q-tab-panel name="courses">
+        <JournalDetailCourses :journal="journal"></JournalDetailCourses>
+      </q-tab-panel>
       <q-tab-panel name="students">
         <JournalDetailStudents :id="journal.content.id"></JournalDetailStudents>
       </q-tab-panel>
@@ -32,6 +34,7 @@ import { api } from "src/boot/axios";
 import { reactive, ref } from "vue";
 import JournalDetailGeneral from "./JournalDetailGeneral.vue";
 import JournalDetailStudents from "./JournalDetailStudents.vue";
+import JournalDetailCourses from "./JournalDetailCourses.vue";
 
 export default {
   name: "JournalDetail",
@@ -64,6 +67,10 @@ export default {
     getJournal();
     return { tab, journal, loading, getJournal };
   },
-  components: { JournalDetailGeneral, JournalDetailStudents },
+  components: {
+    JournalDetailGeneral,
+    JournalDetailStudents,
+    JournalDetailCourses,
+  },
 };
 </script>
