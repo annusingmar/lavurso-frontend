@@ -19,11 +19,26 @@
               @click="changeCourse('up')"
             ></q-btn>
           </div>
+          <div class="row flex-center">
+            <div class="text-subtitle2">
+              {{ journal.content.name }}
+            </div>
+          </div>
         </q-card-section>
         <q-card-section>
           <q-card>
             <q-card-section>
               <div class="text-h6">Lessons</div>
+            </q-card-section>
+            <q-card-section>
+              <q-list separator v-if="lessons.length > 0">
+                <JournalLessonsListItem
+                  v-for="lesson in lessons"
+                  :key="lesson.id"
+                  :lesson="lesson"
+                ></JournalLessonsListItem>
+              </q-list>
+              <div v-else>No lessons found.</div>
             </q-card-section>
           </q-card>
         </q-card-section>
@@ -38,15 +53,14 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
+import JournalLessonsListItem from "src/components/JournalLessonsListItem.vue";
 
 export default {
   name: "JournalDetailCourses",
   props: ["journal"],
   setup(props) {
     const $q = useQuasar();
-
     const course = ref(1);
-
     const loading = ref(true);
     const lessons = ref([]);
     const getLessons = async () => {
@@ -71,7 +85,6 @@ export default {
         });
       }
     };
-
     watch(
       props.journal,
       () => {
@@ -80,7 +93,6 @@ export default {
       },
       { immediate: true }
     );
-
     const changeCourse = (way) => {
       if (way === "down") {
         course.value--;
@@ -89,8 +101,8 @@ export default {
       }
       getLessons();
     };
-
     return { course, loading, lessons, changeCourse };
   },
+  components: { JournalLessonsListItem },
 };
 </script>

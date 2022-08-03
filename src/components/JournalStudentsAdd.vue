@@ -5,7 +5,7 @@
       <q-separator></q-separator>
       <div class="text-caption">
         Selecting one or more classes will add all users currently part of the
-        chosen class to the group.
+        chosen class to the journal.
       </div>
     </q-card-section>
     <q-card-section class="q-gutter-y-md">
