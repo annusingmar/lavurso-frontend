@@ -39,103 +39,89 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "GroupEditInfo",
-  props: ["group"],
-  emits: ["refreshGroup"],
-  setup(props, context) {
-    const $q = useQuasar();
-    const router = useRouter();
+const $q = useQuasar();
+const router = useRouter();
+const props = defineProps(["group"]);
+const emit = defineEmits(["refreshGroup"]);
 
-    const inputGroupName = ref("");
-    const resetData = () => {
-      inputGroupName.value = props.group.content.name;
-    };
+const inputGroupName = ref("");
+const resetData = () => {
+  inputGroupName.value = props.group.content.name;
+};
 
-    watch(props.group, resetData);
+watch(props.group, resetData);
 
-    const nameField = ref(null);
+const nameField = ref(null);
 
-    const updateLoading = ref(false);
-    const updateGroup = async () => {
-      if (
-        !nameField.value.validate() ||
-        inputGroupName.value === props.group.content.name
-      ) {
-        return;
-      }
-      updateLoading.value = true;
-      try {
-        await api.patch("/groups/" + props.group.content.id, {
-          name: inputGroupName.value,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Updating group succeeded!",
-          timeout: 3000,
-        });
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Updating group failed",
-          timeout: 6000,
-        });
-      } finally {
-        updateLoading.value = false;
-        context.emit("refreshGroup");
-      }
-    };
+const updateLoading = ref(false);
+const updateGroup = async () => {
+  if (
+    !nameField.value.validate() ||
+    inputGroupName.value === props.group.content.name
+  ) {
+    return;
+  }
+  updateLoading.value = true;
+  try {
+    await api.patch("/groups/" + props.group.content.id, {
+      name: inputGroupName.value,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Updating group succeeded!",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Updating group failed",
+      timeout: 6000,
+    });
+  } finally {
+    updateLoading.value = false;
+    emit("refreshGroup");
+  }
+};
 
-    const deleteLoading = ref(false);
-    const deleteGroup = async () => {
-      deleteLoading.value = true;
-      try {
-        await api.delete("/groups/" + props.group.content.id);
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Deleting group succeeded!",
-          timeout: 3000,
-        });
-        router.replace("/admin/groups");
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Deleting group failed",
-          timeout: 6000,
-        });
-        deleteLoading.value = false;
-      }
-    };
+const deleteLoading = ref(false);
+const deleteGroup = async () => {
+  deleteLoading.value = true;
+  try {
+    await api.delete("/groups/" + props.group.content.id);
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Deleting group succeeded!",
+      timeout: 3000,
+    });
+    router.replace("/admin/groups");
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Deleting group failed",
+      timeout: 6000,
+    });
+    deleteLoading.value = false;
+  }
+};
 
-    const deleteGroupPrompt = () => {
-      $q.dialog({
-        title: "Confirm",
-        message: "Are you sure you want to delete this group?",
-        cancel: true,
-        persistent: true,
-      }).onOk(() => {
-        deleteGroup();
-      });
-    };
-
-    return {
-      inputGroupName,
-      updateLoading,
-      deleteLoading,
-      nameField,
-      deleteGroupPrompt,
-      updateGroup,
-    };
-  },
+const deleteGroupPrompt = () => {
+  $q.dialog({
+    title: "Confirm",
+    message: "Are you sure you want to delete this group?",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    deleteGroup();
+  });
 };
 </script>

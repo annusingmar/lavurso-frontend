@@ -63,7 +63,7 @@
   </q-card>
 </template>
 
-<script>
+<script setup>
 import { useQuasar, date } from "quasar";
 import { computed, ref } from "vue";
 import { useUserStore } from "src/stores/user";
@@ -71,130 +71,108 @@ import { storeToRefs } from "pinia";
 import { api } from "src/boot/axios";
 import { onEditorPaste } from "src/composables/editor";
 
-export default {
-  name: "MessageContentItem",
-  props: ["msg"],
-  emits: ["refreshThread"],
-  setup(props, context) {
-    const $q = useQuasar();
-    const { id } = storeToRefs(useUserStore());
-    const deleteMessageLoading = ref(false);
+const $q = useQuasar();
+const { id } = storeToRefs(useUserStore());
+const props = defineProps(["msg"]);
+const emit = defineEmits("refreshThread");
 
-    const createdAt = computed(() => {
-      return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
+const createdAt = computed(() => {
+  return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
+});
+
+const updatedAt = computed(() => {
+  return date.formatDate(props.msg.updated_at, "DD. MMM YYYY HH:mm");
+});
+
+const hasBeenEdited = computed(() => {
+  return (
+    new Date(props.msg.updated_at).getTime() !==
+    new Date(props.msg.created_at).getTime()
+  );
+});
+
+// deleting message
+
+const deleteMessageLoading = ref(false);
+const deleteMessage = async () => {
+  deleteMessageLoading.value = true;
+  try {
+    await api.delete("/messages/" + props.msg.id);
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Deleting message succeeded!",
+      timeout: 3000,
     });
-
-    const updatedAt = computed(() => {
-      return date.formatDate(props.msg.updated_at, "DD. MMM YYYY HH:mm");
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Deleting message failed",
+      timeout: 6000,
     });
+  } finally {
+    deleteMessageLoading.value = false;
+    emit("refreshThread");
+  }
+};
 
-    const hasBeenEdited = computed(() => {
-      return (
-        new Date(props.msg.updated_at).getTime() !==
-        new Date(props.msg.created_at).getTime()
-      );
+const deleteMessagePrompt = (id) => {
+  $q.dialog({
+    title: "Confirm",
+    message: "Are you sure you want to delete this message?",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    deleteMessage();
+  });
+};
+
+// editing message
+
+const onPaste = (event) => {
+  onEditorPaste(event, editorRef);
+};
+
+const messageEditorVisible = ref(false);
+const editorMessage = ref("");
+const editorRef = ref(null);
+const saveLoading = ref(false);
+
+const toggleMessageEditor = () => {
+  editorMessage.value = props.msg.body;
+  messageEditorVisible.value = !messageEditorVisible.value;
+};
+
+const saveButtonDisable = computed(() =>
+  editorMessage.value.trim() === "" || editorMessage.value.trim() === "<br>"
+    ? true
+    : false
+);
+
+const updateMessage = async () => {
+  saveLoading.value = true;
+  try {
+    await api.put("/messages/" + props.msg.id, {
+      body: editorMessage.value,
     });
-
-    // deleting message
-
-    const deleteMessage = async () => {
-      deleteMessageLoading.value = true;
-      try {
-        await api.delete("/messages/" + props.msg.id);
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Deleting message succeeded!",
-          timeout: 3000,
-        });
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Deleting message failed",
-          timeout: 6000,
-        });
-      } finally {
-        deleteMessageLoading.value = false;
-        context.emit("refreshThread");
-      }
-    };
-
-    const deleteMessagePrompt = (id) => {
-      $q.dialog({
-        title: "Confirm",
-        message: "Are you sure you want to delete this message?",
-        cancel: true,
-        persistent: true,
-      }).onOk(() => {
-        deleteMessage();
-      });
-    };
-
-    // editing message
-
-    const onPaste = (event) => {
-      onEditorPaste(event, editorRef);
-    };
-
-    const messageEditorVisible = ref(false);
-    const editorMessage = ref("");
-    const editorRef = ref(null);
-    const saveLoading = ref(false);
-
-    const toggleMessageEditor = () => {
-      editorMessage.value = props.msg.body;
-      messageEditorVisible.value = !messageEditorVisible.value;
-    };
-
-    const saveButtonDisable = computed(() =>
-      editorMessage.value.trim() === "" || editorMessage.value.trim() === "<br>"
-        ? true
-        : false
-    );
-
-    const updateMessage = async () => {
-      saveLoading.value = true;
-      try {
-        await api.put("/messages/" + props.msg.id, {
-          body: editorMessage.value,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Saving message succeeded!",
-          timeout: 3000,
-        });
-        messageEditorVisible.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Saving message failed",
-          timeout: 6000,
-        });
-      } finally {
-        saveLoading.value = false;
-        context.emit("refreshThread");
-      }
-    };
-
-    return {
-      createdAt,
-      updatedAt,
-      id,
-      deleteMessageLoading,
-      messageEditorVisible,
-      editorMessage,
-      editorRef,
-      saveLoading,
-      saveButtonDisable,
-      hasBeenEdited,
-      updateMessage,
-      deleteMessagePrompt,
-      toggleMessageEditor,
-      onPaste,
-    };
-  },
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Saving message succeeded!",
+      timeout: 3000,
+    });
+    messageEditorVisible.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Saving message failed",
+      timeout: 6000,
+    });
+  } finally {
+    saveLoading.value = false;
+    emit("refreshThread");
+  }
 };
 </script>

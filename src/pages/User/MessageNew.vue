@@ -87,7 +87,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
@@ -96,150 +96,128 @@ import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
 import { onEditorPaste } from "src/composables/editor";
 
-export default {
-  name: "MessageNew",
-  setup() {
-    const $q = useQuasar();
-    const router = useRouter();
-    const { id } = storeToRefs(useUserStore());
+const $q = useQuasar();
+const router = useRouter();
+const { id } = storeToRefs(useUserStore());
 
-    const usersFilter = async (val, update, abort) => {
-      if (val.length < 4) {
-        abort();
-        return;
-      }
-      await getUsers(val);
-      update();
-    };
+const usersFilter = async (val, update, abort) => {
+  if (val.length < 4) {
+    abort();
+    return;
+  }
+  await getUsers(val);
+  update();
+};
 
-    const filteredGroups = ref(null);
-    const groupsFilter = async (val, update) => {
-      if (availableGroups.value !== null) {
-        update(() => {
-          const v = val.toLowerCase();
-          filteredGroups.value = availableGroups.value.filter(
-            (g) => g.name.toLowerCase().indexOf(v) > -1
-          );
-        });
-      } else {
-        await getGroups();
-        update(() => {
-          filteredGroups.value = availableGroups.value;
-        });
-      }
-    };
+const filteredGroups = ref(null);
+const groupsFilter = async (val, update) => {
+  if (availableGroups.value !== null) {
+    update(() => {
+      const v = val.toLowerCase();
+      filteredGroups.value = availableGroups.value.filter(
+        (g) => g.name.toLowerCase().indexOf(v) > -1
+      );
+    });
+  } else {
+    await getGroups();
+    update(() => {
+      filteredGroups.value = availableGroups.value;
+    });
+  }
+};
 
-    const availableUsers = ref(null);
-    const getUsers = async (search) => {
-      try {
-        const response = await api.get("/users/search", {
-          params: {
-            name: search,
-          },
-        });
-        availableUsers.value =
-          response.data.result !== null
-            ? response.data.result.filter((u) => u.id !== id.value)
-            : [];
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
+const availableUsers = ref(null);
+const getUsers = async (search) => {
+  try {
+    const response = await api.get("/users/search", {
+      params: {
+        name: search,
+      },
+    });
+    availableUsers.value =
+      response.data.result !== null
+        ? response.data.result.filter((u) => u.id !== id.value)
+        : [];
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
 
-    const availableGroups = ref(null);
-    const getGroups = async () => {
-      try {
-        const response = await api.get("/users/" + id.value + "/groups");
-        availableGroups.value =
-          response.data.groups !== null ? response.data.groups : [];
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
+const availableGroups = ref(null);
+const getGroups = async () => {
+  try {
+    const response = await api.get("/users/" + id.value + "/groups");
+    availableGroups.value =
+      response.data.groups !== null ? response.data.groups : [];
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
 
-    const onPaste = (event) => {
-      onEditorPaste(event, editorRef);
-    };
+const onPaste = (event) => {
+  onEditorPaste(event, editorRef);
+};
 
-    const editorRef = ref(null);
-    const titleRef = ref(null);
-    const sendLoading = ref(false);
-    const editorError = ref(false);
+const editorRef = ref(null);
+const titleRef = ref(null);
+const sendLoading = ref(false);
+const editorError = ref(false);
 
-    const title = ref("");
-    const message = ref("");
-    const chosenUsers = ref([]);
-    const chosenGroups = ref([]);
+const title = ref("");
+const message = ref("");
+const chosenUsers = ref([]);
+const chosenGroups = ref([]);
 
-    const sendMessage = async () => {
-      editorError.value = false;
-      if (!titleRef.value.validate()) {
-        return;
-      } else if (message.value.trim() === "") {
-        editorError.value = true;
-        return;
-      }
+const sendMessage = async () => {
+  editorError.value = false;
+  if (!titleRef.value.validate()) {
+    return;
+  } else if (message.value.trim() === "") {
+    editorError.value = true;
+    return;
+  }
 
-      const userIDs = [];
-      const groupIDs = [];
-      chosenUsers.value.forEach((u) => userIDs.push(u.id));
-      chosenGroups.value.forEach((g) => groupIDs.push(g.id));
-      sendLoading.value = true;
-      try {
-        const response = await api.post("/threads", {
-          title: title.value,
-          body: message.value,
-          user_ids: userIDs,
-          group_ids: groupIDs,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Sending message succeeded!",
-          timeout: 3000,
-        });
-        router.replace("/messages/" + response.data.thread.id);
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Sending message failed",
-          timeout: 6000,
-        });
-      } finally {
-        sendLoading.value = false;
-      }
-    };
-
-    return {
-      title,
-      message,
-      editorRef,
-      titleRef,
-      availableUsers,
-      chosenUsers,
-      editorError,
-      sendLoading,
-      chosenGroups,
-      filteredGroups,
-      groupsFilter,
-      usersFilter,
-      onPaste,
-      sendMessage,
-    };
-  },
+  const userIDs = [];
+  const groupIDs = [];
+  chosenUsers.value.forEach((u) => userIDs.push(u.id));
+  chosenGroups.value.forEach((g) => groupIDs.push(g.id));
+  sendLoading.value = true;
+  try {
+    const response = await api.post("/threads", {
+      title: title.value,
+      body: message.value,
+      user_ids: userIDs,
+      group_ids: groupIDs,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Sending message succeeded!",
+      timeout: 3000,
+    });
+    router.replace("/messages/" + response.data.thread.id);
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Sending message failed",
+      timeout: 6000,
+    });
+  } finally {
+    sendLoading.value = false;
+  }
 };
 </script>
 

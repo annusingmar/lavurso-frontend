@@ -50,109 +50,93 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { api } from "src/boot/axios";
 import { ref, computed, reactive, watch } from "vue";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "GradesNew",
-  props: ["id"],
-  setup(props) {
-    const $q = useQuasar();
-    const router = useRouter();
+const $q = useQuasar();
+const router = useRouter();
+const props = defineProps(["id"]);
 
-    const isCreate = computed(() => props.id == 0);
+const isCreate = computed(() => props.id == 0);
 
-    // existing grade
-    const loading = ref(false);
-    const grade = reactive({ content: {} });
-    const getGrade = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/grades/" + props.id);
-        grade.content = response.data.grade;
-        loading.value = false;
-      } catch (error) {
-        if (error.response && error.response.status == 404) {
-          router.replace("/notFound");
-          return;
-        }
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
+// existing grade
+const loading = ref(false);
+const grade = reactive({ content: {} });
+const getGrade = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/grades/" + props.id);
+    grade.content = response.data.grade;
+    loading.value = false;
+  } catch (error) {
+    if (error.response && error.response.status == 404) {
+      router.replace("/notFound");
+      return;
+    }
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
 
-    const identifier = ref("");
-    const value = ref(null);
-    const resetData = () => {
-      identifier.value = grade.content.identifier;
-      value.value = grade.content.value;
-    };
+const identifier = ref("");
+const value = ref(null);
+const resetData = () => {
+  identifier.value = grade.content.identifier;
+  value.value = grade.content.value;
+};
 
-    watch(grade, resetData);
+watch(grade, resetData);
 
+if (!isCreate.value) {
+  getGrade();
+}
+
+// create/update class request
+const submitLoading = ref(false);
+const submitGrade = async () => {
+  submitLoading.value = true;
+  try {
+    if (!isCreate.value) {
+      await api.patch("/grades/" + props.id, {
+        identifier: identifier.value,
+        value: value.value,
+      });
+    } else {
+      await api.post("/grades", {
+        identifier: identifier.value,
+        value: value.value,
+      });
+    }
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: (isCreate.value ? "Creating" : "Updating") + " grade succeeded!",
+      timeout: 3000,
+    });
+    submitLoading.value = false;
+    if (isCreate.value) {
+      router.replace("/admin/grades");
+    }
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: (isCreate.value ? "Creating" : "Updating") + " grade failed!",
+      timeout: 6000,
+    });
+    submitLoading.value = false;
+  } finally {
     if (!isCreate.value) {
       getGrade();
     }
-
-    // create/update class request
-    const submitLoading = ref(false);
-    const submitGrade = async () => {
-      submitLoading.value = true;
-      try {
-        if (!isCreate.value) {
-          await api.patch("/grades/" + props.id, {
-            identifier: identifier.value,
-            value: value.value,
-          });
-        } else {
-          await api.post("/grades", {
-            identifier: identifier.value,
-            value: value.value,
-          });
-        }
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message:
-            (isCreate.value ? "Creating" : "Updating") + " grade succeeded!",
-          timeout: 3000,
-        });
-        submitLoading.value = false;
-        if (isCreate.value) {
-          router.replace("/admin/grades");
-        }
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message:
-            (isCreate.value ? "Creating" : "Updating") + " grade failed!",
-          timeout: 6000,
-        });
-        submitLoading.value = false;
-      } finally {
-        if (!isCreate.value) {
-          getGrade();
-        }
-      }
-    };
-
-    return {
-      identifier,
-      value,
-      submitLoading,
-      isCreate,
-      loading,
-      submitGrade,
-    };
-  },
+  }
 };
 </script>

@@ -12,31 +12,24 @@
   </q-item>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import MarkDialog from "./MarkDialog.vue";
 
-export default {
-  name: "LessonDetailStudentListItem",
-  props: ["student", "lesson"],
-  emits: ["refreshLesson"],
-  setup(props, context) {
-    const $q = useQuasar();
+const $q = useQuasar();
+const props = defineProps(["student", "lesson"]);
+const emit = defineEmits(["refreshLesson"]);
 
-    const addMark = () => {
-      $q.dialog({
-        component: MarkDialog,
-        componentProps: {
-          student: props.student,
-          lesson: props.lesson,
-          type: "lesson",
-        },
-      }).onOk(() => {
-        context.emit("refreshLesson");
-      });
-    };
-
-    return { addMark };
-  },
+const addMark = () => {
+  $q.dialog({
+    component: MarkDialog,
+    componentProps: {
+      student: props.student,
+      lesson: props.lesson,
+      type: "lesson",
+    },
+  }).onOk(() => {
+    emit("refreshLesson");
+  });
 };
 </script>

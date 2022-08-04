@@ -20,7 +20,6 @@ export default {
   name: "LessonDetailStudents",
   props: ["students", "lesson"],
   emits: ["refreshLesson"],
-  setup() {},
   components: { LessonDetailStudentListItem },
 };
 </script>

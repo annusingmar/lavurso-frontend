@@ -27,75 +27,59 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, computed } from "vue";
 import { onEditorPaste } from "src/composables/editor";
 
-export default {
-  name: "MessagePageReply",
-  emits: ["refreshThread"],
-  props: ["id"],
-  setup(props, context) {
-    const $q = useQuasar();
+const $q = useQuasar();
+const props = defineProps(["id"]);
+const emit = defineEmits(["refreshThread"]);
 
-    const showReplyBox = ref(false);
-    const editorRef = ref(null);
-    const userReply = ref("");
+const showReplyBox = ref(false);
+const editorRef = ref(null);
+const userReply = ref("");
 
-    const toggleReplyBox = () => {
-      showReplyBox.value = !showReplyBox.value;
-    };
+const toggleReplyBox = () => {
+  showReplyBox.value = !showReplyBox.value;
+};
 
-    const onPaste = (event) => {
-      onEditorPaste(event, editorRef);
-    };
+const onPaste = (event) => {
+  onEditorPaste(event, editorRef);
+};
 
-    const replyButtonDisable = computed(() =>
-      userReply.value.trim() === "" || userReply.value.trim() === "<br>"
-        ? true
-        : false
-    );
+const replyButtonDisable = computed(() =>
+  userReply.value.trim() === "" || userReply.value.trim() === "<br>"
+    ? true
+    : false
+);
 
-    const sendLoading = ref(false);
-    const sendMessage = async () => {
-      sendLoading.value = true;
-      try {
-        await api.post("/threads/" + props.id + "/messages", {
-          body: userReply.value,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Sending message succeeded!",
-          timeout: 3000,
-        });
-        userReply.value = "";
-        showReplyBox.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Sending message failed",
-          timeout: 6000,
-        });
-      } finally {
-        sendLoading.value = false;
-        context.emit("refreshThread");
-      }
-    };
-
-    return {
-      showReplyBox,
-      editorRef,
-      sendLoading,
-      userReply,
-      replyButtonDisable,
-      toggleReplyBox,
-      onPaste,
-      sendMessage,
-    };
-  },
+const sendLoading = ref(false);
+const sendMessage = async () => {
+  sendLoading.value = true;
+  try {
+    await api.post("/threads/" + props.id + "/messages", {
+      body: userReply.value,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Sending message succeeded!",
+      timeout: 3000,
+    });
+    userReply.value = "";
+    showReplyBox.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Sending message failed",
+      timeout: 6000,
+    });
+  } finally {
+    sendLoading.value = false;
+    emit("refreshThread");
+  }
 };
 </script>

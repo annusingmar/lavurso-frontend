@@ -51,99 +51,84 @@
   </q-drawer>
 </template>
 
-<script>
+<script setup>
 import { storeToRefs } from "pinia";
 
 import DrawerListItem from "./DrawerListItem.vue";
 import { useUserStore } from "../stores/user.js";
 
-export default {
-  components: {
-    DrawerListItem,
+const userStoreRef = storeToRefs(useUserStore());
+const props = defineProps(["open"]);
+const emit = defineEmits(["setLeftDrawer"]);
+
+const userName = userStoreRef.name;
+const userRole = userStoreRef.role;
+const userDisplayRole = userStoreRef.roleName;
+
+const menuItems = [
+  {
+    title: "Home",
+    icon: "home",
+    to: "/home",
+    separator: false,
   },
-  props: ["open"],
-  setup(props, context) {
-    const userStoreRef = storeToRefs(useUserStore());
-
-    const userName = userStoreRef.name;
-    const userRole = userStoreRef.role;
-
-    const menuItems = [
-      {
-        title: "Home",
-        icon: "home",
-        to: "/home",
-        separator: false,
-      },
-      {
-        title: "Account",
-        icon: "settings",
-        to: "/account",
-        separator: false,
-      },
-      {
-        title: "Messages",
-        icon: "chat",
-        to: "/messages",
-        separator: true,
-      },
-    ];
-
-    const teacherMenuItems = [
-      {
-        title: userStoreRef.role.value === "admin" ? "Journals" : "My Journals",
-        icon: "library_books",
-        to: "/teacher/journals",
-        separator: true,
-      },
-    ];
-
-    const adminMenuItems = [
-      {
-        title: "Users",
-        icon: "account_circle",
-        to: "/admin/users",
-        separator: false,
-      },
-      {
-        title: "Groups",
-        icon: "groups",
-        to: "/admin/groups",
-        separator: false,
-      },
-      {
-        title: "Classes",
-        icon: "class",
-        to: "/admin/classes",
-        separator: false,
-      },
-      {
-        title: "Grades",
-        icon: "tag",
-        to: "/admin/grades",
-        separator: false,
-      },
-      {
-        title: "Subjects",
-        icon: "format_list_numbered",
-        to: "/admin/subjects",
-        separator: true,
-      },
-    ];
-
-    const drawerStateChange = (val) => {
-      context.emit("setLeftDrawer", val);
-    };
-
-    return {
-      userName,
-      userDisplayRole: userStoreRef.roleName,
-      userRole,
-      menuItems,
-      teacherMenuItems,
-      adminMenuItems,
-      drawerStateChange,
-    };
+  {
+    title: "Account",
+    icon: "settings",
+    to: "/account",
+    separator: false,
   },
+  {
+    title: "Messages",
+    icon: "chat",
+    to: "/messages",
+    separator: true,
+  },
+];
+
+const teacherMenuItems = [
+  {
+    title: userStoreRef.role.value === "admin" ? "Journals" : "My Journals",
+    icon: "library_books",
+    to: "/teacher/journals",
+    separator: true,
+  },
+];
+
+const adminMenuItems = [
+  {
+    title: "Users",
+    icon: "account_circle",
+    to: "/admin/users",
+    separator: false,
+  },
+  {
+    title: "Groups",
+    icon: "groups",
+    to: "/admin/groups",
+    separator: false,
+  },
+  {
+    title: "Classes",
+    icon: "class",
+    to: "/admin/classes",
+    separator: false,
+  },
+  {
+    title: "Grades",
+    icon: "tag",
+    to: "/admin/grades",
+    separator: false,
+  },
+  {
+    title: "Subjects",
+    icon: "format_list_numbered",
+    to: "/admin/subjects",
+    separator: true,
+  },
+];
+
+const drawerStateChange = (val) => {
+  emit("setLeftDrawer", val);
 };
 </script>

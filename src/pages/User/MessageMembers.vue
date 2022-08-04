@@ -29,7 +29,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
@@ -38,66 +38,50 @@ import { computed, reactive, ref } from "vue";
 import MessageMembersList from "src/components/MessageMembersList.vue";
 import MessageMembersAdd from "../../components/MessageMembersAdd.vue";
 
-export default {
-  name: "MessageMembers",
-  props: ["id"],
-  setup(props) {
-    const $q = useQuasar();
-    const userStore = storeToRefs(useUserStore());
+const $q = useQuasar();
+const userStore = storeToRefs(useUserStore());
+const props = defineProps(["id"]);
+const userID = userStore.id;
 
-    const users = ref([]);
-    const groups = ref([]);
-    const thread = reactive({ content: {} });
-    const loading = ref(true);
-    const getMembers = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/threads/" + props.id + "/members");
-        thread.content = response.data.thread;
+const users = ref([]);
+const groups = ref([]);
+const thread = reactive({ content: {} });
+const loading = ref(true);
+const getMembers = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/threads/" + props.id + "/members");
+    thread.content = response.data.thread;
 
-        // if the users array in response is not null
-        // sort the array so that thread creator is first
-        // otherwise return empty array
-        users.value =
-          response.data.users !== null
-            ? response.data.users.sort((u1, u2) =>
-                u1.id === thread.content.user.id
-                  ? -1
-                  : u2.id === thread.content.user.id
-                  ? 1
-                  : 0
-              )
-            : [];
-        groups.value =
-          response.data.groups !== null ? response.data.groups : [];
-        loading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
-
-    const isUserThreadCreator = computed(
-      () => thread.content.user && thread.content.user.id === userStore.id.value
-    );
-
-    getMembers();
-
-    return {
-      users,
-      groups,
-      thread,
-      loading,
-      userID: userStore.id,
-      isUserThreadCreator,
-      getMembers,
-    };
-  },
-  components: { MessageMembersList, MessageMembersAdd },
+    // if the users array in response is not null
+    // sort the array so that thread creator is first
+    // otherwise return empty array
+    users.value =
+      response.data.users !== null
+        ? response.data.users.sort((u1, u2) =>
+            u1.id === thread.content.user.id
+              ? -1
+              : u2.id === thread.content.user.id
+              ? 1
+              : 0
+          )
+        : [];
+    groups.value = response.data.groups !== null ? response.data.groups : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
+
+const isUserThreadCreator = computed(
+  () => thread.content.user && thread.content.user.id === userStore.id.value
+);
+
+getMembers();
 </script>

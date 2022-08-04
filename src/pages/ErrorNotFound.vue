@@ -1,9 +1,9 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center flex flex-center">
-    <div>
+  <div class="fullscreen bg-blue text-white text-center row flex-center">
+    <div class="q-gutter-y-lg">
       <div class="text-h1">404</div>
 
-      <div class="text-h2 q-my-lg">Not Found</div>
+      <div class="text-h2">Not Found</div>
 
       <q-btn
         color="white"
@@ -16,15 +16,7 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup>
 import { useRouter } from "vue-router";
-
-export default defineComponent({
-  name: "ErrorNotFound",
-  setup() {
-    const router = useRouter();
-    return { router };
-  },
-});
+const router = useRouter();
 </script>

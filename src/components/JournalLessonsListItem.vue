@@ -10,24 +10,18 @@
   </q-item>
 </template>
 
-<script>
+<script setup>
 import { computed } from "vue";
 import { date } from "quasar";
 
-export default {
-  name: "JournalLessonsListItem",
-  props: ["lesson"],
-  setup(props) {
-    const lessonDate = computed(() => {
-      const jsDate = new Date(props.lesson.date);
-      return date.formatDate(jsDate, "DD MMMM YYYY");
-    });
+const props = defineProps(["lesson"]);
 
-    const isDescriptionEmpty = computed(
-      () => props.lesson.description.trim() === ""
-    );
+const lessonDate = computed(() => {
+  const jsDate = new Date(props.lesson.date);
+  return date.formatDate(jsDate, "DD MMMM YYYY");
+});
 
-    return { lessonDate, isDescriptionEmpty };
-  },
-};
+const isDescriptionEmpty = computed(
+  () => props.lesson.description.trim() === ""
+);
 </script>

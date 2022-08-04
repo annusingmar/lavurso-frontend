@@ -46,86 +46,79 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 import { api } from "boot/axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "UsersList",
-  setup() {
-    const $q = useQuasar();
-    const router = useRouter();
+const $q = useQuasar();
+const router = useRouter();
 
-    const getRoleName = (val) => {
-      switch (val) {
-        case "admin":
-          return "Administrator";
-        case "teacher":
-          return "Teacher";
-        case "parent":
-          return "Parent";
-        case "student":
-          return "Student";
-      }
-    };
-
-    const columns = [
-      {
-        name: "name",
-        required: true,
-        label: "Name",
-        align: "left",
-        field: (row) => row.name,
-        sortable: false,
-      },
-      {
-        name: "email",
-        required: true,
-        label: "Email",
-        align: "left",
-        field: (row) => row.email,
-        sortable: false,
-      },
-      {
-        name: "role",
-        required: true,
-        label: "Role",
-        align: "left",
-        field: (row) => row.role,
-        format: (val) => getRoleName(val),
-        sortable: true,
-      },
-      { name: "actions", label: "Action" },
-    ];
-
-    const users = ref([]);
-
-    const loading = ref(true);
-
-    api
-      .get("/users")
-      .then((response) => {
-        users.value = response.data.users;
-        loading.value = false;
-      })
-      .catch((error) => {
-        console.log(error);
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      });
-
-    const filter = ref("");
-
-    const editUser = (id) => router.push("/admin/users/" + id);
-
-    return { columns, users, filter, loading, editUser };
-  },
+const getRoleName = (val) => {
+  switch (val) {
+    case "admin":
+      return "Administrator";
+    case "teacher":
+      return "Teacher";
+    case "parent":
+      return "Parent";
+    case "student":
+      return "Student";
+  }
 };
+
+const columns = [
+  {
+    name: "name",
+    required: true,
+    label: "Name",
+    align: "left",
+    field: (row) => row.name,
+    sortable: false,
+  },
+  {
+    name: "email",
+    required: true,
+    label: "Email",
+    align: "left",
+    field: (row) => row.email,
+    sortable: false,
+  },
+  {
+    name: "role",
+    required: true,
+    label: "Role",
+    align: "left",
+    field: (row) => row.role,
+    format: (val) => getRoleName(val),
+    sortable: true,
+  },
+  { name: "actions", label: "Action" },
+];
+
+const users = ref([]);
+
+const loading = ref(true);
+
+api
+  .get("/users")
+  .then((response) => {
+    users.value = response.data.users;
+    loading.value = false;
+  })
+  .catch((error) => {
+    console.log(error);
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  });
+
+const filter = ref("");
+
+const editUser = (id) => router.push("/admin/users/" + id);
 </script>

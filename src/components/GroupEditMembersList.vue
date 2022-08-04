@@ -27,101 +27,89 @@
   </q-card>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 
-export default {
-  name: "GroupEditMembersList",
-  props: ["users", "loading", "group"],
-  emits: ["refreshGroup"],
-  setup(props, context) {
-    const $q = useQuasar();
+const $q = useQuasar();
+const props = defineProps(["users", "loading", "group"]);
+const emit = defineEmits(["refreshGroup"]);
 
-    const getRoleName = (val) => {
-      switch (val) {
-        case "admin":
-          return "Administrator";
-        case "teacher":
-          return "Teacher";
-        case "parent":
-          return "Parent";
-        case "student":
-          return "Student";
-      }
-    };
+const getRoleName = (val) => {
+  switch (val) {
+    case "admin":
+      return "Administrator";
+    case "teacher":
+      return "Teacher";
+    case "parent":
+      return "Parent";
+    case "student":
+      return "Student";
+  }
+};
 
-    const columns = [
-      {
-        name: "name",
-        required: true,
-        label: "Name",
-        align: "left",
-        field: (row) => row.name,
-        sortable: false,
-      },
-      {
-        name: "role",
-        required: true,
-        label: "Role",
-        align: "left",
-        field: (row) => row.role,
-        format: (val) => getRoleName(val),
-        sortable: true,
-      },
-    ];
-
-    const selectedUsers = ref([]);
-
-    const removeLoading = ref(false);
-    const removeUsers = async () => {
-      removeLoading.value = true;
-      const userIDs = [];
-      selectedUsers.value.forEach((u) => userIDs.push(u.id));
-      try {
-        await api.delete("/groups/" + props.group.content.id + "/users", {
-          data: {
-            user_ids: userIDs,
-          },
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Users successfully removed",
-          timeout: 3000,
-        });
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Removing users failed",
-          timeout: 6000,
-        });
-      } finally {
-        removeLoading.value = false;
-        selectedUsers.value = [];
-        context.emit("refreshGroup");
-      }
-    };
-
-    const removeUsersPrompt = () => {
-      $q.dialog({
-        title: "Confirm",
-        message: "Are you sure you want to remove these users?",
-        cancel: true,
-        persistent: true,
-      }).onOk(() => {
-        removeUsers();
-      });
-    };
-
-    return {
-      columns,
-      selectedUsers,
-      removeLoading,
-      removeUsersPrompt,
-    };
+const columns = [
+  {
+    name: "name",
+    required: true,
+    label: "Name",
+    align: "left",
+    field: (row) => row.name,
+    sortable: false,
   },
+  {
+    name: "role",
+    required: true,
+    label: "Role",
+    align: "left",
+    field: (row) => row.role,
+    format: (val) => getRoleName(val),
+    sortable: true,
+  },
+];
+
+const selectedUsers = ref([]);
+
+const removeLoading = ref(false);
+const removeUsers = async () => {
+  removeLoading.value = true;
+  const userIDs = [];
+  selectedUsers.value.forEach((u) => userIDs.push(u.id));
+  try {
+    await api.delete("/groups/" + props.group.content.id + "/users", {
+      data: {
+        user_ids: userIDs,
+      },
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Users successfully removed",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Removing users failed",
+      timeout: 6000,
+    });
+  } finally {
+    removeLoading.value = false;
+    selectedUsers.value = [];
+    emit("refreshGroup");
+  }
+};
+
+const removeUsersPrompt = () => {
+  $q.dialog({
+    title: "Confirm",
+    message: "Are you sure you want to remove these users?",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    removeUsers();
+  });
 };
 </script>

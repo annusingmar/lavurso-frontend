@@ -60,75 +60,63 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, reactive, watch } from "vue";
 
-export default {
-  emits: ["refreshUser"],
-  props: ["serverUser"],
-  setup(props, context) {
-    const $q = useQuasar();
-    const userData = reactive({ user: {} });
-    const updateLoading = ref(false);
-    const hidePwd = ref(true);
+const $q = useQuasar();
+const props = defineProps(["serverUser"]);
+const emit = defineEmits(["refreshUser"]);
 
-    const resetData = () => {
-      userData.user = {
-        name: props.serverUser.user.name,
-        email: props.serverUser.user.email,
-        password: null,
-      };
-    };
+const userData = reactive({ user: {} });
+const updateLoading = ref(false);
+const hidePwd = ref(true);
 
-    watch(props.serverUser, resetData);
+const resetData = () => {
+  userData.user = {
+    name: props.serverUser.user.name,
+    email: props.serverUser.user.email,
+    password: null,
+  };
+};
 
-    const validateEmail = (email) => {
-      const re =
-        /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+watch(props.serverUser, resetData);
 
-      return re.test(email) || "Invalid email";
-    };
+const validateEmail = (email) => {
+  const re =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-    const updateUser = async () => {
-      updateLoading.value = true;
-      try {
-        await api.patch("/users/" + props.serverUser.user.id, {
-          name: userData.user.name,
-          email: userData.user.email,
-          password:
-            userData.user.password && userData.user.password.length > 0
-              ? userData.user.password
-              : null,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Updating user succeeded!",
-          timeout: 3000,
-        });
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Updating user failed",
-          timeout: 6000,
-        });
-      } finally {
-        updateLoading.value = false;
-        context.emit("refreshUser");
-      }
-    };
+  return re.test(email) || "Invalid email";
+};
 
-    return {
-      userData,
-      resetData,
-      updateUser,
-      updateLoading,
-      validateEmail,
-      hidePwd,
-    };
-  },
+const updateUser = async () => {
+  updateLoading.value = true;
+  try {
+    await api.patch("/users/" + props.serverUser.user.id, {
+      name: userData.user.name,
+      email: userData.user.email,
+      password:
+        userData.user.password && userData.user.password.length > 0
+          ? userData.user.password
+          : null,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Updating user succeeded!",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Updating user failed",
+      timeout: 6000,
+    });
+  } finally {
+    updateLoading.value = false;
+    emit("refreshUser");
+  }
 };
 </script>

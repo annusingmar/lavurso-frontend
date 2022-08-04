@@ -31,66 +31,54 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "GradesPages",
-  setup() {
-    const $q = useQuasar();
-    const router = useRouter();
+const $q = useQuasar();
+const router = useRouter();
 
-    const columns = [
-      {
-        name: "identifier",
-        required: true,
-        label: "Identifier",
-        align: "left",
-        field: (row) => row.identifier,
-        sortable: false,
-      },
-      {
-        name: "value",
-        required: true,
-        label: "Value",
-        align: "left",
-        field: (row) => row.value,
-        sortable: false,
-      },
-      { name: "actions", label: "Action" },
-    ];
-    const loading = ref(true);
-    const grades = ref([]);
-    const getGrades = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/grades");
-        grades.value =
-          response.data.grades !== null ? response.data.grades : [];
-        loading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
-
-    const editGrade = (id) => router.push("/admin/grades/" + id);
-
-    getGrades();
-    return {
-      columns,
-      loading,
-      grades,
-      editGrade,
-    };
+const columns = [
+  {
+    name: "identifier",
+    required: true,
+    label: "Identifier",
+    align: "left",
+    field: (row) => row.identifier,
+    sortable: false,
   },
+  {
+    name: "value",
+    required: true,
+    label: "Value",
+    align: "left",
+    field: (row) => row.value,
+    sortable: false,
+  },
+  { name: "actions", label: "Action" },
+];
+const loading = ref(true);
+const grades = ref([]);
+const getGrades = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/grades");
+    grades.value = response.data.grades !== null ? response.data.grades : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
+
+const editGrade = (id) => router.push("/admin/grades/" + id);
+
+getGrades();
 </script>

@@ -32,7 +32,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
@@ -40,36 +40,29 @@ import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
 import MessageListItem from "src/components/MessageListItem.vue";
 
-export default {
-  name: "MessageList",
-  setup() {
-    const $q = useQuasar();
-    const loading = ref(true);
-    const messages = ref([]);
-    const { id } = storeToRefs(useUserStore());
+const $q = useQuasar();
+const loading = ref(true);
+const messages = ref([]);
+const { id } = storeToRefs(useUserStore());
 
-    const getMessages = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/users/" + id.value + "/threads");
-        messages.value =
-          response.data.threads !== null ? response.data.threads : [];
-        loading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
-    getMessages();
-    return { messages, getMessages, loading };
-  },
-  components: { MessageListItem },
+const getMessages = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/users/" + id.value + "/threads");
+    messages.value =
+      response.data.threads !== null ? response.data.threads : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
+getMessages();
 </script>
 
 <style scoped>

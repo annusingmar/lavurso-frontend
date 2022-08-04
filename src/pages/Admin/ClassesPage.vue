@@ -51,74 +51,58 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import ClassMembersTable from "src/components/ClassMembersTable.vue";
 
-export default {
-  name: "ClassesPage",
-  setup() {
-    const $q = useQuasar();
-    const router = useRouter();
-    const columns = [
-      {
-        name: "name",
-        required: true,
-        label: "Name",
-        align: "left",
-        field: (row) => row.name,
-        sortable: false,
-      },
-      {
-        name: "teacher",
-        required: true,
-        label: "Teacher",
-        align: "left",
-        field: (row) => row.teacher.name,
-        sortable: true,
-      },
-      { name: "actions", label: "Action" },
-    ];
-    const loading = ref(true);
-    const classes = ref([]);
-    const getClasses = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/classes");
-        classes.value =
-          response.data.classes !== null ? response.data.classes : [];
-        loading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
-    const editClass = (id) => router.push("/admin/classes/" + id);
-    const showClassID = ref(null);
-    const dialog = ref(false);
-    const showMembers = (id) => {
-      showClassID.value = id;
-      dialog.value = true;
-    };
-    getClasses();
-    return {
-      columns,
-      classes,
-      loading,
-      showClassID,
-      dialog,
-      showMembers,
-      editClass,
-    };
+const $q = useQuasar();
+const router = useRouter();
+const columns = [
+  {
+    name: "name",
+    required: true,
+    label: "Name",
+    align: "left",
+    field: (row) => row.name,
+    sortable: false,
   },
-  components: { ClassMembersTable },
+  {
+    name: "teacher",
+    required: true,
+    label: "Teacher",
+    align: "left",
+    field: (row) => row.teacher.name,
+    sortable: true,
+  },
+  { name: "actions", label: "Action" },
+];
+const loading = ref(true);
+const classes = ref([]);
+const getClasses = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/classes");
+    classes.value = response.data.classes !== null ? response.data.classes : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
+const editClass = (id) => router.push("/admin/classes/" + id);
+const showClassID = ref(null);
+const dialog = ref(false);
+const showMembers = (id) => {
+  showClassID.value = id;
+  dialog.value = true;
+};
+getClasses();
 </script>

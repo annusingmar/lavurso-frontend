@@ -14,6 +14,5 @@
 export default {
   name: "JournalListItem",
   props: ["journal"],
-  setup() {},
 };
 </script>

@@ -53,152 +53,132 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, reactive, watch } from "vue";
 import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "ClassDetails",
-  props: ["id"],
-  setup(props) {
-    const $q = useQuasar();
-    const router = useRouter();
+const $q = useQuasar();
+const router = useRouter();
+const props = defineProps(["id"]);
 
-    const isCreate = computed(() => props.id == 0);
+const isCreate = computed(() => props.id == 0);
 
-    // both
+// both
 
-    const teachers = ref(null);
-    const getTeachers = async (search) => {
-      try {
-        const response = await api.get("/users/search", {
-          params: {
-            name: search,
-          },
-        });
-        teachers.value =
-          response.data.result !== null
-            ? response.data.result.filter(
-                (u) => u.role === "teacher" || u.role === "admin"
-              )
-            : [];
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
+const teachers = ref(null);
+const getTeachers = async (search) => {
+  try {
+    const response = await api.get("/users/search", {
+      params: {
+        name: search,
+      },
+    });
+    teachers.value =
+      response.data.result !== null
+        ? response.data.result.filter(
+            (u) => u.role === "teacher" || u.role === "admin"
+          )
+        : [];
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
 
-    const teachersFilter = async (val, update, abort) => {
-      if (val.length < 4) {
-        abort();
-        return;
-      }
-      await getTeachers(val);
-      update();
-    };
+const teachersFilter = async (val, update, abort) => {
+  if (val.length < 4) {
+    abort();
+    return;
+  }
+  await getTeachers(val);
+  update();
+};
 
-    // existing class
+// existing class
 
-    const loading = ref(false);
-    const classs = reactive({ content: {} });
-    const getClass = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/classes/" + props.id);
-        classs.content = response.data.class;
-        loading.value = false;
-      } catch (error) {
-        if (error.response && error.response.status == 404) {
-          router.replace("/notFound");
-          return;
-        }
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
+const loading = ref(false);
+const classs = reactive({ content: {} });
+const getClass = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/classes/" + props.id);
+    classs.content = response.data.class;
+    loading.value = false;
+  } catch (error) {
+    if (error.response && error.response.status == 404) {
+      router.replace("/notFound");
+      return;
+    }
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
 
-    const name = ref("");
-    const teacher = ref(null);
-    const resetData = () => {
-      name.value = classs.content.name;
-      teacher.value = classs.content.teacher;
-    };
+const name = ref("");
+const teacher = ref(null);
+const resetData = () => {
+  name.value = classs.content.name;
+  teacher.value = classs.content.teacher;
+};
 
-    watch(classs, resetData);
+watch(classs, resetData);
 
+if (!isCreate.value) {
+  getClass();
+}
+
+// create/update class request
+const submitLoading = ref(false);
+const submitClass = async () => {
+  submitLoading.value = true;
+  const data = {
+    name: name.value,
+    teacher_id: teacher.value.id,
+  };
+  try {
+    if (!isCreate.value) {
+      await api.patch("/classes/" + props.id, data);
+    } else {
+      await api.post("/classes/", data);
+    }
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: (isCreate.value ? "Creating" : "Updating") + " class succeeded!",
+      timeout: 3000,
+    });
+    submitLoading.value = false;
+    if (isCreate.value) {
+      router.replace("/admin/classes");
+    }
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: (isCreate.value ? "Creating" : "Updating") + " class failed!",
+      timeout: 6000,
+    });
+    submitLoading.value = false;
+  } finally {
     if (!isCreate.value) {
       getClass();
     }
-
-    // create/update class request
-    const submitLoading = ref(false);
-    const submitClass = async () => {
-      submitLoading.value = true;
-      const data = {
-        name: name.value,
-        teacher_id: teacher.value.id,
-      };
-      try {
-        if (!isCreate.value) {
-          await api.patch("/classes/" + props.id, data);
-        } else {
-          await api.post("/classes/", data);
-        }
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message:
-            (isCreate.value ? "Creating" : "Updating") + " class succeeded!",
-          timeout: 3000,
-        });
-        submitLoading.value = false;
-        if (isCreate.value) {
-          router.replace("/admin/classes");
-        }
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message:
-            (isCreate.value ? "Creating" : "Updating") + " class failed!",
-          timeout: 6000,
-        });
-        submitLoading.value = false;
-      } finally {
-        if (!isCreate.value) {
-          getClass();
-        }
-      }
-    };
-
-    const buttonDisabled = computed(
-      () => name.value === "" || teacher.value === null
-    );
-
-    return {
-      isCreate,
-      teachers,
-      loading,
-      classs,
-      name,
-      teacher,
-      buttonDisabled,
-      submitLoading,
-      teachersFilter,
-      submitClass,
-    };
-  },
+  }
 };
+
+const buttonDisabled = computed(
+  () => name.value === "" || teacher.value === null
+);
 </script>

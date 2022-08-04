@@ -31,20 +31,13 @@
   </q-item>
 </template>
 
-<script>
+<script setup>
 import { date } from "quasar";
 import { computed } from "vue";
 
-export default {
-  name: "MessageListItem",
-  props: ["msg"],
-  setup(props) {
-    const formatDate = computed(() => {
-      return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
-    });
-    return {
-      formatDate,
-    };
-  },
-};
+const props = defineProps(["msg"]);
+
+const formatDate = computed(() => {
+  return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
+});
 </script>

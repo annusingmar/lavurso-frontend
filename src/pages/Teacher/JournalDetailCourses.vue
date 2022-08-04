@@ -49,60 +49,53 @@
   <q-inner-loading :showing="loading"></q-inner-loading>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
 import JournalLessonsListItem from "src/components/JournalLessonsListItem.vue";
 
-export default {
-  name: "JournalDetailCourses",
-  props: ["journal"],
-  setup(props) {
-    const $q = useQuasar();
-    const course = ref(1);
-    const loading = ref(true);
-    const lessons = ref([]);
-    const getLessons = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get(
-          "/journals/" + props.journal.content.id + "/lessons",
-          {
-            params: { course: course.value },
-          }
-        );
-        lessons.value =
-          response.data.lessons !== null ? response.data.lessons : [];
-        loading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
+const $q = useQuasar();
+const props = defineProps(["journal"]);
+
+const course = ref(1);
+const loading = ref(true);
+const lessons = ref([]);
+const getLessons = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get(
+      "/journals/" + props.journal.content.id + "/lessons",
+      {
+        params: { course: course.value },
       }
-    };
-    watch(
-      props.journal,
-      () => {
-        course.value = props.journal.content.current_course;
-        getLessons();
-      },
-      { immediate: true }
     );
-    const changeCourse = (way) => {
-      if (way === "down") {
-        course.value--;
-      } else {
-        course.value++;
-      }
-      getLessons();
-    };
-    return { course, loading, lessons, changeCourse };
+    lessons.value = response.data.lessons !== null ? response.data.lessons : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
+watch(
+  props.journal,
+  () => {
+    course.value = props.journal.content.current_course;
+    getLessons();
   },
-  components: { JournalLessonsListItem },
+  { immediate: true }
+);
+const changeCourse = (way) => {
+  if (way === "down") {
+    course.value--;
+  } else {
+    course.value++;
+  }
+  getLessons();
 };
 </script>

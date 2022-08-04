@@ -25,50 +25,37 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
 import GroupEditInfo from "./GroupEditInfo.vue";
 import GroupEditMembers from "./GroupEditMembers.vue";
 
-export default {
-  name: "GroupEdit",
-  props: ["id"],
-  setup(props) {
-    const $q = useQuasar();
+const $q = useQuasar();
+const props = defineProps(["id"]);
 
-    const tab = ref("general");
+const tab = ref("general");
 
-    const loading = ref(true);
-    const users = ref([]);
-    const group = reactive({ content: {} });
-    const getGroup = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/groups/" + props.id + "/users");
-        group.content = response.data.group;
-        users.value = response.data.users !== null ? response.data.users : [];
-        loading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
-    getGroup();
-    return {
-      tab,
-      loading,
-      users,
-      group,
-      getGroup,
-    };
-  },
-  components: { GroupEditInfo, GroupEditMembers },
+const loading = ref(true);
+const users = ref([]);
+const group = reactive({ content: {} });
+const getGroup = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/groups/" + props.id + "/users");
+    group.content = response.data.group;
+    users.value = response.data.users !== null ? response.data.users : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
+getGroup();
 </script>

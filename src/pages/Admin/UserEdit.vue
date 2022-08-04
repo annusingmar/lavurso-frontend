@@ -39,7 +39,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive } from "vue";
 import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";
@@ -50,45 +50,34 @@ import UserEditParents from "./UserEditParents.vue";
 import UserEditSessions from "./UserEditSessions.vue";
 import UserEditClass from "./UserEditClass.vue";
 
-export default {
-  name: "UserEdit",
-  props: ["id"],
-  components: {
-    UserEditGeneral,
-    UserEditParents,
-    UserEditSessions,
-    UserEditClass,
-  },
-  setup(props) {
-    const $q = useQuasar();
-    const router = useRouter();
-    const tab = ref("general");
-    const user = reactive({ user: {} });
-    const loading = ref(true);
+const $q = useQuasar();
+const router = useRouter();
+const props = defineProps(["id"]);
 
-    const getUserFromAPI = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/users/" + props.id);
-        user.user = response.data.user;
-        loading.value = false;
-      } catch (error) {
-        if (error.response && error.response.status == 404) {
-          router.replace("/notFound");
-        } else {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading data failed",
-            timeout: 0,
-            actions: [{ label: "Dismiss", color: "white" }],
-          });
-        }
-      }
-    };
-    getUserFromAPI();
+const tab = ref("general");
+const user = reactive({ user: {} });
 
-    return { tab, user, loading, getUserFromAPI };
-  },
+const loading = ref(true);
+
+const getUserFromAPI = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/users/" + props.id);
+    user.user = response.data.user;
+    loading.value = false;
+  } catch (error) {
+    if (error.response && error.response.status == 404) {
+      router.replace("/notFound");
+    } else {
+      $q.notify({
+        type: "negative",
+        position: "top",
+        message: "Loading data failed",
+        timeout: 0,
+        actions: [{ label: "Dismiss", color: "white" }],
+      });
+    }
+  }
 };
+getUserFromAPI();
 </script>

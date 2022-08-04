@@ -24,44 +24,37 @@
   </q-card>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 
-export default {
-  name: "JournalStudentsList",
-  emits: ["refreshStudents"],
-  props: ["students", "id"],
-  setup(props, context) {
-    const $q = useQuasar();
+const $q = useQuasar();
+const props = defineProps(["students", "id"]);
+const emit = defineEmits(["refreshStudents"]);
 
-    const removeStudent = async (id) => {
-      try {
-        await api.delete("/journals/" + props.id + "/students", {
-          data: {
-            student_id: id,
-          },
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Student removed successfully",
-          timeout: 3000,
-        });
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Removing student failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      } finally {
-        context.emit("refreshStudents");
-      }
-    };
-
-    return { removeStudent };
-  },
+const removeStudent = async (id) => {
+  try {
+    await api.delete("/journals/" + props.id + "/students", {
+      data: {
+        student_id: id,
+      },
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Student removed successfully",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Removing student failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  } finally {
+    emit("refreshStudents");
+  }
 };
 </script>

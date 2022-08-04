@@ -80,102 +80,87 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { api } from "src/boot/axios";
 import { reactive, ref } from "vue";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "UserCreate",
-  setup() {
-    const $q = useQuasar();
-    const router = useRouter();
-    const user = reactive({});
-    const createLoading = ref(false);
-    const hidePwd = ref(true);
+const $q = useQuasar();
+const router = useRouter();
+const user = reactive({});
+const createLoading = ref(false);
+const hidePwd = ref(true);
 
-    const roles = [
-      {
-        label: "Administrator",
-        value: "admin",
-      },
-      {
-        label: "Teacher",
-        value: "teacher",
-      },
-      {
-        label: "Parent",
-        value: "parent",
-      },
-      {
-        label: "Student",
-        value: "student",
-      },
-    ];
-
-    const validateEmail = (email) => {
-      const re =
-        /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
-      return re.test(email) || "Invalid email";
-    };
-
-    const resetFields = () => {
-      user.name = "";
-      user.email = "";
-      user.password = "";
-      user.role = null;
-    };
-
-    const createUser = async () => {
-      createLoading.value = true;
-      try {
-        await api.post("/users", {
-          name: user.name,
-          email: user.email,
-          password: user.password,
-          role: user.role.value,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Creating user succeeded!",
-          timeout: 3000,
-        });
-        router.replace("/admin/users");
-      } catch (error) {
-        user.password = "";
-        if (error.response && error.response.status == 409) {
-          (user.email = ""),
-            $q.notify({
-              type: "negative",
-              position: "top",
-              message: "Email already exists",
-              timeout: 6000,
-            });
-        } else {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Creating user failed",
-            timeout: 6000,
-          });
-        }
-      } finally {
-        createLoading.value = false;
-      }
-    };
-
-    return {
-      user,
-      hidePwd,
-      roles,
-      createLoading,
-      resetFields,
-      validateEmail,
-      createUser,
-    };
+const roles = [
+  {
+    label: "Administrator",
+    value: "admin",
   },
+  {
+    label: "Teacher",
+    value: "teacher",
+  },
+  {
+    label: "Parent",
+    value: "parent",
+  },
+  {
+    label: "Student",
+    value: "student",
+  },
+];
+
+const validateEmail = (email) => {
+  const re =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+  return re.test(email) || "Invalid email";
+};
+
+const resetFields = () => {
+  user.name = "";
+  user.email = "";
+  user.password = "";
+  user.role = null;
+};
+
+const createUser = async () => {
+  createLoading.value = true;
+  try {
+    await api.post("/users", {
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      role: user.role.value,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Creating user succeeded!",
+      timeout: 3000,
+    });
+    router.replace("/admin/users");
+  } catch (error) {
+    user.password = "";
+    if (error.response && error.response.status == 409) {
+      (user.email = ""),
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: "Email already exists",
+          timeout: 6000,
+        });
+    } else {
+      $q.notify({
+        type: "negative",
+        position: "top",
+        message: "Creating user failed",
+        timeout: 6000,
+      });
+    }
+  } finally {
+    createLoading.value = false;
+  }
 };
 </script>

@@ -51,142 +51,125 @@
   </q-card>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
 
-export default {
-  name: "JournalStudentsAdd",
-  emits: ["refreshStudents"],
-  props: ["id", "students"],
-  setup(props, context) {
-    const $q = useQuasar();
+const $q = useQuasar();
+const props = defineProps(["id", "students"]);
+const emit = defineEmits(["refreshStudents"]);
 
-    const chosenStudents = ref([]);
-    const chosenClasses = ref([]);
+const chosenStudents = ref([]);
+const chosenClasses = ref([]);
 
-    const studentsFilter = async (val, update, abort) => {
-      if (val.length < 4) {
-        abort();
-        return;
-      }
-      await getStudents(val);
-      update();
-    };
+const studentsFilter = async (val, update, abort) => {
+  if (val.length < 4) {
+    abort();
+    return;
+  }
+  await getStudents(val);
+  update();
+};
 
-    const filteredClasses = ref(null);
-    const classesFilter = async (val, update) => {
-      if (availableClasses.value !== null) {
-        update(() => {
-          const v = val.toLowerCase();
-          filteredClasses.value = availableClasses.value.filter(
-            (g) => g.name.toLowerCase().indexOf(v) > -1
-          );
-        });
-      } else {
-        await getClasses();
-        update(() => {
-          filteredClasses.value = availableClasses.value;
-        });
-      }
-    };
+const filteredClasses = ref(null);
+const classesFilter = async (val, update) => {
+  if (availableClasses.value !== null) {
+    update(() => {
+      const v = val.toLowerCase();
+      filteredClasses.value = availableClasses.value.filter(
+        (g) => g.name.toLowerCase().indexOf(v) > -1
+      );
+    });
+  } else {
+    await getClasses();
+    update(() => {
+      filteredClasses.value = availableClasses.value;
+    });
+  }
+};
 
-    const availableStudents = ref(null);
-    const getStudents = async (search) => {
-      try {
-        const response = await api.get("/users/search", {
-          params: {
-            name: search,
-          },
-        });
-        availableStudents.value =
-          response.data.result !== null
-            ? response.data.result.filter(
-                (u) =>
-                  !props.students.some((su) => su.id === u.id) &&
-                  u.role === "student"
-              )
-            : [];
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
+const availableStudents = ref(null);
+const getStudents = async (search) => {
+  try {
+    const response = await api.get("/users/search", {
+      params: {
+        name: search,
+      },
+    });
+    availableStudents.value =
+      response.data.result !== null
+        ? response.data.result.filter(
+            (u) =>
+              !props.students.some((su) => su.id === u.id) &&
+              u.role === "student"
+          )
+        : [];
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
 
-    const availableClasses = ref(null);
-    const getClasses = async () => {
-      try {
-        const response = await api.get("/classes");
-        availableClasses.value =
-          response.data.classes !== null ? response.data.classes : [];
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
+const availableClasses = ref(null);
+const getClasses = async () => {
+  try {
+    const response = await api.get("/classes");
+    availableClasses.value =
+      response.data.classes !== null ? response.data.classes : [];
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
 
-    const atLeastOneChosen = computed(
-      () => chosenClasses.value.length > 0 || chosenStudents.value.length > 0
-    );
+const atLeastOneChosen = computed(
+  () => chosenClasses.value.length > 0 || chosenStudents.value.length > 0
+);
 
-    const addLoading = ref(false);
-    const addMembers = async () => {
-      const studentIDs = [];
-      const classIDs = [];
+const addLoading = ref(false);
+const addMembers = async () => {
+  const studentIDs = [];
+  const classIDs = [];
 
-      chosenClasses.value.forEach((c) => classIDs.push(c.id));
-      chosenStudents.value.forEach((u) => studentIDs.push(u.id));
+  chosenClasses.value.forEach((c) => classIDs.push(c.id));
+  chosenStudents.value.forEach((u) => studentIDs.push(u.id));
 
-      addLoading.value = true;
+  addLoading.value = true;
 
-      try {
-        await api.post("/journals/" + props.id + "/students", {
-          student_ids: studentIDs,
-          class_ids: classIDs,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Students successfully added",
-          timeout: 3000,
-        });
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Adding students failed",
-          timeout: 6000,
-        });
-      } finally {
-        chosenClasses.value = [];
-        chosenStudents.value = [];
-        addLoading.value = false;
-        context.emit("refreshStudents");
-      }
-    };
-
-    return {
-      chosenStudents,
-      chosenClasses,
-      availableStudents,
-      filteredClasses,
-      atLeastOneChosen,
-      addLoading,
-      studentsFilter,
-      classesFilter,
-      addMembers,
-    };
-  },
+  try {
+    await api.post("/journals/" + props.id + "/students", {
+      student_ids: studentIDs,
+      class_ids: classIDs,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Students successfully added",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Adding students failed",
+      timeout: 6000,
+    });
+  } finally {
+    chosenClasses.value = [];
+    chosenStudents.value = [];
+    addLoading.value = false;
+    emit("refreshStudents");
+  }
 };
 </script>

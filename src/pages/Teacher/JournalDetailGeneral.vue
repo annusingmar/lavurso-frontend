@@ -62,7 +62,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
@@ -70,141 +70,124 @@ import { useUserStore } from "src/stores/user";
 import { reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "JournalNew",
-  props: ["isCreate", "serverJournal"],
-  emits: ["refreshJournal"],
-  setup(props, context) {
-    const $q = useQuasar();
-    const router = useRouter();
+const $q = useQuasar();
+const router = useRouter();
+const props = defineProps(["isCreate", "serverJournal"]);
+const emit = defineEmits(["refreshJournal"]);
 
-    const userStoreRef = storeToRefs(useUserStore());
-    const userRole = userStoreRef.role;
+const userStoreRef = storeToRefs(useUserStore());
+const userRole = userStoreRef.role;
 
-    const subjectsLoading = ref(true);
-    const subjects = ref([]);
-    const getSubjects = async () => {
-      subjectsLoading.value = true;
-      try {
-        const response = await api.get("/subjects");
-        subjects.value =
-          response.data.subjects !== null ? response.data.subjects : [];
-        subjectsLoading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
-
-    const journal = reactive({ content: {} });
-
-    // existing
-    const resetData = () => {
-      journal.content.name = props.serverJournal.content.name;
-      journal.content.subject = props.serverJournal.content.subject;
-      journal.content.teacher = props.serverJournal.content.teacher;
-    };
-    if (!props.isCreate) {
-      watch(props.serverJournal, resetData, { immediate: true });
-    }
-
-    const submitLoading = ref(false);
-    const submitJournal = async () => {
-      submitLoading.value = true;
-      let data = {
-        name: journal.content.name,
-      };
-      if (props.isCreate) {
-        data.subject_id = journal.content.subject.id;
-      }
-      if (!props.isCreate && userRole.value === "admin") {
-        data.teacher_id = journal.content.teacher.id;
-      }
-      try {
-        if (!props.isCreate) {
-          await api.patch("/journals/" + props.serverJournal.content.id, data);
-        } else {
-          await api.post("/journals", data);
-        }
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message:
-            (props.isCreate ? "Creating" : "Updating") + " journal succeeded!",
-          timeout: 3000,
-        });
-        submitLoading.value = false;
-        if (props.isCreate) {
-          router.replace("/teacher/journals");
-        } else {
-          context.emit("refreshJournal");
-        }
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message:
-            (props.isCreate ? "Creating" : "Updating") + " journal failed!",
-          timeout: 6000,
-        });
-        submitLoading.value = false;
-      }
-    };
-
-    // teachers
-    const teachers = ref(null);
-    const getTeachers = async (search) => {
-      try {
-        const response = await api.get("/users/search", {
-          params: {
-            name: search,
-          },
-        });
-        teachers.value =
-          response.data.result !== null
-            ? response.data.result.filter(
-                (u) => u.role === "teacher" || u.role === "admin"
-              )
-            : [];
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
-
-    const teachersFilter = async (val, update, abort) => {
-      if (val.length < 4) {
-        abort();
-        return;
-      }
-      await getTeachers(val);
-      update();
-    };
-
-    if (props.isCreate) {
-      getSubjects();
-    }
-
-    return {
-      journal,
-      submitLoading,
-      subjects,
-      subjectsLoading,
-      userRole,
-      teachers,
-      teachersFilter,
-      submitJournal,
-    };
-  },
+const subjectsLoading = ref(true);
+const subjects = ref([]);
+const getSubjects = async () => {
+  subjectsLoading.value = true;
+  try {
+    const response = await api.get("/subjects");
+    subjects.value =
+      response.data.subjects !== null ? response.data.subjects : [];
+    subjectsLoading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
+
+const journal = reactive({ content: {} });
+
+// existing
+const resetData = () => {
+  journal.content.name = props.serverJournal.content.name;
+  journal.content.subject = props.serverJournal.content.subject;
+  journal.content.teacher = props.serverJournal.content.teacher;
+};
+if (!props.isCreate) {
+  watch(props.serverJournal, resetData, { immediate: true });
+}
+
+const submitLoading = ref(false);
+const submitJournal = async () => {
+  submitLoading.value = true;
+  let data = {
+    name: journal.content.name,
+  };
+  if (props.isCreate) {
+    data.subject_id = journal.content.subject.id;
+  }
+  if (!props.isCreate && userRole.value === "admin") {
+    data.teacher_id = journal.content.teacher.id;
+  }
+  try {
+    if (!props.isCreate) {
+      await api.patch("/journals/" + props.serverJournal.content.id, data);
+    } else {
+      await api.post("/journals", data);
+    }
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message:
+        (props.isCreate ? "Creating" : "Updating") + " journal succeeded!",
+      timeout: 3000,
+    });
+    submitLoading.value = false;
+    if (props.isCreate) {
+      router.replace("/teacher/journals");
+    } else {
+      emit("refreshJournal");
+    }
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: (props.isCreate ? "Creating" : "Updating") + " journal failed!",
+      timeout: 6000,
+    });
+    submitLoading.value = false;
+  }
+};
+
+// teachers
+const teachers = ref(null);
+const getTeachers = async (search) => {
+  try {
+    const response = await api.get("/users/search", {
+      params: {
+        name: search,
+      },
+    });
+    teachers.value =
+      response.data.result !== null
+        ? response.data.result.filter(
+            (u) => u.role === "teacher" || u.role === "admin"
+          )
+        : [];
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
+
+const teachersFilter = async (val, update, abort) => {
+  if (val.length < 4) {
+    abort();
+    return;
+  }
+  await getTeachers(val);
+  update();
+};
+
+if (props.isCreate) {
+  getSubjects();
+}
 </script>

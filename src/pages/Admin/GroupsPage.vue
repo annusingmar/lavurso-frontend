@@ -32,106 +32,92 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "GroupsPage",
-  setup() {
-    const $q = useQuasar();
-    const router = useRouter();
+const $q = useQuasar();
+const router = useRouter();
 
-    const columns = [
-      {
-        name: "name",
-        required: true,
-        label: "Name",
-        align: "left",
-        field: (row) => row.name,
-        sortable: false,
-      },
-      {
-        name: "members",
-        required: true,
-        label: "Members",
-        align: "left",
-        field: (row) => row.member_count + " members",
-        sortable: true,
-      },
-      { name: "actions", label: "Action" },
-    ];
-
-    const loading = ref(true);
-    const groups = ref([]);
-    const getGroups = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/groups");
-        groups.value =
-          response.data.groups !== null ? response.data.groups : [];
-        loading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
-
-    const newGroup = async (val) => {
-      try {
-        await api.post("/groups", {
-          name: val,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Group created successfully",
-          timeout: 3000,
-        });
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Group creation failed",
-          timeout: 6000,
-        });
-      } finally {
-        await getGroups();
-      }
-    };
-
-    const newGroupDialog = () => {
-      $q.dialog({
-        title: "New group",
-        prompt: {
-          model: "",
-          type: "text",
-          isValid: (val) => val && val.length > 0,
-        },
-        cancel: true,
-      }).onOk((data) => {
-        newGroup(data);
-      });
-    };
-
-    const editGroup = (id) => router.push("/admin/groups/" + id);
-
-    getGroups();
-
-    return {
-      columns,
-      groups,
-      loading,
-      newGroupDialog,
-      editGroup,
-    };
+const columns = [
+  {
+    name: "name",
+    required: true,
+    label: "Name",
+    align: "left",
+    field: (row) => row.name,
+    sortable: false,
   },
+  {
+    name: "members",
+    required: true,
+    label: "Members",
+    align: "left",
+    field: (row) => row.member_count + " members",
+    sortable: true,
+  },
+  { name: "actions", label: "Action" },
+];
+
+const loading = ref(true);
+const groups = ref([]);
+const getGroups = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/groups");
+    groups.value = response.data.groups !== null ? response.data.groups : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
+
+const newGroup = async (val) => {
+  try {
+    await api.post("/groups", {
+      name: val,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Group created successfully",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Group creation failed",
+      timeout: 6000,
+    });
+  } finally {
+    await getGroups();
+  }
+};
+
+const newGroupDialog = () => {
+  $q.dialog({
+    title: "New group",
+    prompt: {
+      model: "",
+      type: "text",
+      isValid: (val) => val && val.length > 0,
+    },
+    cancel: true,
+  }).onOk((data) => {
+    newGroup(data);
+  });
+};
+
+const editGroup = (id) => router.push("/admin/groups/" + id);
+
+getGroups();
 </script>

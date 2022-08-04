@@ -31,48 +31,39 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import JournalListItem from "src/components/JournalListItem.vue";
 import { useUserStore } from "src/stores/user";
 import { ref } from "vue";
-export default {
-  name: "JournalsList",
-  setup() {
-    const $q = useQuasar();
-    const { id, role } = storeToRefs(useUserStore());
 
-    const loading = ref(true);
-    const journals = ref([]);
-    const getJournals = async () => {
-      const endpoint =
-        role.value === "admin" ? "/journals" : "/teachers/" + id + "/journals";
-      loading.value = true;
-      try {
-        const response = await api.get(endpoint);
-        journals.value =
-          response.data.journals !== null ? response.data.journals : [];
-        loading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
+import JournalListItem from "src/components/JournalListItem.vue";
 
-    getJournals();
+const $q = useQuasar();
+const { id, role } = storeToRefs(useUserStore());
 
-    return {
-      loading,
-      journals,
-    };
-  },
-  components: { JournalListItem },
+const loading = ref(true);
+const journals = ref([]);
+const getJournals = async () => {
+  const endpoint =
+    role.value === "admin" ? "/journals" : "/teachers/" + id + "/journals";
+  loading.value = true;
+  try {
+    const response = await api.get(endpoint);
+    journals.value =
+      response.data.journals !== null ? response.data.journals : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
+
+getJournals();
 </script>

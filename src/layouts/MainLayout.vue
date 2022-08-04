@@ -11,29 +11,19 @@
   </q-layout>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 
 import TheHeader from "src/components/TheHeader.vue";
 import TheSidebar from "src/components/TheSidebar.vue";
 
-export default {
-  components: {
-    TheHeader,
-    TheSidebar,
-  },
-  setup() {
-    const leftDrawerOpen = ref(false);
+const leftDrawerOpen = ref(false);
 
-    const toggleLeftDrawer = () => {
-      leftDrawerOpen.value = !leftDrawerOpen.value;
-    };
+const toggleLeftDrawer = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+};
 
-    const setLeftDrawer = (val) => {
-      leftDrawerOpen.value = val;
-    };
-
-    return { leftDrawerOpen, toggleLeftDrawer, setLeftDrawer };
-  },
+const setLeftDrawer = (val) => {
+  leftDrawerOpen.value = val;
 };
 </script>

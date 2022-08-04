@@ -36,7 +36,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
@@ -46,50 +46,37 @@ import MessageContentItem from "src/components/MessageContentItem.vue";
 import MessagePageThread from "src/components/MessagePageThread.vue";
 import MessagePageReply from "src/components/MessagePageReply.vue";
 
-export default {
-  name: "MessagePage",
-  props: ["id"],
-  setup(props) {
-    const $q = useQuasar();
-    const router = useRouter();
+const $q = useQuasar();
+const router = useRouter();
+const props = defineProps(["id"]);
 
-    const thread = reactive({ content: {} });
-    const messages = ref([]);
-    const loading = ref(true);
-    const getThread = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/threads/" + props.id);
-        thread.content = response.data.thread;
-        messages.value = response.data.messages;
-      } catch (error) {
-        if (error.response && error.response.status == 404) {
-          router.replace("/notFound");
-        } else {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading of data failed",
-            timeout: 0,
-            actions: [{ label: "Dismiss", color: "white" }],
-          });
-        }
-      } finally {
-        loading.value = false;
-      }
-    };
-
-    getThread();
-
-    return {
-      thread,
-      messages,
-      loading,
-      getThread,
-    };
-  },
-  components: { MessageContentItem, MessagePageThread, MessagePageReply },
+const thread = reactive({ content: {} });
+const messages = ref([]);
+const loading = ref(true);
+const getThread = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/threads/" + props.id);
+    thread.content = response.data.thread;
+    messages.value = response.data.messages;
+  } catch (error) {
+    if (error.response && error.response.status == 404) {
+      router.replace("/notFound");
+    } else {
+      $q.notify({
+        type: "negative",
+        position: "top",
+        message: "Loading of data failed",
+        timeout: 0,
+        actions: [{ label: "Dismiss", color: "white" }],
+      });
+    }
+  } finally {
+    loading.value = false;
+  }
 };
+
+getThread();
 </script>
 
 <style scoped>

@@ -28,7 +28,7 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { reactive, ref } from "vue";
@@ -36,41 +36,31 @@ import JournalDetailGeneral from "./JournalDetailGeneral.vue";
 import JournalDetailStudents from "./JournalDetailStudents.vue";
 import JournalDetailCourses from "./JournalDetailCourses.vue";
 
-export default {
-  name: "JournalDetail",
-  props: ["id"],
-  setup(props) {
-    const $q = useQuasar();
-    const tab = ref("courses");
-    const journal = reactive({ content: {} });
-    const loading = ref(true);
-    const getJournal = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/journals/" + props.id);
-        journal.content = response.data.journal;
-        loading.value = false;
-      } catch (error) {
-        if (error.response && error.response.status == 404) {
-          router.replace("/notFound");
-        } else {
-          $q.notify({
-            type: "negative",
-            position: "top",
-            message: "Loading data failed",
-            timeout: 0,
-            actions: [{ label: "Dismiss", color: "white" }],
-          });
-        }
-      }
-    };
-    getJournal();
-    return { tab, journal, loading, getJournal };
-  },
-  components: {
-    JournalDetailGeneral,
-    JournalDetailStudents,
-    JournalDetailCourses,
-  },
+const $q = useQuasar();
+const props = defineProps(["id"]);
+
+const tab = ref("courses");
+const journal = reactive({ content: {} });
+const loading = ref(true);
+const getJournal = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/journals/" + props.id);
+    journal.content = response.data.journal;
+    loading.value = false;
+  } catch (error) {
+    if (error.response && error.response.status == 404) {
+      router.replace("/notFound");
+    } else {
+      $q.notify({
+        type: "negative",
+        position: "top",
+        message: "Loading data failed",
+        timeout: 0,
+        actions: [{ label: "Dismiss", color: "white" }],
+      });
+    }
+  }
 };
+getJournal();
 </script>

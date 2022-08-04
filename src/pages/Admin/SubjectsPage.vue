@@ -50,124 +50,110 @@
   </q-page>
 </template>
 
-<script>
+<script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 
-export default {
-  name: "SubjectsPage",
-  setup() {
-    const $q = useQuasar();
+const $q = useQuasar();
 
-    const columns = [
-      {
-        name: "name",
-        required: true,
-        label: "Name",
-        align: "left",
-        field: (row) => row.name,
-        sortable: false,
-      },
-    ];
-
-    const loading = ref(true);
-    const subjects = ref([]);
-    const getSubjects = async () => {
-      loading.value = true;
-      try {
-        const response = await api.get("/subjects");
-        subjects.value =
-          response.data.subjects !== null ? response.data.subjects : [];
-        loading.value = false;
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Loading of data failed",
-          timeout: 0,
-          actions: [{ label: "Dismiss", color: "white" }],
-        });
-      }
-    };
-
-    const validateName = (val) => {
-      if (val && val.length > 0) {
-        return true;
-      }
-      return false;
-    };
-
-    const saveName = async (id, val) => {
-      try {
-        await api.patch("/subjects/" + id, {
-          name: val,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Subject changed successfully",
-          timeout: 3000,
-        });
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Subject change failed",
-          timeout: 6000,
-        });
-      } finally {
-        await getSubjects();
-      }
-    };
-
-    const newSubject = async (val) => {
-      try {
-        await api.post("/subjects", {
-          name: val,
-        });
-        $q.notify({
-          type: "positive",
-          position: "top",
-          message: "Subject created successfully",
-          timeout: 3000,
-        });
-      } catch (error) {
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Subject creation failed",
-          timeout: 6000,
-        });
-      } finally {
-        await getSubjects();
-      }
-    };
-
-    const newSubjectDialog = () => {
-      $q.dialog({
-        title: "New Subject",
-        prompt: {
-          model: "",
-          type: "text",
-          isValid: (val) => val && val.length > 0,
-        },
-        cancel: true,
-      }).onOk((data) => {
-        newSubject(data);
-      });
-    };
-
-    getSubjects();
-
-    return {
-      columns,
-      loading,
-      subjects,
-      validateName,
-      saveName,
-      newSubjectDialog,
-    };
+const columns = [
+  {
+    name: "name",
+    required: true,
+    label: "Name",
+    align: "left",
+    field: (row) => row.name,
+    sortable: false,
   },
+];
+
+const loading = ref(true);
+const subjects = ref([]);
+const getSubjects = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/subjects");
+    subjects.value =
+      response.data.subjects !== null ? response.data.subjects : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading of data failed",
+      timeout: 0,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
+
+const validateName = (val) => {
+  if (val && val.length > 0) {
+    return true;
+  }
+  return false;
+};
+
+const saveName = async (id, val) => {
+  try {
+    await api.patch("/subjects/" + id, {
+      name: val,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Subject changed successfully",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Subject change failed",
+      timeout: 6000,
+    });
+  } finally {
+    await getSubjects();
+  }
+};
+
+const newSubject = async (val) => {
+  try {
+    await api.post("/subjects", {
+      name: val,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Subject created successfully",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Subject creation failed",
+      timeout: 6000,
+    });
+  } finally {
+    await getSubjects();
+  }
+};
+
+const newSubjectDialog = () => {
+  $q.dialog({
+    title: "New Subject",
+    prompt: {
+      model: "",
+      type: "text",
+      isValid: (val) => val && val.length > 0,
+    },
+    cancel: true,
+  }).onOk((data) => {
+    newSubject(data);
+  });
+};
+
+getSubjects();
 </script>
