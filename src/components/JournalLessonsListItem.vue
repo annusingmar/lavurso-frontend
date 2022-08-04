@@ -1,8 +1,11 @@
 <template>
-  <q-item clickable v-ripple>
+  <q-item clickable v-ripple :to="'/teacher/lessons/' + lesson.id">
     <q-item-section>
       <q-item-label>{{ lessonDate }}</q-item-label>
-      <q-item-label caption lines="1">{{ lesson.description }}</q-item-label>
+      <q-item-label caption lines="1" v-if="!isDescriptionEmpty">{{
+        lesson.description
+      }}</q-item-label>
+      <q-item-label caption v-else>No description</q-item-label>
     </q-item-section>
   </q-item>
 </template>
@@ -20,7 +23,11 @@ export default {
       return date.formatDate(jsDate, "DD MMMM YYYY");
     });
 
-    return { lessonDate };
+    const isDescriptionEmpty = computed(
+      () => props.lesson.description.trim() === ""
+    );
+
+    return { lessonDate, isDescriptionEmpty };
   },
 };
 </script>
