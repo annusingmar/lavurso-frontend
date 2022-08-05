@@ -2,8 +2,14 @@
   <q-card>
     <q-card-section>
       <div class="row justify-between">
-        <div class="text-h4">{{ lessonDate }}</div>
+        <div class="text-h4">Lesson</div>
         <q-btn color="primary" label="edit lesson"></q-btn>
+      </div>
+    </q-card-section>
+    <q-separator></q-separator>
+    <q-card-section>
+      <div class="row justify-between">
+        <div class="text-h4">{{ lessonDate }}</div>
         <div class="text-h6 text-weight-regular">{{ lesson.journal.name }}</div>
       </div>
       <div>

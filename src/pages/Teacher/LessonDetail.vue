@@ -5,10 +5,11 @@
       style="min-height: 90vh; align-content: center"
       v-if="!loading"
     >
-      <div class="col-10">
+      <div class="col-md-5 col-xs-10">
         <LessonDetailInfo :lesson="lesson"></LessonDetailInfo>
       </div>
-      <div class="col-10">
+      <div class="flex-break"></div>
+      <div class="col-md-5 col-xs-10">
         <LessonDetailStudents
           :students="students"
           :lesson="lesson"
@@ -66,3 +67,9 @@ const getLessonData = async () => {
 
 getLessonData();
 </script>
+
+<style scoped>
+.flex-break {
+  flex: 1 0 100% !important;
+}
+</style>
