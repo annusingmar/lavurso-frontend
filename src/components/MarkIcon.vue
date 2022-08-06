@@ -32,7 +32,9 @@ const icon = computed(() => {
       return "schedule";
     case "not_done":
       return "turned_in_not";
-    case "notice_good" || "notice_neutral" || "notice_bad":
+    case "notice_good":
+    case "notice_neutral":
+    case "notice_bad":
       return "message";
     default:
       return "";
@@ -88,6 +90,8 @@ const tooltip = computed(() => {
   }
   return tt;
 });
+
+console.log(icon.value, isBadGrade.value, tooltip.value);
 </script>
 
 <style scoped lang="scss">
