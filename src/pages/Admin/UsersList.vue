@@ -108,7 +108,6 @@ api
     loading.value = false;
   })
   .catch((error) => {
-    console.log(error);
     $q.notify({
       type: "negative",
       position: "top",

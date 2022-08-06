@@ -13,6 +13,7 @@
             label="Mark Type"
             v-model="mark.type"
             :rules="[(val) => val || 'Must be chosen']"
+            :disable="isUpdateDialog"
           ></q-select>
           <q-select
             v-if="mark.type && mark.type.value === 'grade'"
@@ -45,19 +46,23 @@
 <script setup>
 import { useDialogPluginComponent, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 const $q = useQuasar();
 const props = defineProps({
   student: {
     type: Object,
-    required: true,
+    required: false,
   },
   type: {
     type: String,
-    required: true,
+    required: false,
   },
   lesson: {
+    type: Object,
+    required: false,
+  },
+  existingMark: {
     type: Object,
     required: false,
   },
@@ -81,6 +86,7 @@ const typeRef = ref(null);
 const gradeRef = ref(null);
 
 const mark = ref({});
+
 const markTypes = [
   {
     label: "Grade",
@@ -147,12 +153,20 @@ const submitMark = async () => {
 
   saveLoading.value = true;
 
-  let data = {
-    user_id: props.student.id,
-  };
+  let data = new Object();
 
-  if (props.type === "lesson") {
-    data.lesson_id = props.lesson.id;
+  if (!isUpdateDialog.value) {
+    data.user_id = props.student.id;
+
+    if (props.type === "lesson") {
+      data.lesson_id = props.lesson.id;
+    }
+
+    data.type = mark.value.type.value;
+
+    if (props.type === "lesson" && mark.value.type.value === "grade") {
+      data.type = "lesson_grade";
+    }
   }
 
   if (mark.value.type.value === "grade") {
@@ -163,14 +177,12 @@ const submitMark = async () => {
     data.comment = mark.value.comment;
   }
 
-  data.type = mark.value.type.value;
-
-  if (props.type === "lesson" && mark.value.type.value === "grade") {
-    data.type = "lesson_grade";
-  }
-
   try {
-    await api.post("/marks", data);
+    if (!isUpdateDialog.value) {
+      await api.post("/marks", data);
+    } else {
+      await api.patch("/marks/" + props.existingMark.id, data);
+    }
     saveLoading.value = false;
     $q.notify({
       type: "positive",
@@ -188,4 +200,35 @@ const submitMark = async () => {
     });
   }
 };
+
+// editing a mark
+
+const isUpdateDialog = computed(() => (props.existingMark ? true : false));
+
+const initialData = () => {
+  mark.value.type = markTypes.find((t) => {
+    if (
+      t.value === "grade" &&
+      (props.existingMark.type === "lesson_grade" ||
+        props.existingMark.type === "course_grade" ||
+        props.existingMark.type === "subject_grade")
+    )
+      return true;
+    else if (t.value == props.existingMark.type) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  if (props.existingMark.grade && props.existingMark.grade.identifier) {
+    mark.value.grade = props.existingMark.grade;
+  }
+  if (props.existingMark.comment) {
+    mark.value.comment = props.existingMark.comment;
+  }
+};
+
+if (isUpdateDialog.value) {
+  initialData();
+}
 </script>

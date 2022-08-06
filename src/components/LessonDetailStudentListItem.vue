@@ -9,6 +9,7 @@
           v-for="mark in student.marks"
           :key="mark.id"
           :mark="mark"
+          @refresh-lesson="$emit('refreshLesson')"
         ></MarkIcon>
       </div>
     </q-item-section>

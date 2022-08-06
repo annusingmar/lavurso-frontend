@@ -1,12 +1,18 @@
 <template>
   <div>
-    <div class="mark" :class="props.mark.type" v-if="icon !== ''">
+    <div
+      class="mark"
+      :class="props.mark.type"
+      v-if="icon !== ''"
+      @click="editMark"
+    >
       <q-icon :name="icon" size="sm"></q-icon>
     </div>
     <span
       class="mark"
       :class="[props.mark.type, { 'bad-grade': isBadGrade }]"
       v-else
+      @click="editMark"
       >{{ props.mark.grade.identifier }}</span
     >
     <q-tooltip
@@ -20,9 +26,14 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import { computed } from "vue";
+import MarkDialog from "./MarkDialog.vue";
+
+const $q = useQuasar();
 
 const props = defineProps(["mark"]);
+const emit = defineEmits(["refreshLesson"]);
 
 const icon = computed(() => {
   switch (props.mark.type) {
@@ -91,7 +102,16 @@ const tooltip = computed(() => {
   return tt;
 });
 
-console.log(icon.value, isBadGrade.value, tooltip.value);
+const editMark = () => {
+  $q.dialog({
+    component: MarkDialog,
+    componentProps: {
+      existingMark: props.mark,
+    },
+  }).onOk(() => {
+    emit("refreshLesson");
+  });
+};
 </script>
 
 <style scoped lang="scss">
@@ -105,6 +125,7 @@ $border: 2px solid;
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .absent,
