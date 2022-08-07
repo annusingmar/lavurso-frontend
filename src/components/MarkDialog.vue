@@ -60,7 +60,7 @@
 <script setup>
 import { useDialogPluginComponent, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 
 const $q = useQuasar();
 const props = defineProps({
@@ -106,7 +106,7 @@ const deleteClicked = async () => {
 const typeRef = ref(null);
 const gradeRef = ref(null);
 
-const mark = ref({});
+const mark = reactive({});
 
 const markTypes = [
   {
@@ -168,7 +168,7 @@ const saveLoading = ref(false);
 const submitMark = async () => {
   if (!typeRef.value.validate()) {
     throw new Error();
-  } else if (mark.value.type.value === "grade" && !gradeRef.value.validate()) {
+  } else if (mark.type.value === "grade" && !gradeRef.value.validate()) {
     throw new Error();
   }
 
@@ -183,19 +183,19 @@ const submitMark = async () => {
       data.lesson_id = props.lesson.id;
     }
 
-    data.type = mark.value.type.value;
+    data.type = mark.type.value;
 
-    if (props.type === "lesson" && mark.value.type.value === "grade") {
+    if (props.type === "lesson" && mark.type.value === "grade") {
       data.type = "lesson_grade";
     }
   }
 
-  if (mark.value.type.value === "grade") {
-    data.grade_id = mark.value.grade.id;
+  if (mark.type.value === "grade") {
+    data.grade_id = mark.grade.id;
   }
 
-  if (mark.value.comment && mark.value.comment.trim() !== "") {
-    data.comment = mark.value.comment;
+  if (mark.comment && mark.comment.trim() !== "") {
+    data.comment = mark.comment;
   }
 
   try {
@@ -204,13 +204,13 @@ const submitMark = async () => {
     } else {
       await api.patch("/marks/" + props.existingMark.id, data);
     }
-    saveLoading.value = false;
     $q.notify({
       type: "positive",
       position: "top",
       message: "Saving mark succeeded",
       timeout: 3000,
     });
+    saveLoading.value = false;
   } catch (error) {
     $q.notify({
       type: "negative",
@@ -219,6 +219,8 @@ const submitMark = async () => {
       timeout: 5000,
       actions: [{ label: "Dismiss", color: "white" }],
     });
+    saveLoading.value = false;
+    throw new Error();
   }
 };
 
@@ -237,6 +239,7 @@ const deleteMark = async () => {
       message: "Deleting mark succeeded",
       timeout: 3000,
     });
+    deleteLoading.value = false;
   } catch (error) {
     $q.notify({
       type: "negative",
@@ -245,6 +248,8 @@ const deleteMark = async () => {
       timeout: 5000,
       actions: [{ label: "Dismiss", color: "white" }],
     });
+    deleteLoading.value = false;
+    throw new Error();
   }
 };
 
@@ -260,7 +265,7 @@ const deleteMarkPrompt = () => {
 };
 
 const initialData = () => {
-  mark.value.type = markTypes.find((t) => {
+  mark.type = markTypes.find((t) => {
     if (
       t.value === "grade" &&
       (props.existingMark.type === "lesson_grade" ||
@@ -275,10 +280,10 @@ const initialData = () => {
     }
   });
   if (props.existingMark.grade && props.existingMark.grade.identifier) {
-    mark.value.grade = props.existingMark.grade;
+    mark.grade = props.existingMark.grade;
   }
   if (props.existingMark.comment) {
-    mark.value.comment = props.existingMark.comment;
+    mark.comment = props.existingMark.comment;
   }
 };
 

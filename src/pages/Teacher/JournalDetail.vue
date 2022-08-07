@@ -10,7 +10,10 @@
 
     <q-tab-panels v-model="tab" animated keep-alive v-if="!loading">
       <q-tab-panel name="courses">
-        <JournalDetailCourses :journal="journal"></JournalDetailCourses>
+        <JournalDetailCourses
+          :journal="journal"
+          @refresh-journal="getJournal"
+        ></JournalDetailCourses>
       </q-tab-panel>
       <q-tab-panel name="students">
         <JournalDetailStudents :id="journal.content.id"></JournalDetailStudents>

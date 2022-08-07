@@ -3,7 +3,11 @@
     <q-card-section>
       <div class="row justify-between">
         <div class="text-h4">Lesson</div>
-        <q-btn color="primary" label="edit lesson"></q-btn>
+        <q-btn
+          color="primary"
+          label="edit lesson"
+          @click="lessonEditDialog"
+        ></q-btn>
       </div>
     </q-card-section>
     <q-separator></q-separator>
@@ -24,9 +28,12 @@
 
 <script setup>
 import { computed } from "vue";
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
+import LessonDialog from "./LessonDialog.vue";
 
+const $q = useQuasar();
 const props = defineProps(["lesson"]);
+const emit = defineEmits(["refreshLesson"]);
 
 const lessonDate = computed(() => {
   const jsDate = new Date(props.lesson.date);
@@ -36,4 +43,15 @@ const lessonDate = computed(() => {
 const isDescriptionEmpty = computed(
   () => props.lesson.description.trim() === ""
 );
+
+const lessonEditDialog = () => {
+  $q.dialog({
+    component: LessonDialog,
+    componentProps: {
+      existingLesson: props.lesson,
+    },
+  }).onOk(() => {
+    emit("refreshLesson");
+  });
+};
 </script>

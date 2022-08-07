@@ -28,7 +28,14 @@
         <q-card-section>
           <q-card>
             <q-card-section>
-              <div class="text-h6">Lessons</div>
+              <div class="row justify-between">
+                <div class="text-h6">Lessons</div>
+                <q-btn
+                  color="primary"
+                  label="create lesson"
+                  @click="lessonCreateDialog"
+                ></q-btn>
+              </div>
             </q-card-section>
             <q-card-section>
               <q-list separator v-if="lessons.length > 0">
@@ -54,9 +61,11 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
 import JournalLessonsListItem from "src/components/JournalLessonsListItem.vue";
+import LessonDialog from "src/components/LessonDialog.vue";
 
 const $q = useQuasar();
 const props = defineProps(["journal"]);
+const emit = defineEmits(["refreshJournal"]);
 
 const course = ref(1);
 const loading = ref(true);
@@ -97,5 +106,17 @@ const changeCourse = (way) => {
     course.value++;
   }
   getLessons();
+};
+
+const lessonCreateDialog = () => {
+  $q.dialog({
+    component: LessonDialog,
+    componentProps: {
+      course: course.value,
+      journal: props.journal.content,
+    },
+  }).onOk(() => {
+    emit("refreshJournal");
+  });
 };
 </script>

@@ -6,7 +6,10 @@
       v-if="!loading"
     >
       <div class="col-md-5 col-xs-10">
-        <LessonDetailInfo :lesson="lesson"></LessonDetailInfo>
+        <LessonDetailInfo
+          :lesson="lesson"
+          @refresh-lesson="getLessonData"
+        ></LessonDetailInfo>
       </div>
       <div class="flex-break"></div>
       <div class="col-md-5 col-xs-10">
