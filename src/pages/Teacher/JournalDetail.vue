@@ -16,7 +16,10 @@
         ></JournalDetailCourses>
       </q-tab-panel>
       <q-tab-panel name="students">
-        <JournalDetailStudents :id="journal.content.id"></JournalDetailStudents>
+        <JournalDetailStudents
+          :id="journal.content.id"
+          :archived="journal.content.archived"
+        ></JournalDetailStudents>
       </q-tab-panel>
       <q-tab-panel name="general">
         <JournalDetailGeneral

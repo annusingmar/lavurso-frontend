@@ -10,12 +10,12 @@
           :key="mark.id"
           :mark="mark"
           type="lesson"
-          :editable="true"
+          :editable="!lesson.journal.archived"
           @refresh-lesson="$emit('refreshLesson')"
         ></MarkIcon>
       </div>
     </q-item-section>
-    <q-item-section side>
+    <q-item-section side v-if="!lesson.journal.archived">
       <q-btn flat round icon="add_circle" @click="addMark">
         <q-tooltip>Add a mark</q-tooltip>
       </q-btn>

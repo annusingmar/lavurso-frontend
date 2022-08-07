@@ -6,8 +6,18 @@
     <div class="col-md-6 col-sm-10">
       <q-card>
         <q-card-section>
-          <div class="text-h4" v-if="isCreate">Create Journal</div>
-          <div class="text-h4" v-else>Update Journal</div>
+          <div class="row q-gutter-x-md">
+            <div>
+              <div class="text-h4" v-if="isCreate">Create Journal</div>
+              <div class="text-h4" v-else>Update Journal</div>
+            </div>
+            <q-btn
+              v-if="!isCreate && !serverJournal.content.archived"
+              color="warning"
+              label="archive"
+              @click="archiveJournalPrompt"
+            ></q-btn>
+          </div>
         </q-card-section>
         <q-card-section>
           <q-form @submit.prevent="submitJournal" ref="form">
@@ -20,13 +30,14 @@
               autocomplete="off"
               spellcheck="false"
               :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
+              :disable="serverJournal.content.archived"
             ></q-input>
             <q-select
               filled
               label="Subject"
               v-model="journal.content.subject"
               :options="subjects"
-              :disable="!isCreate"
+              :disable="!isCreate || serverJournal.content.archived"
               :rules="[(val) => val || 'Must be chosen']"
               option-value="id"
               option-label="name"
@@ -46,8 +57,12 @@
               option-label="name"
               option-value="id"
               :rules="[(val) => val || 'Must be chosen']"
+              :disable="serverJournal.content.archived"
             ></q-select>
-            <div class="row justify-end q-mt-sm">
+            <div
+              class="row justify-end q-mt-sm"
+              v-if="!serverJournal.content.archived"
+            >
               <q-btn
                 :loading="submitLoading"
                 type="submit"
@@ -185,6 +200,44 @@ const teachersFilter = async (val, update, abort) => {
   }
   await getTeachers(val);
   update();
+};
+
+// archive journal
+
+const archiveLoading = ref(false);
+const archiveJournal = async () => {
+  archiveLoading.value = true;
+  try {
+    await api.put("/journals/" + props.serverJournal.content.id + "/archive");
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Archiving journal succeeded",
+      timeout: 3000,
+    });
+    archiveLoading.value = false;
+    router.replace("/teacher/journals");
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Archiving journal failed",
+      timeout: 6000,
+    });
+    archiveLoading.value = false;
+  }
+};
+
+const archiveJournalPrompt = () => {
+  $q.dialog({
+    title: "Confirm",
+    message:
+      "Are you sure you want to archive this journal? This action can only be reversed by an administrator.",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    archiveJournal();
+  });
 };
 
 if (props.isCreate) {

@@ -107,7 +107,7 @@ const teacherMenuItems = [
     title: userRole.value === "admin" ? "Journals" : "My Journals",
     icon: "library_books",
     to: "/teacher/journals",
-    separator: true,
+    separator: userRole.value === "admin" ? true : false,
   },
 ];
 
@@ -140,7 +140,7 @@ const adminMenuItems = [
     title: "Subjects",
     icon: "format_list_numbered",
     to: "/admin/subjects",
-    separator: true,
+    separator: false,
   },
 ];
 

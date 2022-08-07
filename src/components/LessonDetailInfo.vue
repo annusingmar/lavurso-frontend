@@ -4,6 +4,7 @@
       <div class="row justify-between">
         <div class="text-h4">Lesson</div>
         <q-btn
+          v-if="!lesson.journal.archived"
           color="primary"
           label="edit lesson"
           @click="lessonEditDialog"

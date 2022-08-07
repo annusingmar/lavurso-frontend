@@ -7,10 +7,11 @@
       <JournalStudentsList
         :students="students"
         :id="id"
+        :archived="archived"
         @refresh-students="getStudents"
       ></JournalStudentsList>
     </div>
-    <div class="col-md-5 col-sm-10">
+    <div class="col-md-5 col-sm-10" v-if="!archived">
       <JournalStudentsAdd
         :students="students"
         :id="id"
@@ -31,7 +32,7 @@ import JournalStudentsList from "src/components/JournalStudentsList.vue";
 import JournalStudentsAdd from "src/components/JournalStudentsAdd.vue";
 
 const $q = useQuasar();
-const props = defineProps(["id"]);
+const props = defineProps(["id", "archived"]);
 
 const students = ref([]);
 const loading = ref(true);

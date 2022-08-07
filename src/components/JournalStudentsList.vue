@@ -7,7 +7,7 @@
       <q-list bordered separator v-if="students.length > 0">
         <q-item v-for="student in students" :key="student.id">
           <q-item-section>{{ student.name }}</q-item-section>
-          <q-item-section side>
+          <q-item-section side v-if="!archived">
             <q-btn
               @click="removeStudent(student.id)"
               flat
@@ -29,7 +29,7 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 
 const $q = useQuasar();
-const props = defineProps(["students", "id"]);
+const props = defineProps(["students", "id", "archived"]);
 const emit = defineEmits(["refreshStudents"]);
 
 const removeStudent = async (id) => {

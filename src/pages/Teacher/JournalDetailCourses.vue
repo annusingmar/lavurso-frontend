@@ -31,6 +31,7 @@
               <div class="row justify-between">
                 <div class="text-h6">Lessons</div>
                 <q-btn
+                  v-if="!journal.content.archived"
                   color="primary"
                   label="create lesson"
                   @click="lessonCreateDialog"
