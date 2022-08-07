@@ -2,7 +2,16 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
       <q-card-section>
-        <div class="text-h5">Add Mark</div>
+        <div class="text-h5" v-if="!isUpdateDialog">Add Mark</div>
+        <div class="row q-gutter-x-md" v-else>
+          <div class="text-h5">Update Mark</div>
+          <q-btn
+            color="negative"
+            label="delete"
+            :loading="deleteLoading"
+            @click="deleteMarkPrompt"
+          ></q-btn>
+        </div>
       </q-card-section>
       <q-card-section>
         <div class="q-gutter-y-xs">
@@ -36,7 +45,12 @@
         </div>
       </q-card-section>
       <q-card-actions align="right">
-        <q-btn color="primary" label="Save" @click="saveClicked"></q-btn>
+        <q-btn
+          color="primary"
+          label="Save"
+          :loading="saveLoading"
+          @click="saveClicked"
+        ></q-btn>
         <q-btn label="cancel" @click="cancelClicked"></q-btn>
       </q-card-actions>
     </q-card>
@@ -78,6 +92,13 @@ const cancelClicked = onDialogCancel;
 const saveClicked = async () => {
   try {
     await submitMark();
+    onDialogOK();
+  } catch {}
+};
+
+const deleteClicked = async () => {
+  try {
+    await deleteMark();
     onDialogOK();
   } catch {}
 };
@@ -204,6 +225,39 @@ const submitMark = async () => {
 // editing a mark
 
 const isUpdateDialog = computed(() => (props.existingMark ? true : false));
+
+const deleteLoading = ref(false);
+const deleteMark = async () => {
+  deleteLoading.value = true;
+  try {
+    await api.delete("/marks/" + props.existingMark.id);
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Deleting mark succeeded",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Deleting mark failed",
+      timeout: 5000,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
+};
+
+const deleteMarkPrompt = () => {
+  $q.dialog({
+    title: "Confirm",
+    message: "Are you sure you want to delete this mark?",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    deleteClicked();
+  });
+};
 
 const initialData = () => {
   mark.value.type = markTypes.find((t) => {

@@ -2,18 +2,18 @@
   <div>
     <div
       class="mark"
-      :class="props.mark.type"
+      :class="[mark.type, { clickable: editable }]"
       v-if="icon !== ''"
-      @click="editMark"
+      v-on="editable ? { click: editMark } : null"
     >
       <q-icon :name="icon" size="sm"></q-icon>
     </div>
     <span
       class="mark"
-      :class="[props.mark.type, { 'bad-grade': isBadGrade }]"
+      :class="[mark.type, { 'bad-grade': isBadGrade }, { clickable: editable }]"
       v-else
-      @click="editMark"
-      >{{ props.mark.grade.identifier }}</span
+      v-on="editable ? { click: editMark } : null"
+      >{{ mark.grade.identifier }}</span
     >
     <q-tooltip
       class="mark text-center"
@@ -32,7 +32,7 @@ import MarkDialog from "./MarkDialog.vue";
 
 const $q = useQuasar();
 
-const props = defineProps(["mark"]);
+const props = defineProps(["type", "mark", "editable"]);
 const emit = defineEmits(["refreshLesson"]);
 
 const icon = computed(() => {
@@ -109,7 +109,10 @@ const editMark = () => {
       existingMark: props.mark,
     },
   }).onOk(() => {
-    emit("refreshLesson");
+    switch (props.type) {
+      case "lesson":
+        emit("refreshLesson");
+    }
   });
 };
 </script>
@@ -125,6 +128,9 @@ $border: 2px solid;
   display: inline-flex;
   justify-content: center;
   align-items: center;
+}
+
+.clickable {
   cursor: pointer;
 }
 

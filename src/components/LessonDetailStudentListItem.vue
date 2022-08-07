@@ -9,6 +9,8 @@
           v-for="mark in student.marks"
           :key="mark.id"
           :mark="mark"
+          type="lesson"
+          :editable="true"
           @refresh-lesson="$emit('refreshLesson')"
         ></MarkIcon>
       </div>

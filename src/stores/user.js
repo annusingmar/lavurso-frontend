@@ -7,7 +7,7 @@ export const useUserStore = defineStore("user", {
     name: "Some Admin",
     email: "admin@example.com",
     session_id: 12,
-    token: "XLCT4NTNJ2AY4EM2BEP3ST6YTU",
+    token: "KVG3IMTOYXQE7GOOQWQUJU4SHQ",
   }),
   getters: {
     roleName: (state) => {
