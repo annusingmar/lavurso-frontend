@@ -4,7 +4,6 @@
     :model-value="open"
     @update:model-value="drawerStateChange"
     side="left"
-    bordered
     elevated
   >
     <q-img src="~assets/beach.jpg" style="height: 200px">
@@ -19,6 +18,21 @@
       </div>
     </q-img>
     <q-list>
+      <q-item>
+        <q-item-section>
+          <q-item-label>Dark mode</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-toggle
+            color="grey"
+            :model-value="$q.dark.isActive"
+            @update:model-value="changeDarkMode"
+            checked-icon="dark_mode"
+            unchecked-icon="light_mode"
+          ></q-toggle>
+        </q-item-section>
+      </q-item>
+      <q-separator></q-separator>
       <DrawerListItem
         v-for="(item, index) in menuItems"
         :title="item.title"
@@ -52,18 +66,20 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import { storeToRefs } from "pinia";
-
-import DrawerListItem from "./DrawerListItem.vue";
 import { useUserStore } from "../stores/user.js";
+import DrawerListItem from "./DrawerListItem.vue";
 
-const userStoreRef = storeToRefs(useUserStore());
+const $q = useQuasar();
+
+const userStore = storeToRefs(useUserStore());
 const props = defineProps(["open"]);
 const emit = defineEmits(["setLeftDrawer"]);
 
-const userName = userStoreRef.name;
-const userRole = userStoreRef.role;
-const userDisplayRole = userStoreRef.roleName;
+const userName = userStore.name;
+const userRole = userStore.role;
+const userDisplayRole = userStore.roleName;
 
 const menuItems = [
   {
@@ -88,7 +104,7 @@ const menuItems = [
 
 const teacherMenuItems = [
   {
-    title: userStoreRef.role.value === "admin" ? "Journals" : "My Journals",
+    title: userRole.value === "admin" ? "Journals" : "My Journals",
     icon: "library_books",
     to: "/teacher/journals",
     separator: true,
@@ -127,6 +143,8 @@ const adminMenuItems = [
     separator: true,
   },
 ];
+
+const changeDarkMode = (val) => $q.dark.set(val);
 
 const drawerStateChange = (val) => {
   emit("setLeftDrawer", val);
