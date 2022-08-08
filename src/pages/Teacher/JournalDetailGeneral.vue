@@ -12,15 +12,35 @@
               <div class="text-h4" v-else>Update Journal</div>
             </div>
             <q-btn
-              v-if="!isCreate && !serverJournal.content.archived"
+              v-if="!isCreate && !isArchived"
               color="warning"
               label="archive"
+              :loading="archiveLoading"
               @click="archiveJournalPrompt"
             ></q-btn>
+            <div v-else-if="!isCreate && userRole === 'admin'" class="row">
+              <q-btn
+                color="secondary"
+                label="unarchive"
+                :loading="unarchiveLoading"
+                @click="unarchiveJournal"
+              ></q-btn>
+              <q-btn
+                color="negative"
+                label="delete"
+                class="q-ml-sm"
+                :loading="deleteLoading"
+                @click="deleteJournalPrompt"
+              ></q-btn>
+            </div>
           </div>
         </q-card-section>
         <q-card-section>
-          <q-form @submit.prevent="submitJournal" ref="form">
+          <q-form
+            @submit.prevent="submitJournal"
+            ref="form"
+            class="q-col-gutter-y-sm"
+          >
             <q-input
               filled
               label="Name"
@@ -30,20 +50,20 @@
               autocomplete="off"
               spellcheck="false"
               :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
-              :disable="serverJournal.content.archived"
+              :disable="isArchived"
             ></q-input>
             <q-select
               filled
               label="Subject"
               v-model="journal.content.subject"
               :options="subjects"
-              :disable="!isCreate || serverJournal.content.archived"
+              :disable="!isCreate"
               :rules="[(val) => val || 'Must be chosen']"
               option-value="id"
               option-label="name"
             ></q-select>
             <q-select
-              v-if="!isCreate && userRole === 'admin'"
+              v-if="(!isCreate && userRole === 'admin') || isCreate"
               filled
               label="Teacher"
               v-model="journal.content.teacher"
@@ -57,12 +77,9 @@
               option-label="name"
               option-value="id"
               :rules="[(val) => val || 'Must be chosen']"
-              :disable="serverJournal.content.archived"
+              :disable="isArchived"
             ></q-select>
-            <div
-              class="row justify-end q-mt-sm"
-              v-if="!serverJournal.content.archived"
-            >
+            <div class="row justify-end q-mt-sm" v-if="!isArchived">
               <q-btn
                 :loading="submitLoading"
                 type="submit"
@@ -82,7 +99,7 @@ import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { reactive, ref, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 const $q = useQuasar();
@@ -112,6 +129,10 @@ const getSubjects = async () => {
     });
   }
 };
+
+const isArchived = computed(
+  () => props.serverJournal && props.serverJournal.content.archived
+);
 
 const journal = reactive({ content: {} });
 
@@ -237,6 +258,66 @@ const archiveJournalPrompt = () => {
     persistent: true,
   }).onOk(() => {
     archiveJournal();
+  });
+};
+
+const unarchiveLoading = ref(false);
+const unarchiveJournal = async () => {
+  unarchiveLoading.value = true;
+  try {
+    await api.put("/journals/" + props.serverJournal.content.id + "/unarchive");
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Unarchiving journal succeeded",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Unarchiving journal failed",
+      timeout: 6000,
+    });
+  } finally {
+    unarchiveLoading.value = false;
+    emit("refreshJournal");
+  }
+};
+
+const deleteLoading = ref(false);
+const deleteJournal = async () => {
+  deleteLoading.value = true;
+  try {
+    await api.delete("/journals/" + props.serverJournal.content.id);
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Deleting journal succeeded",
+      timeout: 3000,
+    });
+    deleteLoading.value = false;
+    router.replace("/teacher/journals");
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Deleting journal failed",
+      timeout: 6000,
+    });
+    deleteLoading.value = false;
+  }
+};
+
+const deleteJournalPrompt = () => {
+  $q.dialog({
+    title: "Confirm",
+    message:
+      "Are you sure you want to delete this journal? This action will remove all lessons, assignments and marks associated with this journal, and CANNOT be undone.",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    deleteJournal();
   });
 };
 
