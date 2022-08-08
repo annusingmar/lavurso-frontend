@@ -89,8 +89,10 @@ const routes = [
     ],
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
+  {
+    path: "/access-denied",
+    component: () => import("pages/ErrorAccessDenied.vue"),
+  },
   {
     path: "/:catchAll(.*)*",
     component: () => import("pages/ErrorNotFound.vue"),

@@ -1,13 +1,13 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center row flex-center">
+  <div class="fullscreen bg-red text-white text-center row flex-center">
     <div class="q-gutter-y-lg">
-      <div class="text-h1">404</div>
+      <div class="text-h1">403</div>
 
-      <div class="text-h2">Not Found</div>
+      <div class="text-h2">Access Denied</div>
 
       <q-btn
         color="white"
-        text-color="blue"
+        text-color="red"
         label="Go Back"
         @click="router.go(-1)"
       />

@@ -5,12 +5,21 @@
         <q-card>
           <q-card-section>
             <div class="row justify-between">
-              <div class="text-h4">Journals</div>
-              <q-btn
-                label="new"
-                to="/teacher/journals/new"
-                color="primary"
-              ></q-btn>
+              <div class="text-h4" v-if="!archived">Active Journals</div>
+              <div class="text-h4" v-else>Archived Journals</div>
+              <div class="q-gutter-x-md">
+                <q-btn
+                  :label="archivedButtonLabel"
+                  color="secondary"
+                  @click="toggleArchived"
+                ></q-btn>
+                <q-btn
+                  v-if="!archived"
+                  label="new"
+                  to="/teacher/journals/new"
+                  color="primary"
+                ></q-btn>
+              </div>
             </div>
           </q-card-section>
           <q-card-section>
@@ -36,18 +45,22 @@ import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 import JournalListItem from "src/components/JournalListItem.vue";
 
 const $q = useQuasar();
 const { id, role } = storeToRefs(useUserStore());
 
+const archived = ref(false);
+
 const loading = ref(true);
 const journals = ref([]);
 const getJournals = async () => {
   const endpoint =
-    role.value === "admin" ? "/journals" : "/teachers/" + id + "/journals";
+    role.value === "admin"
+      ? "/journals?archived=" + archived.value
+      : "/teachers/" + id.value + "/journals?archived=" + archived.value;
   loading.value = true;
   try {
     const response = await api.get(endpoint);
@@ -64,6 +77,15 @@ const getJournals = async () => {
     });
   }
 };
+
+const toggleArchived = () => {
+  archived.value = !archived.value;
+  getJournals();
+};
+
+const archivedButtonLabel = computed(() =>
+  archived.value ? "Active Journals" : "Archived Journals"
+);
 
 getJournals();
 </script>

@@ -38,12 +38,14 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 import JournalDetailGeneral from "./JournalDetailGeneral.vue";
 import JournalDetailStudents from "./JournalDetailStudents.vue";
 import JournalDetailCourses from "./JournalDetailCourses.vue";
 
 const $q = useQuasar();
 const props = defineProps(["id"]);
+const router = useRouter();
 
 const tab = ref("courses");
 const journal = reactive({ content: {} });
@@ -57,6 +59,8 @@ const getJournal = async () => {
   } catch (error) {
     if (error.response && error.response.status == 404) {
       router.replace("/notFound");
+    } else if (error.response && error.response.status == 403) {
+      router.replace("/access-denied");
     } else {
       $q.notify({
         type: "negative",

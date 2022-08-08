@@ -56,15 +56,17 @@ const getLessonData = async () => {
   } catch (error) {
     if (error.response && error.response.status == 404) {
       router.replace("/notFound");
-      return;
+    } else if (error.response && error.response.status == 403) {
+      router.replace("/access-denied");
+    } else {
+      $q.notify({
+        type: "negative",
+        position: "top",
+        message: "Loading of data failed",
+        timeout: 0,
+        actions: [{ label: "Dismiss", color: "white" }],
+      });
     }
-    $q.notify({
-      type: "negative",
-      position: "top",
-      message: "Loading of data failed",
-      timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
-    });
   }
 };
 
