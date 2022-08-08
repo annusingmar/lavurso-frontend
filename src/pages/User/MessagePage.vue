@@ -61,7 +61,9 @@ const getThread = async () => {
     messages.value = response.data.messages;
   } catch (error) {
     if (error.response && error.response.status == 404) {
-      router.replace("/notFound");
+      router.replace("/not-found");
+    } else if (error.response && error.response.status == 403) {
+      router.replace("/access-denied");
     } else {
       $q.notify({
         type: "negative",
@@ -71,8 +73,6 @@ const getThread = async () => {
         actions: [{ label: "Dismiss", color: "white" }],
       });
     }
-  } finally {
-    loading.value = false;
   }
 };
 

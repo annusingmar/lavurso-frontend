@@ -58,7 +58,7 @@ const getJournal = async () => {
     loading.value = false;
   } catch (error) {
     if (error.response && error.response.status == 404) {
-      router.replace("/notFound");
+      router.replace("/not-found");
     } else if (error.response && error.response.status == 403) {
       router.replace("/access-denied");
     } else {

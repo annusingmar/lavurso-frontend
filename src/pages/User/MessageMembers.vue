@@ -69,13 +69,19 @@ const getMembers = async () => {
     groups.value = response.data.groups !== null ? response.data.groups : [];
     loading.value = false;
   } catch (error) {
-    $q.notify({
-      type: "negative",
-      position: "top",
-      message: "Loading of data failed",
-      timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
-    });
+    if (error.response && error.response.status == 404) {
+      router.replace("/not-found");
+    } else if (error.response && error.response.status == 403) {
+      router.replace("/access-denied");
+    } else {
+      $q.notify({
+        type: "negative",
+        position: "top",
+        message: "Loading of data failed",
+        timeout: 0,
+        actions: [{ label: "Dismiss", color: "white" }],
+      });
+    }
   }
 };
 

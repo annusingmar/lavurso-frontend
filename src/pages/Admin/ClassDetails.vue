@@ -113,7 +113,7 @@ const getClass = async () => {
     loading.value = false;
   } catch (error) {
     if (error.response && error.response.status == 404) {
-      router.replace("/notFound");
+      router.replace("/not-found");
       return;
     }
     $q.notify({
