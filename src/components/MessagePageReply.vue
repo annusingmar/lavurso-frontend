@@ -1,17 +1,17 @@
 <template>
-  <div class="row justify-end" v-if="!showReplyBox">
+  <div v-if="!showReplyBox" class="row justify-end">
     <q-btn color="primary" label="Reply" @click="toggleReplyBox"></q-btn>
   </div>
   <div v-else>
     <q-editor
       ref="editorRef"
-      @paste="onPaste"
       v-model="userReply"
       :toolbar="[
         ['bold', 'italic', 'strike', 'underline'],
         ['undo', 'redo'],
       ]"
       min-height="5rem"
+      @paste="onPaste"
     ></q-editor>
     <div class="row justify-end">
       <q-btn
@@ -20,8 +20,8 @@
         icon-right="send"
         :loading="sendLoading"
         :disabled="replyButtonDisable"
-        @click="sendMessage"
         class="q-mt-md"
+        @click="sendMessage"
       ></q-btn>
     </div>
   </div>

@@ -14,7 +14,7 @@
           @refresh-members="getMembers"
         ></MessageMembersList>
       </div>
-      <div class="col-10" v-if="isUserThreadCreator">
+      <div v-if="isUserThreadCreator" class="col-10">
         <MessageMembersAdd
           :user-id="userID"
           :users="users"

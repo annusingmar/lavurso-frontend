@@ -18,6 +18,7 @@
 import LessonDetailStudentListItem from "./LessonDetailStudentListItem.vue";
 export default {
   name: "LessonDetailStudents",
+  components: { LessonDetailStudentListItem },
   props: {
     students: {
       type: Array,
@@ -29,6 +30,5 @@ export default {
     },
   },
   emits: ["refreshLesson"],
-  components: { LessonDetailStudentListItem },
 };
 </script>

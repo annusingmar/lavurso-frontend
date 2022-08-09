@@ -4,34 +4,34 @@
       <div class="col-md-6 col-sm-10">
         <q-card>
           <q-card-section>
-            <div class="text-h4" v-if="isCreate">Create Class</div>
-            <div class="text-h4" v-else>Update Class</div>
+            <div v-if="isCreate" class="text-h4">Create Class</div>
+            <div v-else class="text-h4">Update Class</div>
           </q-card-section>
           <q-card-section>
             <q-form @submit.prevent="submitClass">
               <div class="q-gutter-y-md">
                 <q-input
+                  v-model.trim="name"
                   filled
                   label="Name"
-                  v-model.trim="name"
                   autocorrect="off"
                   autocapitalize="off"
                   autocomplete="off"
                   spellcheck="false"
                 ></q-input>
                 <q-select
+                  v-model="teacher"
                   filled
                   label="Teacher"
-                  v-model="teacher"
                   use-input
                   hide-selected
                   fill-input
                   input-debounce
                   hint="Minimum 4 characters"
-                  @filter="teachersFilter"
                   :options="teachers"
                   option-label="name"
                   option-value="id"
+                  @filter="teachersFilter"
                 ></q-select>
                 <div class="row justify-end q-mt-sm">
                   <q-btn

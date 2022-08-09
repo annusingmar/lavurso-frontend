@@ -8,17 +8,16 @@
           </q-card-section>
           <q-card-section>
             <q-input
+              ref="titleRef"
+              v-model="title"
               square
               outlined
-              v-model="title"
               label="Title"
-              ref="titleRef"
               :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
               lazy-rules="ondemand"
             ></q-input>
             <q-editor
               ref="editorRef"
-              @paste="onPaste"
               v-model="message"
               :class="{ editorError }"
               class="q-mt-sm"
@@ -27,8 +26,9 @@
                 ['undo', 'redo'],
               ]"
               min-height="10rem"
+              @paste="onPaste"
             ></q-editor>
-            <div class="text-subtitle2 q-mt-sm" v-if="editorError">
+            <div v-if="editorError" class="text-subtitle2 q-mt-sm">
               Message content cannot be empty
             </div>
           </q-card-section>
@@ -36,6 +36,7 @@
             <div class="row q-col-gutter-x-md">
               <div class="col-sm col-xs-12">
                 <q-select
+                  v-model="chosenUsers"
                   filled
                   multiple
                   use-chips
@@ -43,7 +44,6 @@
                   input-debounce="200"
                   stack-label
                   label="Users"
-                  v-model="chosenUsers"
                   :options="availableUsers"
                   option-label="name"
                   option-value="id"
@@ -53,6 +53,7 @@
               </div>
               <div class="col-sm col-xs-12">
                 <q-select
+                  v-model="chosenGroups"
                   filled
                   multiple
                   use-chips
@@ -60,7 +61,6 @@
                   input-debounce="200"
                   stack-label
                   label="Groups"
-                  v-model="chosenGroups"
                   :options="filteredGroups"
                   option-label="name"
                   option-value="id"
@@ -76,8 +76,8 @@
                 label="Send"
                 icon-right="send"
                 :loading="sendLoading"
-                @click="sendMessage"
                 class="q-mt-md"
+                @click="sendMessage"
               ></q-btn>
             </div>
           </q-card-section>

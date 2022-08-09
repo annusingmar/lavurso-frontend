@@ -39,7 +39,7 @@
               </div>
             </q-card-section>
             <q-card-section>
-              <q-list separator v-if="lessons.length > 0">
+              <q-list v-if="lessons.length > 0" separator>
                 <JournalLessonsListItem
                   v-for="lesson in lessons"
                   :key="lesson.id"

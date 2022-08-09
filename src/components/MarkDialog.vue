@@ -2,8 +2,8 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
       <q-card-section>
-        <div class="text-h5" v-if="!isUpdateDialog">Add Mark</div>
-        <div class="row q-gutter-x-md" v-else>
+        <div v-if="!isUpdateDialog" class="text-h5">Add Mark</div>
+        <div v-else class="row q-gutter-x-md">
           <div class="text-h5">Update Mark</div>
           <q-btn
             color="negative"
@@ -17,24 +17,24 @@
         <div class="q-gutter-y-xs">
           <q-select
             ref="typeRef"
+            v-model="mark.type"
             filled
             :options="markTypes"
             label="Mark Type"
-            v-model="mark.type"
             :rules="[(val) => val || 'Must be chosen']"
             :disable="isUpdateDialog"
           ></q-select>
           <q-select
             v-if="mark.type && mark.type.value === 'grade'"
             ref="gradeRef"
+            v-model="mark.grade"
             filled
             :options="grades"
             label="Grade"
-            v-model="mark.grade"
             option-value="id"
             option-label="identifier"
-            @filter="gradeFilter"
             :rules="[(val) => val || 'Must be chosen']"
+            @filter="gradeFilter"
           ></q-select>
           <q-input
             v-model="mark.comment"

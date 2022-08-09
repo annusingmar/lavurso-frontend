@@ -8,7 +8,7 @@
 
     <q-separator />
 
-    <q-tab-panels v-model="tab" animated keep-alive v-if="!loading">
+    <q-tab-panels v-if="!loading" v-model="tab" animated keep-alive>
       <q-tab-panel name="courses">
         <JournalDetailCourses
           :journal="journal"

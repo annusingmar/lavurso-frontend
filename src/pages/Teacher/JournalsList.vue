@@ -5,8 +5,8 @@
         <q-card>
           <q-card-section>
             <div class="row justify-between">
-              <div class="text-h4" v-if="!archived">Active Journals</div>
-              <div class="text-h4" v-else>Archived Journals</div>
+              <div v-if="!archived" class="text-h4">Active Journals</div>
+              <div v-else class="text-h4">Archived Journals</div>
               <div class="q-gutter-x-md">
                 <q-btn
                   :label="archivedButtonLabel"
@@ -23,7 +23,7 @@
             </div>
           </q-card-section>
           <q-card-section>
-            <q-list separator v-if="journals.length > 0">
+            <q-list v-if="journals.length > 0" separator>
               <JournalListItem
                 v-for="journal in journals"
                 :key="journal.id"

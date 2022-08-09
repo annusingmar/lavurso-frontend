@@ -15,10 +15,10 @@
         </q-card-section>
         <q-card-section>
           <q-input
+            ref="nameField"
+            v-model.trim="inputGroupName"
             filled
             label="Name"
-            v-model.trim="inputGroupName"
-            ref="nameField"
             autocorrect="off"
             autocapitalize="off"
             autocomplete="off"

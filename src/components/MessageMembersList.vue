@@ -7,10 +7,10 @@
       <div class="col-sm col-xs-12">
         <q-card-section>
           <div class="text-h6">Users</div>
-          <q-list bordered separator v-if="users.length > 0">
+          <q-list v-if="users.length > 0" bordered separator>
             <q-item v-for="user in users" :key="user.id">
               <q-item-section>{{ user.name }}</q-item-section>
-              <q-item-section side v-if="isUserThreadCreator">
+              <q-item-section v-if="isUserThreadCreator" side>
                 <q-checkbox
                   v-model="removedUserIDs"
                   :val="user.id"
@@ -22,8 +22,8 @@
           </q-list>
           <div v-else-if="!loading">No users in thread.</div>
           <div
-            class="row justify-end q-mt-sm"
             v-if="isUserThreadCreator && removedUserIDs.length > 0"
+            class="row justify-end q-mt-sm"
           >
             <div>{{ removedUserIDs.length }} selected</div>
           </div>
@@ -32,10 +32,10 @@
       <div class="col-sm col-xs-12">
         <q-card-section>
           <div class="text-h6">Groups</div>
-          <q-list bordered separator v-if="groups.length > 0">
+          <q-list v-if="groups.length > 0" bordered separator>
             <q-item v-for="group in groups" :key="group.id">
               <q-item-section>{{ group.name }}</q-item-section>
-              <q-item-section side v-if="isUserThreadCreator">
+              <q-item-section v-if="isUserThreadCreator" side>
                 <q-checkbox
                   v-model="removedGroupIDs"
                   :val="group.id"
@@ -46,15 +46,15 @@
           </q-list>
           <div v-else-if="!loading">No groups in thread.</div>
           <div
-            class="row justify-end q-mt-sm"
             v-if="isUserThreadCreator && removedGroupIDs.length > 0"
+            class="row justify-end q-mt-sm"
           >
             <div>{{ removedGroupIDs.length }} selected</div>
           </div>
         </q-card-section>
       </div>
     </div>
-    <div class="row justify-end" v-if="isUserThreadCreator">
+    <div v-if="isUserThreadCreator" class="row justify-end">
       <q-card-section>
         <q-btn
           color="negative"

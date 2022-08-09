@@ -9,15 +9,15 @@
               <div class="row q-gutter-x-sm">
                 <q-btn
                   label="refresh"
-                  @click="getMessages"
                   :loading="loading"
+                  @click="getMessages"
                 ></q-btn>
                 <q-btn label="new" color="primary" to="/messages/new"></q-btn>
               </div>
             </div>
           </q-card-section>
           <q-card-section>
-            <q-list separator v-if="messages.length > 0">
+            <q-list v-if="messages.length > 0" separator>
               <MessageListItem
                 v-for="msg in messages"
                 :key="msg.id"

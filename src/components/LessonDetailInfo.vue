@@ -18,10 +18,10 @@
         <div class="text-h6 text-weight-regular">{{ lesson.journal.name }}</div>
       </div>
       <div>
-        <div class="text-subtitle1" v-if="!isDescriptionEmpty">
+        <div v-if="!isDescriptionEmpty" class="text-subtitle1">
           {{ lesson.description }}
         </div>
-        <div class="text-caption" v-else>No description for lesson</div>
+        <div v-else class="text-caption">No description for lesson</div>
       </div>
     </q-card-section>
   </q-card>

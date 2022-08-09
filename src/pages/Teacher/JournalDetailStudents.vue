@@ -5,16 +5,16 @@
   >
     <div class="col-md-5 col-sm-10">
       <JournalStudentsList
-        :students="students"
         :id="id"
+        :students="students"
         :archived="archived"
         @refresh-students="getStudents"
       ></JournalStudentsList>
     </div>
-    <div class="col-md-5 col-sm-10" v-if="!archived">
+    <div v-if="!archived" class="col-md-5 col-sm-10">
       <JournalStudentsAdd
-        :students="students"
         :id="id"
+        :students="students"
         @refresh-students="getStudents"
       ></JournalStudentsAdd>
     </div>

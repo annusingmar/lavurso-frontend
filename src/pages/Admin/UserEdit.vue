@@ -4,14 +4,14 @@
       <q-tab name="general" label="General"></q-tab>
       <q-tab name="sessions" label="Sessions"></q-tab>
       <q-tab
+        v-if="user.user.role === 'student'"
         name="parents"
         label="Parents"
-        v-if="user.user.role === 'student'"
       ></q-tab>
       <q-tab
+        v-if="user.user.role === 'student'"
         name="class"
         label="Class"
-        v-if="user.user.role === 'student'"
       ></q-tab>
     </q-tabs>
 
@@ -27,10 +27,10 @@
       <q-tab-panel name="sessions">
         <UserEditSessions :id="user.user.id"></UserEditSessions>
       </q-tab-panel>
-      <q-tab-panel name="parents" v-if="user.user.role === 'student'">
+      <q-tab-panel v-if="user.user.role === 'student'" name="parents">
         <UserEditParents :id="user.user.id"></UserEditParents>
       </q-tab-panel>
-      <q-tab-panel name="class" v-if="user.user.role === 'student'">
+      <q-tab-panel v-if="user.user.role === 'student'" name="class">
         <UserEditClass :id="user.user.id"></UserEditClass>
       </q-tab-panel>
     </q-tab-panels>

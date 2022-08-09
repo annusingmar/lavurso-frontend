@@ -8,9 +8,9 @@
         <q-card-section>
           <q-form @submit.prevent="updateUser" @reset="resetData">
             <q-input
+              v-model.trim="userData.user.name"
               filled
               label="Name"
-              v-model.trim="userData.user.name"
               autocorrect="off"
               autocapitalize="off"
               autocomplete="off"
@@ -18,9 +18,9 @@
               :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
             ></q-input>
             <q-input
+              v-model.trim="userData.user.email"
               filled
               label="Email"
-              v-model.trim="userData.user.email"
               autocorrect="off"
               autocapitalize="off"
               autocomplete="off"
@@ -31,10 +31,10 @@
               ]"
             ></q-input>
             <q-input
+              v-model="userData.user.password"
               filled
               label="Password"
               :type="hidePwd ? 'password' : 'text'"
-              v-model="userData.user.password"
             >
               <template #append>
                 <q-icon

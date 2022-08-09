@@ -1,11 +1,11 @@
 <template>
-  <q-item clickable v-ripple :to="'/teacher/lessons/' + lesson.id">
+  <q-item v-ripple clickable :to="'/teacher/lessons/' + lesson.id">
     <q-item-section>
       <q-item-label>{{ lessonDate }}</q-item-label>
-      <q-item-label caption lines="1" v-if="!isDescriptionEmpty">{{
+      <q-item-label v-if="!isDescriptionEmpty" caption lines="1">{{
         lesson.description
       }}</q-item-label>
-      <q-item-label caption v-else>No description</q-item-label>
+      <q-item-label v-else caption>No description</q-item-label>
     </q-item-section>
   </q-item>
 </template>

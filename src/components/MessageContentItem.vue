@@ -5,11 +5,11 @@
         <q-card-section>
           <div class="text-subtitle2">{{ msg.user.name }}</div>
           <div class="text-caption">{{ createdAt }}</div>
-          <div class="text-caption" v-if="hasBeenEdited">
+          <div v-if="hasBeenEdited" class="text-caption">
             Edited {{ updatedAt }}
           </div>
-          <div class="row q-col-gutter-x-sm" v-if="msg.user.id === id">
-            <div class="col-sm-6 col-xs-12" v-if="msg.type !== 'thread_start'">
+          <div v-if="msg.user.id === id" class="row q-col-gutter-x-sm">
+            <div v-if="msg.type !== 'thread_start'" class="col-sm-6 col-xs-12">
               <q-btn
                 color="negative"
                 label="Delete"
@@ -38,13 +38,13 @@
         <q-card-section v-else>
           <q-editor
             ref="editorRef"
-            @paste="onPaste"
             v-model="editorMessage"
             :toolbar="[
               ['bold', 'italic', 'strike', 'underline'],
               ['undo', 'redo'],
             ]"
             min-height="5rem"
+            @paste="onPaste"
           ></q-editor>
           <div class="row justify-end q-mt-sm">
             <q-btn

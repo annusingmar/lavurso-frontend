@@ -27,6 +27,7 @@ import GroupEditMembersAdd from "src/components/GroupEditMembersAdd.vue";
 
 export default {
   name: "GroupEditMembers",
+  components: { GroupEditMembersList, GroupEditMembersAdd },
   props: {
     users: {
       type: Array,
@@ -42,6 +43,5 @@ export default {
     },
   },
   emits: ["refreshGroup"],
-  components: { GroupEditMembersList, GroupEditMembersAdd },
 };
 </script>

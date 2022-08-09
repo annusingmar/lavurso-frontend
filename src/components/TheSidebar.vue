@@ -2,9 +2,9 @@
   <q-drawer
     show-if-above
     :model-value="open"
-    @update:model-value="drawerStateChange"
     side="left"
     elevated
+    @update:model-value="drawerStateChange"
   >
     <q-img src="~assets/beach.jpg" style="height: 200px">
       <div class="absolute-bottom row items-end">
@@ -26,39 +26,39 @@
           <q-toggle
             color="grey"
             :model-value="$q.dark.isActive"
-            @update:model-value="changeDarkMode"
             checked-icon="dark_mode"
             unchecked-icon="light_mode"
+            @update:model-value="changeDarkMode"
           ></q-toggle>
         </q-item-section>
       </q-item>
       <q-separator></q-separator>
       <DrawerListItem
         v-for="(item, index) in menuItems"
+        :key="index"
         :title="item.title"
         :icon="item.icon"
         :to="item.to"
         :separator="item.separator"
-        :key="index"
       ></DrawerListItem>
       <template v-if="userRole === 'admin' || userRole === 'teacher'">
         <DrawerListItem
           v-for="(item, index) in teacherMenuItems"
+          :key="index"
           :title="item.title"
           :icon="item.icon"
           :to="item.to"
           :separator="item.separator"
-          :key="index"
         ></DrawerListItem>
       </template>
       <template v-if="userRole === 'admin'">
         <DrawerListItem
           v-for="(item, index) in adminMenuItems"
+          :key="index"
           :title="item.title"
           :icon="item.icon"
           :to="item.to"
           :separator="item.separator"
-          :key="index"
         ></DrawerListItem>
       </template>
     </q-list>

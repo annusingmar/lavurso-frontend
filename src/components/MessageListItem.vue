@@ -1,13 +1,13 @@
 <template>
-  <q-item clickable v-ripple :to="'/messages/' + msg.id">
+  <q-item v-ripple clickable :to="'/messages/' + msg.id">
     <div class="row justify-between items-center" style="width: 100%">
       <div>
         <q-item-section avatar>
           <q-badge
+            v-if="!msg.read"
             color="red"
             style="max-width: 5em"
             class="q-mb-sm"
-            v-if="!msg.read"
             >UNREAD</q-badge
           >
           <q-item-label>{{ msg.user.name }}</q-item-label>

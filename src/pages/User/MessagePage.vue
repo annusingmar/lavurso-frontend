@@ -19,8 +19,8 @@
           </q-card-section>
           <q-card-section v-if="!thread.content.locked">
             <MessagePageReply
-              @refresh-thread="getThread"
               :id="thread.content.id"
+              @refresh-thread="getThread"
             ></MessagePageReply>
           </q-card-section>
           <q-card-section v-else>

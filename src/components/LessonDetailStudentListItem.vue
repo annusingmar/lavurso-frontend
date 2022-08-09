@@ -15,7 +15,7 @@
         ></MarkIcon>
       </div>
     </q-item-section>
-    <q-item-section side v-if="!lesson.journal.archived">
+    <q-item-section v-if="!lesson.journal.archived" side>
       <q-btn flat round icon="add_circle" @click="addMark">
         <q-tooltip>Add a mark</q-tooltip>
       </q-btn>

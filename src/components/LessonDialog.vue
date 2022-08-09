@@ -2,15 +2,15 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin" style="width: 322px">
       <q-card-section>
-        <div class="text-h5" v-if="!isUpdateDialog">Create Lesson</div>
-        <div class="text-h5" v-else>Update Lesson</div>
+        <div v-if="!isUpdateDialog" class="text-h5">Create Lesson</div>
+        <div v-else class="text-h5">Update Lesson</div>
       </q-card-section>
       <q-card-section>
         <div class="q-gutter-y-md">
           <q-date
+            v-model="lesson.date"
             minimal
             mask="YYYY-MM-DD"
-            v-model="lesson.date"
             first-day-of-week="1"
           ></q-date>
           <q-input

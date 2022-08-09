@@ -4,15 +4,15 @@
       <div class="col-md-6 col-sm-10">
         <q-card>
           <q-card-section>
-            <div class="text-h4" v-if="isCreate">Create Grade</div>
-            <div class="text-h4" v-else>Update Grade</div>
+            <div v-if="isCreate" class="text-h4">Create Grade</div>
+            <div v-else class="text-h4">Update Grade</div>
           </q-card-section>
           <q-card-section>
             <q-form @submit.prevent="submitGrade">
               <q-input
+                v-model.trim="identifier"
                 filled
                 label="Identifier"
-                v-model.trim="identifier"
                 autocorrect="off"
                 autocapitalize="off"
                 autocomplete="off"
@@ -23,9 +23,9 @@
                 ]"
               ></q-input>
               <q-input
+                v-model.number="value"
                 filled
                 label="Value"
-                v-model.number="value"
                 autocorrect="off"
                 autocapitalize="off"
                 autocomplete="off"

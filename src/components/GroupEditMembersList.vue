@@ -5,13 +5,13 @@
     </q-card-section>
     <q-card-section>
       <q-table
+        v-model:selected="selectedUsers"
         :rows="users"
         :columns="columns"
         :loading="loading"
         :pagination="{ rowsPerPage: 5 }"
         row-key="id"
         selection="multiple"
-        v-model:selected="selectedUsers"
       >
       </q-table>
       <div class="row justify-end q-mt-md">

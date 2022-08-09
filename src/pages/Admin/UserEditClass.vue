@@ -10,25 +10,25 @@
         </q-card-section>
         <q-card-section>
           <q-select
-            filled
             v-model="chosenClass"
+            filled
             use-input
             hide-selected
             fill-input
             input-debounce
-            @filter="filter"
             :options="filteredClasses"
             option-label="name"
             option-value="id"
+            @filter="filter"
           ></q-select>
         </q-card-section>
         <q-card-actions align="right">
           <q-btn
-            @click="setClass"
             :loading="setLoading"
             :disable="!chosenClass"
             color="primary"
             label="set"
+            @click="setClass"
           ></q-btn>
         </q-card-actions>
       </q-card>

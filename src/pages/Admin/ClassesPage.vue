@@ -44,7 +44,7 @@
           <ClassMembersTable :id="showClassID"></ClassMembersTable>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="close" color="primary" v-close-popup></q-btn>
+          <q-btn v-close-popup flat label="close" color="primary"></q-btn>
         </q-card-actions>
       </q-card>
     </q-dialog>

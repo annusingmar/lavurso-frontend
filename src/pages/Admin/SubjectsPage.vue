@@ -25,16 +25,16 @@
               <q-td key="name" :props="props">
                 {{ props.row.name }}
                 <q-popup-edit
+                  v-slot="scope"
                   :model-value="props.row.name"
                   buttons
                   :validate="validateName"
                   @save="saveName(props.row.id, $event)"
-                  v-slot="scope"
                 >
                   <q-input
+                    v-model="scope.value"
                     dense
                     autofocus
-                    v-model="scope.value"
                     :rules="[
                       (val) => (val && val.length > 0) || 'Must not be empty',
                     ]"

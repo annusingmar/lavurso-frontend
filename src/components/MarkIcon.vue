@@ -1,24 +1,24 @@
 <template>
   <div>
     <div
+      v-if="icon !== ''"
       class="mark"
       :class="[mark.type, { clickable: editable }]"
-      v-if="icon !== ''"
       @click="editMark"
     >
       <q-icon :name="icon" size="sm"></q-icon>
     </div>
     <span
+      v-else
       class="mark"
       :class="[mark.type, { 'bad-grade': isBadGrade }, { clickable: editable }]"
-      v-else
       @click="editMark"
       >{{ mark.grade.identifier }}</span
     >
     <q-tooltip
+      v-if="tooltip !== ''"
       class="mark text-center"
       style="white-space: pre-wrap"
-      v-if="tooltip !== ''"
     >
       {{ tooltip }}
     </q-tooltip>

@@ -9,15 +9,15 @@
           <div class="text-h4">Parents</div>
         </q-card-section>
         <q-card-section>
-          <q-list bordered separator v-if="studentParents.length > 0">
+          <q-list v-if="studentParents.length > 0" bordered separator>
             <q-item v-for="parent in studentParents" :key="parent.id">
               <q-item-section>{{ parent.name }}</q-item-section>
               <q-item-section side>
                 <q-btn
-                  @click="removeParent(parent.id)"
                   flat
                   round
                   icon="highlight_off"
+                  @click="removeParent(parent.id)"
                 >
                   <q-tooltip>Remove parent from student</q-tooltip>
                 </q-btn>
@@ -35,25 +35,25 @@
         </q-card-section>
         <q-card-section>
           <q-select
-            filled
             v-model="chosenParent"
+            filled
             use-input
             hide-selected
             fill-input
             input-debounce
-            @filter="filter"
             :options="filteredParents"
             option-label="name"
             option-value="id"
+            @filter="filter"
           ></q-select>
         </q-card-section>
         <q-card-actions align="right">
           <q-btn
-            @click="addParent"
             :loading="addingLoading"
             :disable="chosenParent === null"
             color="primary"
             label="Add"
+            @click="addParent"
           ></q-btn>
         </q-card-actions>
       </q-card>

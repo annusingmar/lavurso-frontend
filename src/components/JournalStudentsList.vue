@@ -4,15 +4,15 @@
       <div class="text-h4">Students</div>
     </q-card-section>
     <q-card-section>
-      <q-list bordered separator v-if="students.length > 0">
+      <q-list v-if="students.length > 0" bordered separator>
         <q-item v-for="student in students" :key="student.id">
           <q-item-section>{{ student.name }}</q-item-section>
-          <q-item-section side v-if="!archived">
+          <q-item-section v-if="!archived" side>
             <q-btn
-              @click="removeStudent(student.id)"
               flat
               round
               icon="highlight_off"
+              @click="removeStudent(student.id)"
             >
               <q-tooltip>Remove student from journal</q-tooltip>
             </q-btn>

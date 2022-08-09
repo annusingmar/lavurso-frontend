@@ -10,6 +10,7 @@
     </q-card-section>
     <q-card-section class="q-gutter-y-md">
       <q-select
+        v-model="chosenStudents"
         filled
         multiple
         use-chips
@@ -17,7 +18,6 @@
         input-debounce="200"
         stack-label
         label="Students"
-        v-model="chosenStudents"
         :options="availableStudents"
         option-label="name"
         option-value="id"
@@ -25,6 +25,7 @@
         @filter="studentsFilter"
       ></q-select>
       <q-select
+        v-model="chosenClasses"
         filled
         multiple
         use-chips
@@ -32,7 +33,6 @@
         input-debounce="200"
         stack-label
         label="Classes"
-        v-model="chosenClasses"
         :options="filteredClasses"
         option-label="name"
         option-value="id"

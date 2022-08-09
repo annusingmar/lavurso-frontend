@@ -7,6 +7,7 @@
       <div class="row q-col-gutter-x-md">
         <div class="col-sm col-xs-12">
           <q-select
+            v-model="addedUsers"
             filled
             multiple
             use-chips
@@ -14,7 +15,6 @@
             input-debounce="200"
             stack-label
             label="Users"
-            v-model="addedUsers"
             :options="availableUsers"
             option-label="name"
             option-value="id"
@@ -24,6 +24,7 @@
         </div>
         <div class="col-sm col-xs-12">
           <q-select
+            v-model="addedGroups"
             filled
             multiple
             use-chips
@@ -31,7 +32,6 @@
             input-debounce="200"
             stack-label
             label="Groups"
-            v-model="addedGroups"
             :options="filteredGroups"
             option-label="name"
             option-value="id"

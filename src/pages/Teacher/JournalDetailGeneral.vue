@@ -8,8 +8,8 @@
         <q-card-section>
           <div class="row q-gutter-x-md">
             <div>
-              <div class="text-h4" v-if="isCreate">Create Journal</div>
-              <div class="text-h4" v-else>Update Journal</div>
+              <div v-if="isCreate" class="text-h4">Create Journal</div>
+              <div v-else class="text-h4">Update Journal</div>
             </div>
             <q-btn
               v-if="!isCreate && !isArchived"
@@ -37,14 +37,14 @@
         </q-card-section>
         <q-card-section>
           <q-form
-            @submit.prevent="submitJournal"
             ref="form"
             class="q-col-gutter-y-sm"
+            @submit.prevent="submitJournal"
           >
             <q-input
+              v-model.trim="journal.content.name"
               filled
               label="Name"
-              v-model.trim="journal.content.name"
               autocorrect="off"
               autocapitalize="off"
               autocomplete="off"
@@ -53,9 +53,9 @@
               :disable="isArchived"
             ></q-input>
             <q-select
+              v-model="journal.content.subject"
               filled
               label="Subject"
-              v-model="journal.content.subject"
               :options="subjects"
               :disable="!isCreate"
               :rules="[(val) => val || 'Must be chosen']"
@@ -64,22 +64,22 @@
             ></q-select>
             <q-select
               v-if="!isCreate && userRole === 'admin'"
+              v-model="journal.content.teacher"
               filled
               label="Teacher"
-              v-model="journal.content.teacher"
               use-input
               hide-selected
               fill-input
               input-debounce
               hint="Minimum 4 characters"
-              @filter="teachersFilter"
               :options="teachers"
               option-label="name"
               option-value="id"
               :rules="[(val) => val || 'Must be chosen']"
               :disable="isArchived"
+              @filter="teachersFilter"
             ></q-select>
-            <div class="row justify-end q-mt-sm" v-if="!isArchived">
+            <div v-if="!isArchived" class="row justify-end q-mt-sm">
               <q-btn
                 :loading="submitLoading"
                 type="submit"
