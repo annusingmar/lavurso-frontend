@@ -46,7 +46,7 @@
                   (val) => (val && val.length > 0) || 'Must not be empty',
                 ]"
               >
-                <template v-slot:append>
+                <template #append>
                   <q-icon
                     :name="hidePwd ? 'visibility_off' : 'visibility'"
                     class="cursor-pointer"

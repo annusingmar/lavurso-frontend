@@ -6,7 +6,7 @@
     >
       <div class="col-10">
         <MessageMembersList
-          :userID="userID"
+          :user-id="userID"
           :users="users"
           :thread="thread"
           :groups="groups"
@@ -16,7 +16,7 @@
       </div>
       <div class="col-10" v-if="isUserThreadCreator">
         <MessageMembersAdd
-          :userID="userID"
+          :user-id="userID"
           :users="users"
           :thread="thread"
           :groups="groups"
@@ -40,7 +40,12 @@ import MessageMembersAdd from "../../components/MessageMembersAdd.vue";
 
 const $q = useQuasar();
 const userStore = storeToRefs(useUserStore());
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+});
 const userID = userStore.id;
 
 const users = ref([]);

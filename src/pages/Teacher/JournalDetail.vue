@@ -23,8 +23,8 @@
       </q-tab-panel>
       <q-tab-panel name="general">
         <JournalDetailGeneral
-          :isCreate="false"
-          :serverJournal="journal"
+          :is-create="false"
+          :server-journal="journal"
           @refresh-journal="getJournal"
         ></JournalDetailGeneral>
       </q-tab-panel>
@@ -44,7 +44,12 @@ import JournalDetailStudents from "./JournalDetailStudents.vue";
 import JournalDetailCourses from "./JournalDetailCourses.vue";
 
 const $q = useQuasar();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+});
 const router = useRouter();
 
 const tab = ref("courses");

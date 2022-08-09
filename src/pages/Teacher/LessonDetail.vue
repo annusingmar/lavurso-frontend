@@ -35,7 +35,12 @@ import { useRouter } from "vue-router";
 
 const $q = useQuasar();
 const router = useRouter();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+});
 
 const loading = ref(true);
 const lesson = ref({});

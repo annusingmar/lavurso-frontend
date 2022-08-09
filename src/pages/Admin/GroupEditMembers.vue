@@ -27,7 +27,20 @@ import GroupEditMembersAdd from "src/components/GroupEditMembersAdd.vue";
 
 export default {
   name: "GroupEditMembers",
-  props: ["users", "loading", "group"],
+  props: {
+    users: {
+      type: Array,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
+      required: true,
+    },
+    group: {
+      type: Object,
+      required: true,
+    },
+  },
   emits: ["refreshGroup"],
   components: { GroupEditMembersList, GroupEditMembersAdd },
 };

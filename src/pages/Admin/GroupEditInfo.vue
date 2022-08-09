@@ -47,7 +47,12 @@ import { useRouter } from "vue-router";
 
 const $q = useQuasar();
 const router = useRouter();
-const props = defineProps(["group"]);
+const props = defineProps({
+  group: {
+    type: Object,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshGroup"]);
 
 const inputGroupName = ref("");
@@ -61,10 +66,7 @@ const nameField = ref(null);
 
 const updateLoading = ref(false);
 const updateGroup = async () => {
-  if (
-    !nameField.value.validate() ||
-    inputGroupName.value === props.group.content.name
-  ) {
+  if (!nameField.value.validate()) {
     return;
   }
   updateLoading.value = true;

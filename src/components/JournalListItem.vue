@@ -13,6 +13,11 @@
 <script>
 export default {
   name: "JournalListItem",
-  props: ["journal"],
+  props: {
+    journal: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>

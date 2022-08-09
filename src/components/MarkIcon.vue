@@ -4,7 +4,7 @@
       class="mark"
       :class="[mark.type, { clickable: editable }]"
       v-if="icon !== ''"
-      v-on="editable ? { click: editMark } : null"
+      @click="editMark"
     >
       <q-icon :name="icon" size="sm"></q-icon>
     </div>
@@ -12,7 +12,7 @@
       class="mark"
       :class="[mark.type, { 'bad-grade': isBadGrade }, { clickable: editable }]"
       v-else
-      v-on="editable ? { click: editMark } : null"
+      @click="editMark"
       >{{ mark.grade.identifier }}</span
     >
     <q-tooltip
@@ -32,7 +32,20 @@ import MarkDialog from "./MarkDialog.vue";
 
 const $q = useQuasar();
 
-const props = defineProps(["type", "mark", "editable"]);
+const props = defineProps({
+  type: {
+    type: String,
+    required: true,
+  },
+  mark: {
+    type: Object,
+    required: true,
+  },
+  editable: {
+    type: Boolean,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshLesson"]);
 
 const icon = computed(() => {
@@ -103,17 +116,19 @@ const tooltip = computed(() => {
 });
 
 const editMark = () => {
-  $q.dialog({
-    component: MarkDialog,
-    componentProps: {
-      existingMark: props.mark,
-    },
-  }).onOk(() => {
-    switch (props.type) {
-      case "lesson":
-        emit("refreshLesson");
-    }
-  });
+  if (props.editable) {
+    $q.dialog({
+      component: MarkDialog,
+      componentProps: {
+        existingMark: props.mark,
+      },
+    }).onOk(() => {
+      switch (props.type) {
+        case "lesson":
+          emit("refreshLesson");
+      }
+    });
+  }
 };
 </script>
 

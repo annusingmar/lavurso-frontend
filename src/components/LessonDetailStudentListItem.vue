@@ -29,7 +29,16 @@ import MarkDialog from "./MarkDialog.vue";
 import MarkIcon from "./MarkIcon.vue";
 
 const $q = useQuasar();
-const props = defineProps(["student", "lesson"]);
+const props = defineProps({
+  student: {
+    type: Object,
+    required: true,
+  },
+  lesson: {
+    type: Object,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshLesson"]);
 
 const addMark = () => {

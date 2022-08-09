@@ -35,7 +35,12 @@
 import { date } from "quasar";
 import { computed } from "vue";
 
-const props = defineProps(["msg"]);
+const props = defineProps({
+  msg: {
+    type: Object,
+    required: true,
+  },
+});
 
 const formatDate = computed(() => {
   return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");

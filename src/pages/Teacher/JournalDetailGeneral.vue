@@ -63,7 +63,7 @@
               option-label="name"
             ></q-select>
             <q-select
-              v-if="(!isCreate && userRole === 'admin') || isCreate"
+              v-if="!isCreate && userRole === 'admin'"
               filled
               label="Teacher"
               v-model="journal.content.teacher"
@@ -104,7 +104,17 @@ import { useRouter } from "vue-router";
 
 const $q = useQuasar();
 const router = useRouter();
-const props = defineProps(["isCreate", "serverJournal"]);
+const props = defineProps({
+  isCreate: {
+    type: Boolean,
+    required: true,
+  },
+  serverJournal: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+});
 const emit = defineEmits(["refreshJournal"]);
 
 const userStoreRef = storeToRefs(useUserStore());

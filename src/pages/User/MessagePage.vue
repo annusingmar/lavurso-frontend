@@ -48,7 +48,12 @@ import MessagePageReply from "src/components/MessagePageReply.vue";
 
 const $q = useQuasar();
 const router = useRouter();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+});
 
 const thread = reactive({ content: {} });
 const messages = ref([]);
@@ -59,6 +64,7 @@ const getThread = async () => {
     const response = await api.get("/threads/" + props.id);
     thread.content = response.data.thread;
     messages.value = response.data.messages;
+    loading.value = false;
   } catch (error) {
     if (error.response && error.response.status == 404) {
       router.replace("/not-found");

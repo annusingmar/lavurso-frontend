@@ -29,7 +29,20 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 
 const $q = useQuasar();
-const props = defineProps(["students", "id", "archived"]);
+const props = defineProps({
+  students: {
+    type: Array,
+    required: true,
+  },
+  id: {
+    type: Number,
+    required: true,
+  },
+  archived: {
+    type: Boolean,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshStudents"]);
 
 const removeStudent = async (id) => {

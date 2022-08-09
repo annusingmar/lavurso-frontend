@@ -33,7 +33,20 @@ import { api } from "src/boot/axios";
 import { ref } from "vue";
 
 const $q = useQuasar();
-const props = defineProps(["users", "loading", "group"]);
+const props = defineProps({
+  users: {
+    type: Array,
+    required: true,
+  },
+  group: {
+    type: Object,
+    required: true,
+  },
+  loading: {
+    type: Boolean,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshGroup"]);
 
 const getRoleName = (val) => {

@@ -67,18 +67,22 @@ const props = defineProps({
   student: {
     type: Object,
     required: false,
+    default: null,
   },
   type: {
     type: String,
     required: false,
+    default: null,
   },
   lesson: {
     type: Object,
     required: false,
+    default: null,
   },
   existingMark: {
     type: Object,
     required: false,
+    default: null,
   },
 });
 

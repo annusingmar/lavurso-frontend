@@ -9,7 +9,7 @@
           row-key="id"
           :loading="loading"
         >
-          <template v-slot:top-right>
+          <template #top-right>
             <div class="row items-end justify-between">
               <div class="col-auto">
                 <q-btn
@@ -22,12 +22,12 @@
             </div>
           </template>
 
-          <template v-slot:body-cell-actions="props">
-            <q-td :props="props">
+          <template #body-cell-actions="actionProps">
+            <q-td :props="actionProps">
               <q-btn
                 flat
                 icon="clear"
-                @click="removeUserSessionPrompt(props.row.id)"
+                @click="removeUserSessionPrompt(actionProps.row.id)"
               ></q-btn>
             </q-td>
           </template>
@@ -43,7 +43,12 @@ import { api } from "src/boot/axios";
 import { ref } from "vue";
 
 const $q = useQuasar();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+});
 
 const sessions = ref([]);
 const loading = ref(true);

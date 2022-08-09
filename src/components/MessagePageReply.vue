@@ -34,7 +34,12 @@ import { ref, computed } from "vue";
 import { onEditorPaste } from "src/composables/editor";
 
 const $q = useQuasar();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshThread"]);
 
 const showReplyBox = ref(false);

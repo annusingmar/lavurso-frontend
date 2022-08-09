@@ -10,14 +10,14 @@
           :pagination="{ rowsPerPage: 10 }"
           row-key="id"
         >
-          <template v-slot:top-right>
+          <template #top-right>
             <div class="row items-end">
               <q-btn color="primary" label="new class" to="/admin/classes/0">
               </q-btn>
             </div>
           </template>
 
-          <template v-slot:body-cell-actions="props">
+          <template #body-cell-actions="props">
             <q-td :props="props">
               <q-btn
                 flat
@@ -36,7 +36,7 @@
     </div>
 
     <q-dialog v-model="dialog">
-      <q-card>
+      <q-card style="width: 100em">
         <q-card-section>
           <div class="text-h4">Class Students</div>
         </q-card-section>

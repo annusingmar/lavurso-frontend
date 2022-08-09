@@ -33,7 +33,12 @@ import GroupEditInfo from "./GroupEditInfo.vue";
 import GroupEditMembers from "./GroupEditMembers.vue";
 
 const $q = useQuasar();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+});
 
 const tab = ref("general");
 

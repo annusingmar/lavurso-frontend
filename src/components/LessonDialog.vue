@@ -46,14 +46,17 @@ const props = defineProps({
   course: {
     type: Number,
     required: false,
+    default: null,
   },
   journal: {
     type: Object,
     required: false,
+    default: null,
   },
   existingLesson: {
     type: Object,
     required: false,
+    default: null,
   },
 });
 

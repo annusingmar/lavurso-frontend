@@ -52,7 +52,12 @@ import UserEditClass from "./UserEditClass.vue";
 
 const $q = useQuasar();
 const router = useRouter();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+});
 
 const tab = ref("general");
 const user = reactive({ user: {} });

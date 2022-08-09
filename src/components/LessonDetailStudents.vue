@@ -18,7 +18,16 @@
 import LessonDetailStudentListItem from "./LessonDetailStudentListItem.vue";
 export default {
   name: "LessonDetailStudents",
-  props: ["students", "lesson"],
+  props: {
+    students: {
+      type: Array,
+      required: true,
+    },
+    lesson: {
+      type: Object,
+      required: true,
+    },
+  },
   emits: ["refreshLesson"],
   components: { LessonDetailStudentListItem },
 };

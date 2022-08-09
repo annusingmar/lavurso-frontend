@@ -14,7 +14,12 @@
 import { computed } from "vue";
 import { date } from "quasar";
 
-const props = defineProps(["lesson"]);
+const props = defineProps({
+  lesson: {
+    type: Object,
+    required: true,
+  },
+});
 
 const lessonDate = computed(() => {
   const jsDate = new Date(props.lesson.date);

@@ -73,8 +73,13 @@ import { onEditorPaste } from "src/composables/editor";
 
 const $q = useQuasar();
 const { id } = storeToRefs(useUserStore());
-const props = defineProps(["msg"]);
-const emit = defineEmits("refreshThread");
+const props = defineProps({
+  msg: {
+    type: Object,
+    required: true,
+  },
+});
+const emit = defineEmits(["refreshThread"]);
 
 const createdAt = computed(() => {
   return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
@@ -84,12 +89,13 @@ const updatedAt = computed(() => {
   return date.formatDate(props.msg.updated_at, "DD. MMM YYYY HH:mm");
 });
 
-const hasBeenEdited = computed(() => {
-  return (
-    new Date(props.msg.updated_at).getTime() !==
-    new Date(props.msg.created_at).getTime()
-  );
-});
+const hasBeenEdited = computed(() =>
+  date.getDateDiff(
+    new Date(props.msg.updated_at),
+    new Date(props.msg.created_at),
+    "seconds"
+  )
+);
 
 // deleting message
 

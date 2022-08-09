@@ -10,7 +10,7 @@
           :pagination="{ rowsPerPage: 10 }"
           row-key="id"
         >
-          <template v-slot:top-right>
+          <template #top-right>
             <div class="row items-end">
               <q-btn
                 color="primary"
@@ -20,7 +20,7 @@
               </q-btn>
             </div>
           </template>
-          <template v-slot:body="props">
+          <template #body="props">
             <q-tr :props="props">
               <q-td key="name" :props="props">
                 {{ props.row.name }}

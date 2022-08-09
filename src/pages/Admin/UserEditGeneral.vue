@@ -36,7 +36,7 @@
               :type="hidePwd ? 'password' : 'text'"
               v-model="userData.user.password"
             >
-              <template v-slot:append>
+              <template #append>
                 <q-icon
                   :name="hidePwd ? 'visibility_off' : 'visibility'"
                   class="cursor-pointer"
@@ -66,7 +66,12 @@ import { api } from "src/boot/axios";
 import { ref, reactive, watch } from "vue";
 
 const $q = useQuasar();
-const props = defineProps(["serverUser"]);
+const props = defineProps({
+  serverUser: {
+    type: Object,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshUser"]);
 
 const userData = reactive({ user: {} });

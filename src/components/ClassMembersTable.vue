@@ -14,7 +14,12 @@ import { api } from "src/boot/axios";
 import { ref } from "vue";
 
 const $q = useQuasar();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+});
 
 const columns = [
   {

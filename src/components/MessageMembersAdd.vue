@@ -57,10 +57,27 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 const $q = useQuasar();
-const props = defineProps(["userID", "users", "thread", "groups"]);
+const props = defineProps({
+  userId: {
+    type: Number,
+    required: true,
+  },
+  users: {
+    type: Array,
+    required: true,
+  },
+  thread: {
+    type: Object,
+    required: true,
+  },
+  groups: {
+    type: Array,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshMembers"]);
 
 const usersFilter = async (val, update, abort) => {
@@ -117,7 +134,7 @@ const getUsers = async (search) => {
 const availableGroups = ref(null);
 const getGroups = async () => {
   try {
-    const response = await api.get("/users/" + props.userID + "/groups");
+    const response = await api.get("/users/" + props.userId + "/groups");
     availableGroups.value =
       response.data.groups !== null
         ? response.data.groups.filter(
@@ -170,10 +187,13 @@ const addMembers = async () => {
     addedUsers.value = [];
     addedGroups.value = [];
     availableUsers.value = null;
-    availableGroups.value = null;
-    filteredGroups.value = null;
     addLoading.value = false;
     emit("refreshMembers");
   }
 };
+
+watch(props, () => {
+  availableGroups.value = null;
+  filteredGroups.value = null;
+});
 </script>

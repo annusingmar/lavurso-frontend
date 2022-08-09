@@ -10,13 +10,13 @@
           :pagination="{ rowsPerPage: 10 }"
           row-key="id"
         >
-          <template v-slot:top-right>
+          <template #top-right>
             <div class="row items-end">
               <q-btn color="primary" label="new grade" to="/admin/grades/0">
               </q-btn>
             </div>
           </template>
-          <template v-slot:body-cell-actions="props">
+          <template #body-cell-actions="props">
             <q-td :props="props">
               <q-btn
                 flat

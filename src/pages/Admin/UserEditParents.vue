@@ -68,7 +68,12 @@ import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";
 
 const $q = useQuasar();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+});
 
 const allParents = ref(null);
 const studentParents = ref([]);

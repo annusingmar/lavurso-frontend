@@ -43,7 +43,12 @@ import { ref } from "vue";
 const $q = useQuasar();
 const router = useRouter();
 const userStore = storeToRefs(useUserStore());
-const props = defineProps(["id", "thread"]);
+const props = defineProps({
+  thread: {
+    type: Object,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshThread"]);
 
 const userID = userStore.id;

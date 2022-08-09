@@ -32,7 +32,16 @@ import JournalStudentsList from "src/components/JournalStudentsList.vue";
 import JournalStudentsAdd from "src/components/JournalStudentsAdd.vue";
 
 const $q = useQuasar();
-const props = defineProps(["id", "archived"]);
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+  archived: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const students = ref([]);
 const loading = ref(true);

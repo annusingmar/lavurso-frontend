@@ -11,11 +11,11 @@
           :loading="loading"
           :pagination="{ rowsPerPage: 10 }"
         >
-          <template v-slot:top-right>
+          <template #top-right>
             <div class="row items-end justify-between">
               <div class="col">
                 <q-input v-model="filter" placeholder="Search">
-                  <template v-slot:append>
+                  <template #append>
                     <q-icon name="search"></q-icon>
                   </template>
                 </q-input>
@@ -31,7 +31,7 @@
             </div>
           </template>
 
-          <template v-slot:body-cell-actions="props">
+          <template #body-cell-actions="props">
             <q-td :props="props">
               <q-btn
                 flat

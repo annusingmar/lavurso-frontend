@@ -74,7 +74,12 @@ import DrawerListItem from "./DrawerListItem.vue";
 const $q = useQuasar();
 
 const userStore = storeToRefs(useUserStore());
-const props = defineProps(["open"]);
+const props = defineProps({
+  open: {
+    type: Boolean,
+    required: true,
+  },
+});
 const emit = defineEmits(["setLeftDrawer"]);
 
 const userName = userStore.name;

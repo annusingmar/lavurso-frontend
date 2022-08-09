@@ -14,7 +14,7 @@
                 <q-checkbox
                   v-model="removedUserIDs"
                   :val="user.id"
-                  :disable="user.id === userID"
+                  :disable="user.id === userId"
                   color="red"
                 ></q-checkbox>
               </q-item-section>
@@ -74,12 +74,33 @@ import { api } from "src/boot/axios";
 import { ref, computed } from "vue";
 
 const $q = useQuasar();
-const props = defineProps(["userID", "users", "groups", "thread", "loading"]);
+const props = defineProps({
+  userId: {
+    type: Number,
+    required: true,
+  },
+  users: {
+    type: Array,
+    required: true,
+  },
+  groups: {
+    type: Array,
+    required: true,
+  },
+  thread: {
+    type: Object,
+    required: true,
+  },
+  loading: {
+    type: Boolean,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshMembers"]);
 
 const isUserThreadCreator = computed(() => {
   return props.thread.content.user
-    ? props.thread.content.user.id === props.userID
+    ? props.thread.content.user.id === props.userId
     : false;
 });
 

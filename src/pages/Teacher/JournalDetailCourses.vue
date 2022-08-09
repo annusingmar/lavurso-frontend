@@ -65,7 +65,12 @@ import JournalLessonsListItem from "src/components/JournalLessonsListItem.vue";
 import LessonDialog from "src/components/LessonDialog.vue";
 
 const $q = useQuasar();
-const props = defineProps(["journal"]);
+const props = defineProps({
+  journal: {
+    type: Object,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshJournal"]);
 
 const course = ref(1);

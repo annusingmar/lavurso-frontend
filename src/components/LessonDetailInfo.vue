@@ -33,7 +33,12 @@ import { date, useQuasar } from "quasar";
 import LessonDialog from "./LessonDialog.vue";
 
 const $q = useQuasar();
-const props = defineProps(["lesson"]);
+const props = defineProps({
+  lesson: {
+    type: Object,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshLesson"]);
 
 const lessonDate = computed(() => {

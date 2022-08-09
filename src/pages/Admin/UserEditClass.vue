@@ -44,7 +44,12 @@ import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
 
 const $q = useQuasar();
-const props = defineProps(["id"]);
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+});
 
 // get current
 

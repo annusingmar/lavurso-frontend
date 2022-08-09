@@ -57,7 +57,16 @@ import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
 
 const $q = useQuasar();
-const props = defineProps(["id", "students"]);
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+  students: {
+    type: Array,
+    required: true,
+  },
+});
 const emit = defineEmits(["refreshStudents"]);
 
 const chosenStudents = ref([]);
