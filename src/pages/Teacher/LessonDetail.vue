@@ -50,9 +50,7 @@ const getLessonData = async () => {
   try {
     const lessonResponse = await api.get("/lessons/" + props.id);
     lesson.value = lessonResponse.data.lesson;
-    const studentsResponse = await api.get(
-      "/lessons/" + props.id + "/students"
-    );
+    const studentsResponse = await api.get("/lessons/" + props.id + "/marks");
     students.value =
       studentsResponse.data.students !== null
         ? studentsResponse.data.students
