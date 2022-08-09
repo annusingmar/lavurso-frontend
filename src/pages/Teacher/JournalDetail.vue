@@ -8,7 +8,13 @@
 
     <q-separator />
 
-    <q-tab-panels v-if="!loading" v-model="tab" animated keep-alive>
+    <q-tab-panels
+      v-if="!loading"
+      v-model="tab"
+      animated
+      keep-alive
+      style="min-height: 89vh"
+    >
       <q-tab-panel name="courses">
         <JournalDetailCourses
           :journal="journal"

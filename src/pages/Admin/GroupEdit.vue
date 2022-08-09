@@ -7,7 +7,7 @@
 
     <q-separator />
 
-    <q-tab-panels v-model="tab" animated keep-alive>
+    <q-tab-panels v-model="tab" animated keep-alive style="min-height: 89vh">
       <q-tab-panel name="general">
         <GroupEditInfo :group="group" @refresh-group="getGroup"></GroupEditInfo>
       </q-tab-panel>
