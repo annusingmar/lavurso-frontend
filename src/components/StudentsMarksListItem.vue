@@ -42,6 +42,11 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  course: {
+    type: Number,
+    required: false,
+    default: null,
+  },
   archived: {
     type: Boolean,
     required: true,
@@ -55,6 +60,7 @@ const addMark = () => {
     componentProps: {
       student: props.student,
       id: props.id,
+      course: props.course,
       type: props.type,
     },
   }).onOk(() => {

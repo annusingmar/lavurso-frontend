@@ -22,7 +22,11 @@
             :options="markTypes"
             label="Mark Type"
             :rules="[(val) => val || 'Must be chosen']"
-            :disable="isUpdateDialog"
+            :disable="
+              isUpdateDialog ||
+              props.type === 'course' ||
+              props.type === 'subject'
+            "
           ></q-select>
           <q-select
             v-if="mark.type && mark.type.value === 'grade'"
@@ -75,6 +79,11 @@ const props = defineProps({
     default: null,
   },
   id: {
+    type: Number,
+    required: false,
+    default: null,
+  },
+  course: {
     type: Number,
     required: false,
     default: null,
@@ -183,14 +192,27 @@ const submitMark = async () => {
   if (!isUpdateDialog.value) {
     data.user_id = props.student.id;
 
-    if (props.type === "lesson") {
-      data.lesson_id = props.id;
+    switch (props.type) {
+      case "lesson":
+        data.lesson_id = props.id;
+        break;
+      case "course":
+        data.journal_id = props.id;
+        data.course = props.course;
+        break;
+      case "subject":
+        data.journal_id = props.id;
+        break;
     }
 
     data.type = mark.type.value;
 
     if (props.type === "lesson" && mark.type.value === "grade") {
       data.type = "lesson_grade";
+    } else if (props.type === "course") {
+      data.type = "course_grade";
+    } else if (props.type === "subject") {
+      data.type = "subject_grade";
     }
   }
 
@@ -293,5 +315,12 @@ const initialData = () => {
 
 if (isUpdateDialog.value) {
   initialData();
+}
+
+if (props.type === "course" || props.type === "subject") {
+  mark.type = {
+    label: "Grade",
+    value: "grade",
+  };
 }
 </script>

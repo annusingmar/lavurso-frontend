@@ -1,19 +1,16 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <q-list bordered separator>
-        <StudentsMarksListItem
-          v-for="student in students"
-          :id="id"
-          :key="student.id"
-          :student="student"
-          :type="type"
-          :archived="archived"
-          @refresh-above="$emit('refreshAbove')"
-        ></StudentsMarksListItem>
-      </q-list>
-    </q-card-section>
-  </q-card>
+  <q-list bordered separator>
+    <StudentsMarksListItem
+      v-for="student in students"
+      :id="id"
+      :key="student.id"
+      :course="course"
+      :student="student"
+      :type="type"
+      :archived="archived"
+      @refresh-above="$emit('refreshAbove')"
+    ></StudentsMarksListItem>
+  </q-list>
 </template>
 
 <script>
@@ -33,6 +30,11 @@ export default {
     id: {
       type: Number,
       required: true,
+    },
+    course: {
+      type: Number,
+      required: false,
+      default: null,
     },
     archived: {
       type: Boolean,

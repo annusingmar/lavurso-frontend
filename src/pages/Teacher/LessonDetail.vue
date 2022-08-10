@@ -13,13 +13,17 @@
       </div>
       <div class="flex-break"></div>
       <div class="col-md-5 col-xs-10">
-        <StudentsMarksList
-          :id="lesson.id"
-          :students="students"
-          type="lesson"
-          :archived="lesson.journal.archived"
-          @refresh-above="getLessonData"
-        ></StudentsMarksList>
+        <q-card>
+          <q-card-section>
+            <StudentsMarksList
+              :id="lesson.id"
+              :students="students"
+              type="lesson"
+              :archived="lesson.journal.archived"
+              @refresh-above="getLessonData"
+            ></StudentsMarksList>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
 
