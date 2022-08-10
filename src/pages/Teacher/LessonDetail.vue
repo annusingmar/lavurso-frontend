@@ -13,11 +13,13 @@
       </div>
       <div class="flex-break"></div>
       <div class="col-md-5 col-xs-10">
-        <LessonDetailStudents
+        <StudentsMarksList
+          :id="lesson.id"
           :students="students"
-          :lesson="lesson"
-          @refresh-lesson="getLessonData"
-        ></LessonDetailStudents>
+          type="lesson"
+          :archived="lesson.journal.archived"
+          @refresh-above="getLessonData"
+        ></StudentsMarksList>
       </div>
     </div>
 
@@ -30,7 +32,7 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import LessonDetailInfo from "src/components/LessonDetailInfo.vue";
-import LessonDetailStudents from "src/components/LessonDetailStudents.vue";
+import StudentsMarksList from "src/components/StudentsMarksList.vue";
 import { useRouter } from "vue-router";
 
 const $q = useQuasar();

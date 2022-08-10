@@ -46,7 +46,7 @@ const props = defineProps({
     required: true,
   },
 });
-const emit = defineEmits(["refreshLesson"]);
+const emit = defineEmits(["refreshAbove"]);
 
 const icon = computed(() => {
   switch (props.mark.type) {
@@ -123,10 +123,7 @@ const editMark = () => {
         existingMark: props.mark,
       },
     }).onOk(() => {
-      switch (props.type) {
-        case "lesson":
-          emit("refreshLesson");
-      }
+      emit("refreshAbove");
     });
   }
 };

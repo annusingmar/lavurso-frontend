@@ -9,13 +9,13 @@
           v-for="mark in student.marks"
           :key="mark.id"
           :mark="mark"
-          type="lesson"
-          :editable="!lesson.journal.archived"
-          @refresh-lesson="$emit('refreshLesson')"
+          :type="type"
+          :editable="!archived"
+          @refresh-above="$emit('refreshAbove')"
         ></MarkIcon>
       </div>
     </q-item-section>
-    <q-item-section v-if="!lesson.journal.archived" side>
+    <q-item-section v-if="!archived" side>
       <q-btn flat round icon="add_circle" @click="addMark">
         <q-tooltip>Add a mark</q-tooltip>
       </q-btn>
@@ -34,23 +34,31 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  lesson: {
-    type: Object,
+  type: {
+    type: String,
+    required: true,
+  },
+  id: {
+    type: Number,
+    required: true,
+  },
+  archived: {
+    type: Boolean,
     required: true,
   },
 });
-const emit = defineEmits(["refreshLesson"]);
+const emit = defineEmits(["refreshAbove"]);
 
 const addMark = () => {
   $q.dialog({
     component: MarkDialog,
     componentProps: {
       student: props.student,
-      lesson: props.lesson,
-      type: "lesson",
+      id: props.id,
+      type: props.type,
     },
   }).onOk(() => {
-    emit("refreshLesson");
+    emit("refreshAbove");
   });
 };
 </script>

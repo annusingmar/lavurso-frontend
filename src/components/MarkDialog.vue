@@ -74,8 +74,8 @@ const props = defineProps({
     required: false,
     default: null,
   },
-  lesson: {
-    type: Object,
+  id: {
+    type: Number,
     required: false,
     default: null,
   },
@@ -184,7 +184,7 @@ const submitMark = async () => {
     data.user_id = props.student.id;
 
     if (props.type === "lesson") {
-      data.lesson_id = props.lesson.id;
+      data.lesson_id = props.id;
     }
 
     data.type = mark.type.value;
