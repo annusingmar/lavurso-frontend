@@ -32,6 +32,21 @@
           ></q-toggle>
         </q-item-section>
       </q-item>
+      <!-- <q-item>
+        <q-item-section>
+          <q-item-label>Language</q-item-label>
+        </q-item-section>
+        <q-item-section avatar>
+          <q-select
+            v-model="lang"
+            :options="availableLanguages"
+            dense
+            borderless
+            options-dense
+            map-options
+          ></q-select>
+        </q-item-section>
+      </q-item> -->
       <q-separator></q-separator>
       <DrawerListItem
         v-for="(item, index) in menuItems"
@@ -67,11 +82,16 @@
 
 <script setup>
 import { useQuasar } from "quasar";
+// import enUS from "quasar/lang/en-US";
+// import et from "quasar/lang/et";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "../stores/user.js";
+import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import DrawerListItem from "./DrawerListItem.vue";
 
 const $q = useQuasar();
+const i18n = useI18n({ useScope: "global" });
 
 const userStore = storeToRefs(useUserStore());
 const props = defineProps({
@@ -150,6 +170,28 @@ const adminMenuItems = [
 ];
 
 const changeDarkMode = (val) => $q.dark.set(val);
+
+// const lang = ref(i18n.locale);
+
+// const availableLanguages = [
+//   {
+//     label: "Eesti keel",
+//     value: "et",
+//   },
+//   {
+//     label: "English",
+//     value: "en-US",
+//   },
+// ];
+
+// watch(lang, () => {
+//   i18n.locale = lang.value.value;
+//   if (lang.value.value === "en-US") {
+//     $q.lang.set(enUS);
+//   } else if (lang.value.value === "et") {
+//     $q.lang.set(et);
+//   }
+// });
 
 const drawerStateChange = (val) => {
   emit("setLeftDrawer", val);
