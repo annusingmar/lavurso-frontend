@@ -7,7 +7,8 @@
       :course="course"
       :student="student"
       :type="type"
-      :archived="archived"
+      :editable="editable"
+      :extra-info="extraInfo"
       @refresh-above="$emit('refreshAbove')"
     ></StudentsMarksListItem>
   </q-list>
@@ -25,20 +26,27 @@ export default {
     },
     type: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
     id: {
       type: Number,
-      required: true,
+      required: false,
+      default: null,
     },
     course: {
       type: Number,
       required: false,
       default: null,
     },
-    archived: {
+    editable: {
       type: Boolean,
       required: true,
+    },
+    extraInfo: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   emits: ["refreshAbove"],

@@ -26,17 +26,13 @@
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
+import { useQuasar, date } from "quasar";
 import { computed } from "vue";
 import MarkDialog from "./MarkDialog.vue";
 
 const $q = useQuasar();
 
 const props = defineProps({
-  type: {
-    type: String,
-    required: true,
-  },
   mark: {
     type: Object,
     required: true,
@@ -44,6 +40,11 @@ const props = defineProps({
   editable: {
     type: Boolean,
     required: true,
+  },
+  extraInfo: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 const emit = defineEmits(["refreshAbove"]);
@@ -109,6 +110,20 @@ const tooltip = computed(() => {
       break;
   }
 
+  if (props.extraInfo) {
+    if (props.mark.type === "lesson_grade") {
+      tt +=
+        "\n" +
+        date.formatDate(new Date(props.mark.lesson.date), "DD MMMM YYYY");
+      if (
+        props.mark.lesson.description &&
+        props.mark.lesson.description.trim() != ""
+      ) {
+        tt += "\n" + props.mark.lesson.description;
+      }
+    }
+  }
+
   if (props.mark.comment && props.mark.comment.trim() !== "") {
     tt += "\n" + props.mark.comment;
   }
@@ -160,10 +175,14 @@ $border: 2px solid;
 
 .notice_neutral,
 .lesson_grade,
-.course_grade,
 .subject_grade {
   border: $border rgb(35, 112, 189);
   background: rgba(35, 112, 189, 0.25);
+}
+
+.course_grade {
+  border: $border rgb(124, 0, 207);
+  background: rgba(124, 0, 207, 0.25);
 }
 
 .notice_good {

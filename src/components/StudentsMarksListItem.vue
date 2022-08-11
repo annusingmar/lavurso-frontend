@@ -9,13 +9,13 @@
           v-for="mark in student.marks"
           :key="mark.id"
           :mark="mark"
-          :type="type"
-          :editable="!archived"
+          :editable="editable"
+          :extra-info="extraInfo"
           @refresh-above="$emit('refreshAbove')"
         ></MarkIcon>
       </div>
     </q-item-section>
-    <q-item-section v-if="!archived" side>
+    <q-item-section v-if="editable" side>
       <q-btn flat round icon="add_circle" @click="addMark">
         <q-tooltip>Add a mark</q-tooltip>
       </q-btn>
@@ -36,20 +36,27 @@ const props = defineProps({
   },
   type: {
     type: String,
-    required: true,
+    required: false,
+    default: null,
   },
   id: {
     type: Number,
-    required: true,
+    required: false,
+    default: null,
   },
   course: {
     type: Number,
     required: false,
     default: null,
   },
-  archived: {
+  editable: {
     type: Boolean,
     required: true,
+  },
+  extraInfo: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 const emit = defineEmits(["refreshAbove"]);

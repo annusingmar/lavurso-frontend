@@ -19,7 +19,7 @@
               :id="lesson.id"
               :students="students"
               type="lesson"
-              :archived="lesson.journal.archived"
+              :editable="!lesson.journal.archived"
               @refresh-above="getLessonData"
             ></StudentsMarksList>
           </q-card-section>

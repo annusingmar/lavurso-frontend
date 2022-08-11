@@ -1,7 +1,15 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h6">Grades</div>
+      <div class="row justify-between">
+        <div class="text-h6">Grades</div>
+        <q-btn
+          v-if="!loading"
+          color="accent"
+          label="lesson grades"
+          @click="showLessonGradesDialog"
+        ></q-btn>
+      </div>
     </q-card-section>
     <q-card-section v-if="!loading">
       <StudentsMarksList
@@ -9,7 +17,7 @@
         :students="students"
         type="course"
         :course="course"
-        :archived="journal.content.archived"
+        :editable="!journal.content.archived"
         @refresh-above="getCourseStudents"
       ></StudentsMarksList>
     </q-card-section>
@@ -21,6 +29,7 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
+import JournalCourseLessonGradesDialog from "./JournalCourseLessonGradesDialog.vue";
 import StudentsMarksList from "./StudentsMarksList.vue";
 
 const $q = useQuasar();
@@ -41,11 +50,13 @@ const getCourseStudents = async () => {
   loading.value = true;
   try {
     const response = await api.get(
-      "/journals/" +
-        props.journal.content.id +
-        "/course/" +
-        props.course +
-        "/grades"
+      "/journals/" + props.journal.content.id + "/grades",
+      {
+        params: {
+          grade_type: "course_grade",
+          course: props.course,
+        },
+      }
     );
     students.value = response.data.students;
     loading.value = false;
@@ -58,6 +69,16 @@ const getCourseStudents = async () => {
       actions: [{ label: "Dismiss", color: "white" }],
     });
   }
+};
+
+const showLessonGradesDialog = () => {
+  $q.dialog({
+    component: JournalCourseLessonGradesDialog,
+    componentProps: {
+      id: props.journal.content.id,
+      course: props.course,
+    },
+  });
 };
 
 watch(props, getCourseStudents, { immediate: true });

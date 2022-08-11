@@ -2,14 +2,14 @@
   <div class="row flex-center" style="min-height: 75vh">
     <div class="col-md-6 col-sm-10">
       <q-card>
-        <q-card-section style="padding-bottom: 8px">
+        <q-card-section class="q-pb-none">
           <JournalCourseDisplay
             :journal="journal"
             :course="course"
             @change-course="changeCourse"
           ></JournalCourseDisplay>
         </q-card-section>
-        <q-card-section style="padding-top: 0px">
+        <q-card-section class="q-pt-xs">
           <JournalCoursePanels
             :journal="journal"
             :course="course"
