@@ -35,10 +35,12 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
 import { computed, reactive, ref } from "vue";
-import MessageMembersList from "src/components/MessageMembersList.vue";
+import { useRouter } from "vue-router";
 import MessageMembersAdd from "../../components/MessageMembersAdd.vue";
+import MessageMembersList from "src/components/MessageMembersList.vue";
 
 const $q = useQuasar();
+const router = useRouter();
 const userStore = storeToRefs(useUserStore());
 const props = defineProps({
   id: {
