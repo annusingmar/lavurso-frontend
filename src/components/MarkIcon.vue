@@ -121,6 +121,8 @@ const tooltip = computed(() => {
       ) {
         tt += "\n" + props.mark.lesson.description;
       }
+    } else if (props.mark.type === "course_grade") {
+      tt += "\n" + props.mark.course + ". course";
     }
   }
 
@@ -183,6 +185,11 @@ $border: 2px solid;
 .course_grade {
   border: $border rgb(124, 0, 207);
   background: rgba(124, 0, 207, 0.25);
+}
+
+.subject_grade {
+  border: $border rgb(0, 105, 18);
+  background: rgb(0, 105, 18, 0.25);
 }
 
 .notice_good {

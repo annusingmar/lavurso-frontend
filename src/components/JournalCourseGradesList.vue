@@ -10,6 +10,9 @@
           @click="showLessonGradesDialog"
         ></q-btn>
       </div>
+      <div class="text-caption">
+        Here you can add grades to students for the current course.
+      </div>
     </q-card-section>
     <q-card-section v-if="!loading">
       <StudentsMarksList
@@ -29,7 +32,7 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
-import JournalCourseLessonGradesDialog from "./JournalCourseLessonGradesDialog.vue";
+import JournalGradesDialog from "./JournalGradesDialog.vue";
 import StudentsMarksList from "./StudentsMarksList.vue";
 
 const $q = useQuasar();
@@ -73,9 +76,10 @@ const getCourseStudents = async () => {
 
 const showLessonGradesDialog = () => {
   $q.dialog({
-    component: JournalCourseLessonGradesDialog,
+    component: JournalGradesDialog,
     componentProps: {
       id: props.journal.content.id,
+      type: "lesson",
       course: props.course,
     },
   });

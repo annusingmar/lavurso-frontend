@@ -3,7 +3,8 @@
     <q-card class="q-dialog-plugin" style="width: 100%">
       <q-card-section>
         <div class="row justify-between">
-          <div class="text-h5">Lesson Grades</div>
+          <div v-if="type === 'lesson'" class="text-h5">Lesson Grades</div>
+          <div v-else-if="type === 'course'" class="text-h5">Course Grades</div>
           <q-btn flat round dense icon="close" @click="cancelClicked"></q-btn>
         </div>
       </q-card-section>
@@ -34,9 +35,14 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
   course: {
     type: Number,
-    required: true,
+    required: false,
+    default: null,
   },
 });
 
@@ -47,14 +53,20 @@ const cancelClicked = onDialogCancel;
 
 const students = ref([]);
 const loading = ref(true);
-const getLessonGrades = async () => {
+const getGrades = async () => {
   loading.value = true;
+
+  let params = {};
+  if (props.type === "lesson") {
+    params.grade_type = "lesson_grade";
+    params.course = props.course;
+  } else if (props.type === "course") {
+    params.grade_type = "course_grade";
+  }
+
   try {
     const response = await api.get("/journals/" + props.id + "/grades", {
-      params: {
-        grade_type: "lesson_grade",
-        course: props.course,
-      },
+      params,
     });
     students.value =
       response.data.students !== null ? response.data.students : [];
@@ -70,5 +82,5 @@ const getLessonGrades = async () => {
   }
 };
 
-getLessonGrades();
+getGrades();
 </script>

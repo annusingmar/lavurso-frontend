@@ -3,6 +3,7 @@
     <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
       <q-tab name="courses" label="Courses"></q-tab>
       <q-tab name="students" label="Students"></q-tab>
+      <q-tab name="subject_grades" label="subject grades"></q-tab>
       <q-tab name="general" label="general"></q-tab>
     </q-tabs>
 
@@ -27,6 +28,11 @@
           :archived="journal.content.archived"
         ></JournalDetailStudents>
       </q-tab-panel>
+      <q-tab-panel name="subject_grades">
+        <JournalDetailSubjectGrades
+          :journal="journal"
+        ></JournalDetailSubjectGrades>
+      </q-tab-panel>
       <q-tab-panel name="general">
         <JournalDetailGeneral
           :is-create="false"
@@ -48,6 +54,7 @@ import { useRouter } from "vue-router";
 import JournalDetailGeneral from "./JournalDetailGeneral.vue";
 import JournalDetailStudents from "./JournalDetailStudents.vue";
 import JournalDetailCourses from "./JournalDetailCourses.vue";
+import JournalDetailSubjectGrades from "./JournalDetailSubjectGrades.vue";
 
 const $q = useQuasar();
 const props = defineProps({
