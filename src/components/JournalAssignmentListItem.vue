@@ -1,5 +1,5 @@
 <template>
-  <q-item v-ripple clickable>
+  <q-item v-ripple clickable @click="editAssignmentDialog">
     <q-item-section>
       <div class="row q-gutter-x-sm">
         <q-badge
@@ -21,7 +21,10 @@
 
 <script setup>
 import { computed } from "vue";
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
+import AssignmentDialog from "./AssignmentDialog.vue";
+
+const $q = useQuasar();
 
 const props = defineProps({
   assignment: {
@@ -29,6 +32,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits(["refreshAssignments"]);
 
 const deadline = computed(() => {
   const deadlineDate = new Date(props.assignment.deadline);
@@ -38,4 +43,13 @@ const deadline = computed(() => {
   }
   return formattedDate;
 });
+
+const editAssignmentDialog = () => {
+  $q.dialog({
+    component: AssignmentDialog,
+    componentProps: {
+      existingAssignment: props.assignment,
+    },
+  }).onOk(() => emit("refreshAssignments"));
+};
 </script>

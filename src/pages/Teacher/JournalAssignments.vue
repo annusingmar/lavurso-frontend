@@ -5,6 +5,11 @@
         <q-card-section>
           <div class="row justify-between">
             <div class="text-h6">Assignments</div>
+            <q-btn
+              label="new"
+              color="primary"
+              @click="newAssignmentDialog"
+            ></q-btn>
           </div>
         </q-card-section>
         <q-card-section>
@@ -13,6 +18,7 @@
               v-for="a in assignments"
               :key="a.id"
               :assignment="a"
+              @refresh-assignments="getAssignments"
             ></JournalAssignmentListItem>
           </q-list>
           <div v-else>No assignments found.</div>
@@ -28,6 +34,7 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import JournalAssignmentListItem from "src/components/JournalAssignmentListItem.vue";
+import AssignmentDialog from "src/components/AssignmentDialog.vue";
 
 const $q = useQuasar();
 const props = defineProps({
@@ -60,5 +67,15 @@ const getAssignments = async () => {
     });
   }
 };
+
+const newAssignmentDialog = () => {
+  $q.dialog({
+    component: AssignmentDialog,
+    componentProps: {
+      id: props.id,
+    },
+  }).onOk(getAssignments);
+};
+
 getAssignments();
 </script>

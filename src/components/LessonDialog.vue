@@ -12,6 +12,7 @@
               <q-date
                 v-model="lesson.date"
                 minimal
+                no-unset
                 mask="YYYY-MM-DD"
                 first-day-of-week="1"
                 class="full-width q-mt-sm"
@@ -96,6 +97,7 @@ const submitLesson = async () => {
   }
   data.date = lesson.date;
   data.description = lesson.description;
+  saveLoading.value = true;
   try {
     if (!isUpdateDialog.value) {
       await api.post("/lessons", data);
@@ -108,6 +110,7 @@ const submitLesson = async () => {
       message: "Saving lesson succeeded",
       timeout: 3000,
     });
+    saveLoading.value = false;
   } catch (error) {
     $q.notify({
       type: "negative",
@@ -116,6 +119,7 @@ const submitLesson = async () => {
       timeout: 5000,
       actions: [{ label: "Dismiss", color: "white" }],
     });
+    saveLoading.value = false;
     throw new Error();
   }
 };
