@@ -38,9 +38,9 @@
 <script setup>
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useQuasar } from "quasar";
 import StudentsMarksList from "src/components/StudentsMarksList.vue";
 import JournalGradesDialog from "src/components/JournalGradesDialog.vue";
-import { useQuasar } from "quasar";
 
 const $q = useQuasar();
 const props = defineProps({

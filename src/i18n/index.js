@@ -3,5 +3,5 @@ import et from "./et";
 
 export default {
   "en-US": enUS,
-  et: et,
+  et,
 };
