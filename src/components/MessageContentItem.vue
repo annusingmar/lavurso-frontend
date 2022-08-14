@@ -1,14 +1,17 @@
 <template>
   <q-card>
     <div class="row justify-start items-start">
-      <div class="col-shrink">
+      <div
+        class="col-shrink"
+        style="width: 190px; border-right: 2px solid gray"
+      >
         <q-card-section>
           <div class="text-subtitle2">{{ msg.user.name }}</div>
           <div class="text-caption">{{ createdAt }}</div>
           <div v-if="hasBeenEdited" class="text-caption">
             Edited {{ updatedAt }}
           </div>
-          <div v-if="msg.user.id === id" class="row q-col-gutter-x-sm">
+          <div v-if="msg.user.id === id" class="row">
             <div v-if="msg.type !== 'thread_start'" class="col-sm-6 col-xs-12">
               <q-btn
                 color="negative"
