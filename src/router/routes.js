@@ -73,7 +73,7 @@ const routes = [
       },
       {
         path: "teacher/journals/new",
-        component: () => import("pages/Teacher/JournalDetailGeneral.vue"),
+        component: () => import("pages/Teacher/JournalGeneral.vue"),
         props: { isCreate: true },
       },
       {

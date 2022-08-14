@@ -15,7 +15,9 @@
         </q-item-section>
       </div>
       <div>
-        <q-item-section main>{{ msg.title }} </q-item-section>
+        <q-item-section main>
+          <q-item-label>{{ msg.title }}</q-item-label>
+        </q-item-section>
       </div>
       <div>
         <q-item-section side>

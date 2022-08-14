@@ -17,28 +17,26 @@
       style="min-height: 89vh"
     >
       <q-tab-panel name="courses">
-        <JournalDetailCourses
+        <JournalCourses
           :journal="journal"
           @refresh-journal="getJournal"
-        ></JournalDetailCourses>
+        ></JournalCourses>
       </q-tab-panel>
       <q-tab-panel name="students">
-        <JournalDetailStudents
+        <JournalStudents
           :id="journal.content.id"
           :archived="journal.content.archived"
-        ></JournalDetailStudents>
+        ></JournalStudents>
       </q-tab-panel>
       <q-tab-panel name="subject_grades">
-        <JournalDetailSubjectGrades
-          :journal="journal"
-        ></JournalDetailSubjectGrades>
+        <JournalSubjectGrades :journal="journal"></JournalSubjectGrades>
       </q-tab-panel>
       <q-tab-panel name="general">
-        <JournalDetailGeneral
+        <JournalGeneral
           :is-create="false"
           :server-journal="journal"
           @refresh-journal="getJournal"
-        ></JournalDetailGeneral>
+        ></JournalGeneral>
       </q-tab-panel>
     </q-tab-panels>
 
@@ -51,10 +49,10 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import JournalDetailGeneral from "./JournalDetailGeneral.vue";
-import JournalDetailStudents from "./JournalDetailStudents.vue";
-import JournalDetailCourses from "./JournalDetailCourses.vue";
-import JournalDetailSubjectGrades from "./JournalDetailSubjectGrades.vue";
+import JournalGeneral from "./JournalGeneral.vue";
+import JournalStudents from "./JournalStudents.vue";
+import JournalCourses from "./JournalCourses.vue";
+import JournalSubjectGrades from "./JournalSubjectGrades.vue";
 
 const $q = useQuasar();
 const props = defineProps({
