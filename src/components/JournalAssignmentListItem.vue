@@ -31,6 +31,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  archived: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const emit = defineEmits(["refreshAssignments"]);
@@ -45,6 +49,9 @@ const deadline = computed(() => {
 });
 
 const editAssignmentDialog = () => {
+  if (props.archived) {
+    return;
+  }
   $q.dialog({
     component: AssignmentDialog,
     componentProps: {

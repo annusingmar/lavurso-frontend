@@ -114,9 +114,9 @@ const submitAssignment = async () => {
 
   try {
     if (isUpdateDialog.value) {
-      api.patch("/assignments/" + props.existingAssignment.id, data);
+      await api.patch("/assignments/" + props.existingAssignment.id, data);
     } else {
-      api.post("/assignments", data);
+      await api.post("/assignments", data);
     }
 
     $q.notify({
