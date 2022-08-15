@@ -6,7 +6,13 @@
     @show="onShow"
   >
     <q-list v-if="!loading && students && students.length > 0" dense>
-      <q-item v-for="student in students" :key="student.id" v-ripple clickable>
+      <q-item
+        v-for="student in students"
+        :key="student.id"
+        v-ripple
+        clickable
+        :to="'/teacher/students/' + student.id"
+      >
         <q-item-section>
           <q-item-label>{{ student.name }}</q-item-label>
         </q-item-section>
