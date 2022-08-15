@@ -1,10 +1,7 @@
 <template>
   <q-card>
     <div class="row justify-start items-start">
-      <div
-        class="col-shrink"
-        style="width: 190px; border-right: 2px solid gray"
-      >
+      <div class="col-shrink" style="width: 190px">
         <q-card-section>
           <div class="text-subtitle2">{{ msg.user.name }}</div>
           <div class="text-caption">{{ createdAt }}</div>

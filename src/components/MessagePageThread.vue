@@ -1,6 +1,6 @@
 <template>
   <q-card-section>
-    <div class="row q-gutter-x-md">
+    <div class="row q-gutter-x-md q-gutter-y-md">
       <div class="text-h4">{{ thread.content.title }}</div>
       <q-btn
         color="info"

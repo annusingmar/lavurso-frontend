@@ -127,7 +127,7 @@ const markTypes = [
     value: "grade",
   },
   {
-    label: "Homework not done",
+    label: "Not done",
     value: "not_done",
   },
   {
