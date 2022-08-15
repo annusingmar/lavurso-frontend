@@ -90,11 +90,6 @@ const routes = [
         path: "teacher/classes",
         component: () => import("pages/Teacher/ClassesList.vue"),
       },
-      {
-        path: "teacher/classes/:id",
-        component: () => import("pages/Teacher/ClassesDetail.vue"),
-        props: true,
-      },
     ],
   },
 

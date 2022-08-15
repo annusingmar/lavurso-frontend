@@ -1,22 +1,55 @@
 <template>
-  <q-item v-ripple clickable :to="'/teacher/classes/' + classs.id">
-    <q-item-section>
-      <q-item-label>{{ classs.name }}</q-item-label>
-    </q-item-section>
-    <q-item-section side>
-      <q-item-label caption>{{ classs.teacher.name }}</q-item-label>
-    </q-item-section>
-  </q-item>
+  <q-expansion-item
+    :label="classs.name"
+    :caption="classs.teacher.name"
+    group="students"
+    @show="onShow"
+  >
+    <q-list v-if="!loading && students && students.length > 0" dense>
+      <q-item v-for="student in students" :key="student.id" v-ripple clickable>
+        <q-item-section>
+          <q-item-label>{{ student.name }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
+    <div v-else-if="!loading">No students in class.</div>
+    <q-inner-loading :showing="loading"></q-inner-loading>
+  </q-expansion-item>
 </template>
 
-<script>
-export default {
-  name: "ClassListItem",
-  props: {
-    classs: {
-      type: Object,
-      required: true,
-    },
+<script setup>
+import { api } from "src/boot/axios";
+import { ref } from "vue";
+
+const props = defineProps({
+  classs: {
+    type: Object,
+    required: true,
   },
+});
+
+const onShow = () => {
+  if (students.value === null) {
+    getStudents();
+  }
+};
+
+const students = ref(null);
+const loading = ref(true);
+const getStudents = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/classes/" + props.classs.id + "/students");
+    students.value = response.data.users !== null ? response.data.users : [];
+    loading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Loading data failed",
+      timeout: 5000,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  }
 };
 </script>
