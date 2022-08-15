@@ -132,6 +132,12 @@ const teacherMenuItems = [
     title: userRole.value === "admin" ? "Journals" : "My Journals",
     icon: "library_books",
     to: "/teacher/journals",
+    separator: false,
+  },
+  {
+    title: userRole.value === "admin" ? "Classes" : "My Classes",
+    icon: "class",
+    to: "/teacher/classes",
     separator: userRole.value === "admin" ? true : false,
   },
 ];

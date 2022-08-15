@@ -86,6 +86,15 @@ const routes = [
         component: () => import("pages/Teacher/LessonDetail.vue"),
         props: true,
       },
+      {
+        path: "teacher/classes",
+        component: () => import("pages/Teacher/ClassesList.vue"),
+      },
+      {
+        path: "teacher/classes/:id",
+        component: () => import("pages/Teacher/ClassesDetail.vue"),
+        props: true,
+      },
     ],
   },
 
