@@ -111,7 +111,7 @@ const tooltip = computed(() => {
   }
 
   if (props.extraInfo) {
-    if (props.mark.type === "lesson_grade") {
+    if (props.mark.lesson && props.mark.lesson.id) {
       tt +=
         "\n" +
         date.formatDate(new Date(props.mark.lesson.date), "DD MMMM YYYY");

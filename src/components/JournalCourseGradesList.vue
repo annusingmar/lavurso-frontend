@@ -53,10 +53,10 @@ const getCourseStudents = async () => {
   loading.value = true;
   try {
     const response = await api.get(
-      "/journals/" + props.journal.content.id + "/grades",
+      "/journals/" + props.journal.content.id + "/marks",
       {
         params: {
-          grade_type: "course_grade",
+          mark_type: "course_grade",
           course: props.course,
         },
       }

@@ -58,14 +58,14 @@ const getGrades = async () => {
 
   let params = {};
   if (props.type === "lesson") {
-    params.grade_type = "lesson_grade";
+    params.mark_type = "lesson_grade";
     params.course = props.course;
   } else if (props.type === "course") {
-    params.grade_type = "course_grade";
+    params.mark_type = "course_grade";
   }
 
   try {
-    const response = await api.get("/journals/" + props.id + "/grades", {
+    const response = await api.get("/journals/" + props.id + "/marks", {
       params,
     });
     students.value =

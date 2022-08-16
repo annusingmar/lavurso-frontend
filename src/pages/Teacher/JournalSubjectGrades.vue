@@ -56,10 +56,10 @@ const getJournalStudents = async () => {
   loading.value = true;
   try {
     const response = await api.get(
-      "/journals/" + props.journal.content.id + "/grades",
+      "/journals/" + props.journal.content.id + "/marks",
       {
         params: {
-          grade_type: "subject_grade",
+          mark_type: "subject_grade",
         },
       }
     );
