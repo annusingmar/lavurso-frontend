@@ -1,5 +1,10 @@
 <template>
-  <q-item v-ripple clickable @click="editAssignmentDialog">
+  <q-item
+    v-ripple
+    :clickable="!props.archived"
+    :disable="oldAssignment"
+    @click="editAssignmentDialog"
+  >
     <q-item-section>
       <div class="row q-gutter-x-sm">
         <q-badge
@@ -48,10 +53,13 @@ const deadline = computed(() => {
   return formattedDate;
 });
 
+const oldAssignment = computed(
+  () =>
+    date.getDateDiff(new Date(props.assignment.deadline), new Date(), "days") <
+      1 && !props.archived
+);
+
 const editAssignmentDialog = () => {
-  if (props.archived) {
-    return;
-  }
   $q.dialog({
     component: AssignmentDialog,
     componentProps: {
