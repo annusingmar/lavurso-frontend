@@ -6,7 +6,7 @@
     <div class="col-md-6 col-xs-10">
       <q-card>
         <q-card-section>
-          <div class="row q-gutter-x-md">
+          <div class="row justify-between items-center">
             <div>
               <div v-if="isCreate" class="text-h4">Create Journal</div>
               <div v-else class="text-h4">Update Journal</div>

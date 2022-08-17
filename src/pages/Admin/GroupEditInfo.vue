@@ -3,7 +3,7 @@
     <div class="col-md-6 col-xs-10">
       <q-card>
         <q-card-section>
-          <div class="row q-gutter-x-md">
+          <div class="row justify-between items-center">
             <div class="text-h4">Edit Group</div>
             <q-btn
               :loading="deleteLoading"

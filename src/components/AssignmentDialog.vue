@@ -3,7 +3,15 @@
     <q-card class="q-dialog-plugin">
       <q-card-section>
         <div v-if="!isUpdateDialog" class="text-h5">Create Assignment</div>
-        <div v-else class="text-h5">Update Assignment</div>
+        <div v-else class="row justify-between items-center">
+          <div class="text-h5">Update Assignment</div>
+          <q-btn
+            color="negative"
+            label="delete"
+            :loading="deleteLoading"
+            @click="deleteAssignmentPrompt"
+          ></q-btn>
+        </div>
       </q-card-section>
       <q-card-section class="q-gutter-y-md">
         <q-select
@@ -83,6 +91,12 @@ const saveClicked = async () => {
     onDialogOK();
   } catch {}
 };
+const deleteClicked = async () => {
+  try {
+    await deleteAssignment();
+    onDialogOK();
+  } catch {}
+};
 
 const popupRef = ref(null);
 
@@ -137,6 +151,42 @@ const submitAssignment = async () => {
     saveLoading.value = false;
     throw new Error();
   }
+};
+
+const deleteLoading = ref(false);
+const deleteAssignment = async () => {
+  deleteLoading.value = true;
+  try {
+    await api.delete("/assignments/" + props.existingAssignment.id);
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Deleting assignment succeeded",
+      timeout: 3000,
+    });
+    deleteLoading.value = false;
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Deleting assignment failed",
+      timeout: 5000,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+    deleteLoading.value = false;
+    throw new Error();
+  }
+};
+
+const deleteAssignmentPrompt = () => {
+  $q.dialog({
+    title: "Confirm",
+    message: "Are you sure you want to delete this assignment?",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    deleteClicked();
+  });
 };
 
 const isUpdateDialog = computed(() =>

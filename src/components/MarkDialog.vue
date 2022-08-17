@@ -3,7 +3,7 @@
     <q-card class="q-dialog-plugin">
       <q-card-section>
         <div v-if="!isUpdateDialog" class="text-h5">Add Mark</div>
-        <div v-else class="row q-gutter-x-md">
+        <div v-else class="row justify-between items-center">
           <div class="text-h5">Update Mark</div>
           <q-btn
             color="negative"
