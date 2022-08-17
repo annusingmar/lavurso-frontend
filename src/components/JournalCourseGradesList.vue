@@ -4,7 +4,6 @@
       <div class="row justify-between">
         <div class="text-h6">Grades</div>
         <q-btn
-          v-if="!loading"
           color="accent"
           label="lesson grades"
           @click="showLessonGradesDialog"
