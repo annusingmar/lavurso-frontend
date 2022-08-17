@@ -26,7 +26,6 @@
         ></GroupEditMembers>
       </q-tab-panel>
     </q-tab-panels>
-
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>

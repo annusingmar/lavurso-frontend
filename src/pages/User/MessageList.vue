@@ -7,25 +7,22 @@
             <div class="row justify-between">
               <div class="text-h4 q-mr-sm">Messages</div>
               <div class="row q-gutter-x-sm">
-                <q-btn
-                  label="refresh"
-                  :loading="loading"
-                  @click="getMessages"
-                ></q-btn>
+                <q-btn label="refresh" @click="getMessages"></q-btn>
                 <q-btn label="new" color="primary" to="/messages/new"></q-btn>
               </div>
             </div>
           </q-card-section>
           <q-card-section>
-            <q-list v-if="messages.length > 0" separator>
+            <q-list v-if="messages && messages.length > 0" separator>
               <MessageListItem
                 v-for="msg in messages"
                 :key="msg.id"
                 :msg="msg"
               ></MessageListItem>
             </q-list>
-            <div v-else>No messages found.</div>
+            <div v-else-if="!loading">No messages found.</div>
           </q-card-section>
+          <q-inner-loading :showing="loading"></q-inner-loading>
         </q-card>
       </div>
     </div>

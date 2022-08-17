@@ -6,7 +6,7 @@
           <div class="text-h5">Journals - {{ name }}</div>
         </q-card-section>
         <q-card-section>
-          <div v-if="!loading && journals.length > 0" class="q-gutter-y-md">
+          <div v-if="journals && journals.length > 0" class="q-gutter-y-md">
             <StudentJournalMarksItem
               v-for="j in journals"
               :key="j.id"

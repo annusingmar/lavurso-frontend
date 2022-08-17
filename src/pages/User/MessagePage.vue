@@ -2,7 +2,7 @@
   <q-page>
     <div class="row flex-center q-py-lg" style="min-height: inherit">
       <div class="col-10">
-        <q-card v-if="!loading">
+        <q-card v-if="thread && thread.content.id">
           <MessagePageThread
             :thread="thread"
             @refresh-thread="getThread"
@@ -28,11 +28,10 @@
               <div class="subtitle-1">Thread locked.</div>
             </div>
           </q-card-section>
+          <q-inner-loading :showing="loading"></q-inner-loading>
         </q-card>
       </div>
     </div>
-
-    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>
 

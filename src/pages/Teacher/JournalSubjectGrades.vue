@@ -20,17 +20,19 @@
             >)
           </div>
         </q-card-section>
-        <q-card-section v-if="!loading">
+        <q-card-section>
           <StudentsMarksList
+            v-if="students && students.length > 0"
             :id="journal.content.id"
             :students="students"
             type="subject"
             :editable="!journal.content.archived"
             @refresh-above="getJournalStudents"
           ></StudentsMarksList>
+          <div v-else-if="!loading">No students in journal.</div>
         </q-card-section>
+        <q-inner-loading :showing="loading"></q-inner-loading>
       </q-card>
-      <q-inner-loading :showing="loading"></q-inner-loading>
     </div>
   </div>
 </template>

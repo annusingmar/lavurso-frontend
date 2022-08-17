@@ -10,10 +10,12 @@
       </q-card-section>
       <q-card-section>
         <StudentsMarksList
+          v-if="students && students.length > 0"
           :students="students"
           :editable="false"
           :extra-info="true"
         ></StudentsMarksList>
+        <div v-else-if="!loading">No students in journal.</div>
       </q-card-section>
       <q-inner-loading :showing="loading"></q-inner-loading>
     </q-card>

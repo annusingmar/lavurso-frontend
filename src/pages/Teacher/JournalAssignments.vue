@@ -23,10 +23,10 @@
               @refresh-assignments="getAssignments"
             ></JournalAssignmentListItem>
           </q-list>
-          <div v-else>No assignments found.</div>
+          <div v-else-if="!loading">No assignments found.</div>
         </q-card-section>
+        <q-inner-loading :showing="loading"></q-inner-loading>
       </q-card>
-      <q-inner-loading :showing="loading"></q-inner-loading>
     </div>
   </div>
 </template>

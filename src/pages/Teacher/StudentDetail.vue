@@ -7,7 +7,7 @@
     </q-tabs>
     <q-separator />
     <q-tab-panels
-      v-if="!loading"
+      v-if="student.content.id"
       v-model="tab"
       animated
       keep-alive

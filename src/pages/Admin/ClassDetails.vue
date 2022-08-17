@@ -48,7 +48,6 @@
         </q-card>
       </div>
     </div>
-
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>

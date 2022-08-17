@@ -11,7 +11,7 @@
     <q-separator />
 
     <q-tab-panels
-      v-if="!loading"
+      v-if="journal.content.id"
       v-model="tab"
       animated
       keep-alive
@@ -47,7 +47,6 @@
         ></JournalGeneral>
       </q-tab-panel>
     </q-tab-panels>
-
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>

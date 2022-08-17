@@ -21,9 +21,8 @@
       </q-list>
       <div v-else-if="!loading">No lessons found.</div>
     </q-card-section>
+    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-card>
-
-  <q-inner-loading :showing="loading"></q-inner-loading>
 </template>
 
 <script setup>

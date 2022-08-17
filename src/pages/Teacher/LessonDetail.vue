@@ -1,12 +1,12 @@
 <template>
   <q-page>
     <div
-      v-if="!loading"
       class="row flex-center q-py-lg q-col-gutter-md"
       style="min-height: inherit; align-content: center"
     >
       <div class="col-md-5 col-xs-10">
         <LessonDetailInfo
+          v-if="lesson && lesson.id"
           :lesson="lesson"
           @refresh-lesson="getLessonData"
         ></LessonDetailInfo>
@@ -16,17 +16,18 @@
         <q-card>
           <q-card-section>
             <StudentsMarksList
+              v-if="students && students.length > 0"
               :id="lesson.id"
               :students="students"
               type="lesson"
               :editable="!lesson.journal.archived"
-              @refresh-above="getLessonData"
+              @refresh-above="getLessonData(true)"
             ></StudentsMarksList>
+            <div v-else-if="!loading">No students in journal.</div>
           </q-card-section>
         </q-card>
       </div>
     </div>
-
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>
@@ -51,8 +52,10 @@ const props = defineProps({
 const loading = ref(true);
 const lesson = ref({});
 const students = ref([]);
-const getLessonData = async () => {
-  loading.value = true;
+const getLessonData = async (u) => {
+  if (!u) {
+    loading.value = true;
+  }
   try {
     const lessonResponse = await api.get("/lessons/" + props.id);
     lesson.value = lessonResponse.data.lesson;

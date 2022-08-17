@@ -7,19 +7,19 @@
             <div class="text-h4">Classes</div>
           </q-card-section>
           <q-card-section>
-            <q-list v-if="classes.length > 0" separator>
+            <q-list v-if="classes && classes.length > 0" separator>
               <ClassListItem
                 v-for="c in classes"
                 :key="c.id"
                 :classs="c"
               ></ClassListItem>
             </q-list>
-            <div v-else>No classes found.</div>
+            <div v-else-if="!loading">No classes found.</div>
           </q-card-section>
+          <q-inner-loading :showing="loading"></q-inner-loading>
         </q-card>
       </div>
     </div>
-    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>
 

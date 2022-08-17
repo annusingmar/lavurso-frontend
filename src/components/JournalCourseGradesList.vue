@@ -14,8 +14,9 @@
         Here you can add grades to students for the current course.
       </div>
     </q-card-section>
-    <q-card-section v-if="!loading">
+    <q-card-section>
       <StudentsMarksList
+        v-if="students && students.length > 0"
         :id="journal.content.id"
         :students="students"
         type="course"
@@ -23,9 +24,10 @@
         :editable="!journal.content.archived"
         @refresh-above="getCourseStudents"
       ></StudentsMarksList>
+      <div v-else-if="!loading">No students in journal.</div>
     </q-card-section>
+    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-card>
-  <q-inner-loading :showing="loading"></q-inner-loading>
 </template>
 
 <script setup>

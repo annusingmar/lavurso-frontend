@@ -5,7 +5,7 @@
     group="students"
     @show="onShow"
   >
-    <q-list v-if="!loading && students && students.length > 0" dense>
+    <q-list v-if="students && students.length > 0" dense>
       <q-item
         v-for="student in students"
         :key="student.id"

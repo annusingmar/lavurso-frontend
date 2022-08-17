@@ -25,20 +25,19 @@
             </div>
           </q-card-section>
           <q-card-section>
-            <q-list v-if="journals.length > 0" separator>
+            <q-list v-if="journals && journals.length > 0" separator>
               <JournalListItem
                 v-for="journal in journals"
                 :key="journal.id"
                 :journal="journal"
               ></JournalListItem>
             </q-list>
-            <div v-else>No journals found.</div>
+            <div v-else-if="!loading">No journals found.</div>
           </q-card-section>
+          <q-inner-loading :showing="loading"></q-inner-loading>
         </q-card>
       </div>
     </div>
-
-    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>
 
