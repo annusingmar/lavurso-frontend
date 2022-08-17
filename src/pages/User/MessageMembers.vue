@@ -1,8 +1,8 @@
 <template>
   <q-page>
     <div
-      class="row flex-center q-col-gutter-md"
-      style="min-height: 90vh; align-content: center"
+      class="row flex-center q-col-gutter-md q-py-lg"
+      style="min-height: inherit; align-content: center"
     >
       <div class="col-10">
         <MessageMembersList

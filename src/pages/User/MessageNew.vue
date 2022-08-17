@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="row flex-center q-py-lg" style="min-height: 90vh">
+    <div class="row flex-center q-py-lg" style="min-height: inherit">
       <div class="col-10">
         <q-card>
           <q-card-section>
@@ -33,7 +33,7 @@
             </div>
           </q-card-section>
           <q-card-section>
-            <div class="row q-col-gutter-x-md">
+            <div class="row q-col-gutter-x-md q-col-gutter-y-sm">
               <div class="col-sm col-xs-12">
                 <q-select
                   v-model="chosenUsers"

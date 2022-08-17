@@ -13,11 +13,22 @@
         name="class"
         label="Class"
       ></q-tab>
+      <q-route-tab
+        v-if="user.user.role === 'student'"
+        label="teacher page"
+        :to="'/teacher/students/' + user.user.id"
+      ></q-route-tab>
     </q-tabs>
 
     <q-separator />
 
-    <q-tab-panels v-model="tab" animated keep-alive style="min-height: 89vh">
+    <q-tab-panels
+      v-model="tab"
+      animated
+      keep-alive
+      class="row"
+      style="min-height: 89vh; align-items: center"
+    >
       <q-tab-panel name="general">
         <UserEditGeneral
           :server-user="user"

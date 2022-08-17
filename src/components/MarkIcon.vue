@@ -68,7 +68,7 @@ const icon = computed(() => {
 
 const isBadGrade = computed(() => {
   if (props.mark.grade && props.mark.grade.value) {
-    if (props.mark.grade.value <= 50) {
+    if (props.mark.grade.value < 50) {
       return true;
     } else {
       return false;

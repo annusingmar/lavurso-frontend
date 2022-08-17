@@ -7,7 +7,7 @@
       <q-list v-if="students.length > 0" bordered separator>
         <q-item v-for="student in students" :key="student.id">
           <q-item-section>{{ student.name }}</q-item-section>
-          <q-item-section v-if="!archived" side>
+          <q-item-section v-if="!archived && role === 'admin'" side>
             <q-btn
               flat
               round
@@ -25,8 +25,10 @@
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
+import { useUserStore } from "src/stores/user";
 
 const $q = useQuasar();
 const props = defineProps({
@@ -44,6 +46,8 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["refreshStudents"]);
+
+const { role } = storeToRefs(useUserStore());
 
 const removeStudent = async (id) => {
   try {

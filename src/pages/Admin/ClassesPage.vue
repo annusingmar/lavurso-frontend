@@ -1,7 +1,7 @@
 <template>
   <q-page>
-    <div class="row flex-center q-py-lg" style="min-height: 90vh">
-      <div class="col-xl-8 col-sm-10" style="min-width: 0px">
+    <div class="row flex-center q-py-lg" style="min-height: inherit">
+      <div class="col-md-6 col-xs-10" style="min-width: 0px">
         <q-table
           title="Classes"
           :rows="classes"
@@ -21,11 +21,6 @@
             <q-td :props="props">
               <q-btn
                 flat
-                icon="people"
-                @click="showMembers(props.row.id)"
-              ></q-btn>
-              <q-btn
-                flat
                 icon="mode_edit"
                 @click="editClass(props.row.id)"
               ></q-btn>
@@ -34,20 +29,6 @@
         </q-table>
       </div>
     </div>
-
-    <q-dialog v-model="dialog">
-      <q-card style="width: 100em">
-        <q-card-section>
-          <div class="text-h4">Class Students</div>
-        </q-card-section>
-        <q-card-section>
-          <ClassMembersTable :id="showClassID"></ClassMembersTable>
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn v-close-popup flat label="close" color="primary"></q-btn>
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 
@@ -56,7 +37,6 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import ClassMembersTable from "src/components/ClassMembersTable.vue";
 
 const $q = useQuasar();
 const router = useRouter();
@@ -98,11 +78,5 @@ const getClasses = async () => {
   }
 };
 const editClass = (id) => router.push("/admin/classes/" + id);
-const showClassID = ref(null);
-const dialog = ref(false);
-const showMembers = (id) => {
-  showClassID.value = id;
-  dialog.value = true;
-};
 getClasses();
 </script>

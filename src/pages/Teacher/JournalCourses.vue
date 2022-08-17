@@ -1,6 +1,6 @@
 <template>
   <div class="row flex-center" style="min-height: 75vh">
-    <div class="col-md-6 col-sm-10">
+    <div class="col-md-6 col-xs-10">
       <q-card>
         <q-card-section class="q-pb-none">
           <JournalCourseDisplay

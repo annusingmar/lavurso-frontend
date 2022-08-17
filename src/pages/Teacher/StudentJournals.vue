@@ -1,17 +1,24 @@
 <template>
-  <div class="row flex-center" style="min-height: 75vh">
-    <div class="col-md-6 col-sm-10">
-      <div v-if="!loading && journals.length > 0" class="q-gutter-y-md">
-        <StudentJournalMarksItem
-          v-for="j in journals"
-          :key="j.id"
-          :journal="j"
-        ></StudentJournalMarksItem>
-      </div>
-      <q-card v-else-if="!loading">
-        <div>No journals found</div>
+  <div class="row flex-center">
+    <div class="col-md-6 col-xs-10">
+      <q-card>
+        <q-card-section>
+          <div class="text-h5">Journals - {{ name }}</div>
+        </q-card-section>
+        <q-card-section>
+          <div v-if="!loading && journals.length > 0" class="q-gutter-y-md">
+            <StudentJournalMarksItem
+              v-for="j in journals"
+              :key="j.id"
+              :journal="j"
+            ></StudentJournalMarksItem>
+          </div>
+          <q-card v-else-if="!loading">
+            <q-card-section><div>No journals found</div></q-card-section>
+          </q-card>
+        </q-card-section>
+        <q-inner-loading :showing="loading"></q-inner-loading>
       </q-card>
-      <q-inner-loading :showing="loading"></q-inner-loading>
     </div>
   </div>
 </template>
@@ -30,6 +37,10 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  name: {
+    type: String,
+    required: true,
+  },
 });
 
 const loading = ref(true);
@@ -40,6 +51,7 @@ const getJournals = async () => {
     const response = await api.get("/students/" + props.id + "/marks");
     journals.value =
       response.data.journals !== null ? response.data.journals : [];
+    journals.value.sort((j) => (j.archived ? 1 : 0));
     loading.value = false;
   } catch (error) {
     if (error.response && error.response.status == 404) {

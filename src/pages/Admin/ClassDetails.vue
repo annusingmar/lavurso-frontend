@@ -1,7 +1,7 @@
 <template>
   <q-page>
-    <div class="row flex-center q-py-lg" style="min-height: 90vh">
-      <div class="col-md-6 col-sm-10">
+    <div class="row flex-center q-py-lg" style="min-height: inherit">
+      <div class="col-md-6 col-xs-10">
         <q-card>
           <q-card-section>
             <div v-if="isCreate" class="text-h4">Create Class</div>

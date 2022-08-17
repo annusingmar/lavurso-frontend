@@ -1,9 +1,9 @@
 <template>
   <div
     class="row flex-center q-py-lg"
-    :style="{ 'min-height': isCreate ? '90vh' : '75vh' }"
+    :style="{ 'min-height': isCreate ? 'inherit' : '75vh' }"
   >
-    <div class="col-md-6 col-sm-10">
+    <div class="col-md-6 col-xs-10">
       <q-card>
         <q-card-section>
           <div class="row q-gutter-x-md">
@@ -199,7 +199,7 @@ const submitJournal = async () => {
 };
 
 // teachers
-const teachers = ref(null);
+const teachers = ref([]);
 const getTeachers = async (search) => {
   try {
     const response = await api.get("/users/search", {

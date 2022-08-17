@@ -9,7 +9,7 @@
             Edited {{ updatedAt }}
           </div>
           <div v-if="msg.user.id === id" class="row">
-            <div v-if="msg.type !== 'thread_start'" class="col-sm-6 col-xs-12">
+            <div v-if="msg.type !== 'thread_start'" class="col-xs-6 col-xs-12">
               <q-btn
                 color="negative"
                 label="Delete"
@@ -19,7 +19,7 @@
                 @click="deleteMessagePrompt"
               ></q-btn>
             </div>
-            <div class="col-sm-6 col-xs-12">
+            <div class="col-xs-6 col-xs-12">
               <q-btn
                 color="secondary"
                 label="edit"

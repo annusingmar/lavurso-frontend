@@ -1,28 +1,29 @@
 <template>
   <q-page>
-    <q-card style="min-height: inherit">
-      <q-card-section class="q-pb-none q-pt-xs">
-        <div class="row flex-center">
-          <div class="text-h6">{{ student.content.name }}</div>
-        </div>
-      </q-card-section>
-      <q-card-section class="q-pt-none">
-        <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
-          <q-tab name="journals" label="Journals"></q-tab>
-          <q-tab name="absences" label="Absences"></q-tab>
-          <q-tab name="info" label="Info"></q-tab>
-        </q-tabs>
-        <q-separator />
-        <q-tab-panels v-if="!loading" v-model="tab" animated keep-alive>
-          <q-tab-panel name="journals">
-            <StudentJournals :id="student.content.id"></StudentJournals>
-          </q-tab-panel>
-          <q-tab-panel name="absences"></q-tab-panel>
-          <q-tab-panel name="info"></q-tab-panel>
-        </q-tab-panels>
-      </q-card-section>
-      <q-inner-loading :showing="loading"></q-inner-loading>
-    </q-card>
+    <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
+      <q-tab name="journals" label="Journals"></q-tab>
+      <q-tab name="absences" label="Absences"></q-tab>
+      <q-tab name="info" label="Info"></q-tab>
+    </q-tabs>
+    <q-separator />
+    <q-tab-panels
+      v-if="!loading"
+      v-model="tab"
+      animated
+      keep-alive
+      class="row"
+      style="min-height: 89vh; align-items: center"
+    >
+      <q-tab-panel name="journals">
+        <StudentJournals
+          :id="student.content.id"
+          :name="student.content.name"
+        ></StudentJournals>
+      </q-tab-panel>
+      <q-tab-panel name="absences"></q-tab-panel>
+      <q-tab-panel name="info"></q-tab-panel>
+    </q-tab-panels>
+    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
 </template>
 

@@ -3,7 +3,7 @@
     class="row flex-center q-col-gutter-md"
     style="min-height: 75vh; align-content: center"
   >
-    <div class="col-md-4 col-sm-10">
+    <div class="col-md-4 col-xs-10">
       <q-card>
         <q-card-section>
           <div class="text-h4">Class</div>

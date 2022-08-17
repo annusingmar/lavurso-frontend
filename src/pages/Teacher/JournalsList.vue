@@ -1,12 +1,14 @@
 <template>
   <q-page>
-    <div class="row flex-center q-py-lg" style="min-height: 90vh">
-      <div class="col-md-6 col-sm-10">
+    <div class="row flex-center q-py-lg" style="min-height: inherit">
+      <div class="col-md-6 col-xs-10">
         <q-card>
           <q-card-section>
             <div class="row justify-between">
-              <div v-if="!archived" class="text-h4">Active Journals</div>
-              <div v-else class="text-h4">Archived Journals</div>
+              <div v-if="!archived" class="text-h4 q-mr-sm">
+                Active Journals
+              </div>
+              <div v-else class="text-h4 q-mr-sm">Archived Journals</div>
               <div class="q-gutter-x-md">
                 <q-btn
                   :label="archivedButtonLabel"

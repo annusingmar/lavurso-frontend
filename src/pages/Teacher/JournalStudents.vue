@@ -3,7 +3,7 @@
     class="row flex-center q-col-gutter-md"
     style="min-height: 75vh; align-content: center"
   >
-    <div class="col-md-5 col-sm-10">
+    <div class="col-md-5 col-xs-10">
       <JournalStudentsList
         :id="id"
         :students="students"
@@ -11,7 +11,7 @@
         @refresh-students="getStudents"
       ></JournalStudentsList>
     </div>
-    <div v-if="!archived" class="col-md-5 col-sm-10">
+    <div v-if="!archived" class="col-md-5 col-xs-10">
       <JournalStudentsAdd
         :id="id"
         :students="students"

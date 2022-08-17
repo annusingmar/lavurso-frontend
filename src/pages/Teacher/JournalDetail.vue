@@ -15,7 +15,8 @@
       v-model="tab"
       animated
       keep-alive
-      style="min-height: 89vh"
+      class="row"
+      style="min-height: 89vh; align-items: center"
     >
       <q-tab-panel name="courses">
         <JournalCourses

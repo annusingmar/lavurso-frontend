@@ -3,7 +3,7 @@
     <div
       v-if="!loading"
       class="row flex-center q-py-lg q-col-gutter-md"
-      style="min-height: 90vh; align-content: center"
+      style="min-height: inherit; align-content: center"
     >
       <div class="col-md-5 col-xs-10">
         <LessonDetailInfo

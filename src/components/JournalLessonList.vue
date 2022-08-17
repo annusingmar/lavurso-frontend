@@ -2,7 +2,7 @@
   <q-card>
     <q-card-section>
       <div class="row justify-between">
-        <div class="text-h6">Lessons</div>
+        <div class="text-h6 q-mr-sm">Lessons</div>
         <q-btn
           v-if="!journal.content.archived"
           color="primary"

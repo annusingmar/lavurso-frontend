@@ -1,7 +1,7 @@
 <template>
   <q-page>
-    <div class="row flex-center q-py-lg" style="min-height: 90vh">
-      <div class="col-xl-8 col-sm-10" style="min-width: 0px">
+    <div class="row flex-center q-py-lg" style="min-height: inherit">
+      <div class="col-md-8 col-xs-10" style="min-width: 0px">
         <q-table
           title="Groups"
           :rows="groups"

@@ -3,7 +3,7 @@
     class="row flex-center q-col-gutter-md"
     style="min-height: 75vh; align-content: center"
   >
-    <div class="col-md-5 col-sm-10">
+    <div class="col-md-5 col-xs-10">
       <GroupEditMembersList
         :loading="loading"
         :users="users"
@@ -11,7 +11,7 @@
         @refresh-group="$emit('refreshGroup')"
       ></GroupEditMembersList>
     </div>
-    <div class="col-md-3 col-sm-10">
+    <div class="col-md-3 col-xs-10">
       <GroupEditMembersAdd
         :users="users"
         :group="group"

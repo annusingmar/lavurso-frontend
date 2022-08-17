@@ -1,40 +1,38 @@
 <template>
-  <q-page>
-    <div class="row q-mx-xl q-my-xl flex-center" style="min-height: 75vh">
-      <div class="col-md-8 col-sm-10" style="min-width: 0px">
-        <q-table
-          title="Sessions"
-          :rows="sessions"
-          :columns="columns"
-          row-key="id"
-          :loading="loading"
-        >
-          <template #top-right>
-            <div class="row items-end justify-between">
-              <div class="col-auto">
-                <q-btn
-                  color="negative"
-                  label="Remove All"
-                  @click="removeAllSessionsPrompt"
-                >
-                </q-btn>
-              </div>
-            </div>
-          </template>
-
-          <template #body-cell-actions="actionProps">
-            <q-td :props="actionProps">
+  <div class="row flex-center" style="min-height: 75vh">
+    <div class="col-md-8 col-xs-10" style="min-width: 0px">
+      <q-table
+        title="Sessions"
+        :rows="sessions"
+        :columns="columns"
+        row-key="id"
+        :loading="loading"
+      >
+        <template #top-right>
+          <div class="row items-end justify-between">
+            <div class="col-auto">
               <q-btn
-                flat
-                icon="clear"
-                @click="removeUserSessionPrompt(actionProps.row.id)"
-              ></q-btn>
-            </q-td>
-          </template>
-        </q-table>
-      </div>
+                color="negative"
+                label="Remove All"
+                @click="removeAllSessionsPrompt"
+              >
+              </q-btn>
+            </div>
+          </div>
+        </template>
+
+        <template #body-cell-actions="actionProps">
+          <q-td :props="actionProps">
+            <q-btn
+              flat
+              icon="clear"
+              @click="removeUserSessionPrompt(actionProps.row.id)"
+            ></q-btn>
+          </q-td>
+        </template>
+      </q-table>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script setup>
