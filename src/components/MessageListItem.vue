@@ -8,7 +8,7 @@
             color="red"
             style="max-width: 5em"
             class="q-mb-sm"
-            >UNREAD</q-badge
+            >{{ t("messages.unread") }}</q-badge
           >
           <q-item-label>{{ msg.user.name }}</q-item-label>
           <q-item-label caption>{{ formatDate }}</q-item-label>
@@ -36,7 +36,9 @@
 <script setup>
 import { date } from "quasar";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   msg: {
     type: Object,

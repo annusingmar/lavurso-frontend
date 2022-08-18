@@ -1,29 +1,30 @@
 <template>
   <q-card>
     <div class="row justify-start items-start">
-      <div class="col-shrink" style="width: 190px">
+      <div class="col-shrink">
         <q-card-section>
           <div class="text-subtitle2">{{ msg.user.name }}</div>
           <div class="text-caption">{{ createdAt }}</div>
           <div v-if="hasBeenEdited" class="text-caption">
-            Edited {{ updatedAt }}
+            {{ t("messages.edited") }} {{ updatedAt }}
           </div>
-          <div v-if="msg.user.id === id" class="row">
-            <div v-if="msg.type !== 'thread_start'" class="col-xs-6 col-xs-12">
+          <div v-if="msg.user.id === id" class="row q-col-gutter-x-md">
+            <div
+              v-if="msg.type !== 'thread_start'"
+              class="col-sm-6 col-xs-12 q-mt-sm"
+            >
               <q-btn
                 color="negative"
-                label="Delete"
-                class="q-mt-sm"
+                :label="t('messages.delete')"
                 size="sm"
                 :loading="deleteMessageLoading"
                 @click="deleteMessagePrompt"
               ></q-btn>
             </div>
-            <div class="col-xs-6 col-xs-12">
+            <div class="col-sm-6 col-xs-12 q-mt-sm">
               <q-btn
                 color="secondary"
-                label="edit"
-                class="q-mt-sm"
+                :label="t('messages.edit')"
                 size="sm"
                 @click="toggleMessageEditor"
               ></q-btn>
@@ -52,7 +53,7 @@
               :loading="saveLoading"
               :disabled="saveButtonDisable"
               icon-right="save"
-              label="save"
+              :label="t('save')"
               @click="updateMessage"
             >
             </q-btn>
@@ -70,8 +71,10 @@ import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
 import { api } from "src/boot/axios";
 import { onEditorPaste } from "src/composables/editor";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const { id } = storeToRefs(useUserStore());
 const props = defineProps({
   msg: {
@@ -107,14 +110,14 @@ const deleteMessage = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Deleting message succeeded!",
+      message: t("messages.deletingMessageSucceeded"),
       timeout: 3000,
     });
   } catch (error) {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Deleting message failed",
+      message: t("messages.deletingMessageFailed"),
       timeout: 6000,
     });
   } finally {
@@ -126,7 +129,7 @@ const deleteMessage = async () => {
 const deleteMessagePrompt = (id) => {
   $q.dialog({
     title: "Confirm",
-    message: "Are you sure you want to delete this message?",
+    message: t("messages.deleteMessageConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {
@@ -165,7 +168,7 @@ const updateMessage = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Saving message succeeded!",
+      message: t("messages.savingMessageSucceeded"),
       timeout: 3000,
     });
     messageEditorVisible.value = false;
@@ -173,7 +176,7 @@ const updateMessage = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Saving message failed",
+      message: t("messages.savingMessageFailed"),
       timeout: 6000,
     });
   } finally {

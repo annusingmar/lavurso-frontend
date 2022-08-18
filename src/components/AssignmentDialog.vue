@@ -205,7 +205,7 @@ const formattedDate = computed(() => {
 });
 
 const futureDates = (calDate) =>
-  date.getDateDiff(new Date(calDate), new Date().setHours(0, 0, 0, 0)) >= 0
+  date.getDateDiff(new Date(calDate), new Date().setHours(0, 0, 0, 0)) > 0
     ? true
     : false;
 

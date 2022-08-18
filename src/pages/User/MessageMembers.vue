@@ -35,11 +35,13 @@ import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
 import { computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import MessageMembersAdd from "../../components/MessageMembersAdd.vue";
 import MessageMembersList from "src/components/MessageMembersList.vue";
 
 const $q = useQuasar();
 const router = useRouter();
+const { t } = useI18n({ useScope: "global" });
 const userStore = storeToRefs(useUserStore());
 const props = defineProps({
   id: {
@@ -83,9 +85,9 @@ const getMembers = async () => {
       $q.notify({
         type: "negative",
         position: "top",
-        message: "Loading of data failed",
+        message: t("dataLoadingFail"),
         timeout: 0,
-        actions: [{ label: "Dismiss", color: "white" }],
+        actions: [{ label: t("dismiss"), color: "white" }],
       });
     }
   }

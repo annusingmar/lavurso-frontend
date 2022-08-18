@@ -1,6 +1,10 @@
 <template>
   <div v-if="!showReplyBox" class="row justify-end">
-    <q-btn color="primary" label="Reply" @click="toggleReplyBox"></q-btn>
+    <q-btn
+      color="primary"
+      :label="t('messages.reply')"
+      @click="toggleReplyBox"
+    ></q-btn>
   </div>
   <div v-else>
     <q-editor
@@ -16,7 +20,7 @@
     <div class="row justify-end">
       <q-btn
         color="primary"
-        label="Send"
+        :label="t('messages.send')"
         icon-right="send"
         :loading="sendLoading"
         :disabled="replyButtonDisable"
@@ -31,9 +35,11 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { onEditorPaste } from "src/composables/editor";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: Number,
@@ -70,7 +76,7 @@ const sendMessage = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Sending message succeeded!",
+      message: t("messages.sendingMessageSucceeded"),
       timeout: 3000,
     });
     userReply.value = "";
@@ -79,7 +85,7 @@ const sendMessage = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Sending message failed",
+      message: t("messages.sendingMessageFailed"),
       timeout: 6000,
     });
   } finally {

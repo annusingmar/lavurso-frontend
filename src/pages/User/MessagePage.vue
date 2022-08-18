@@ -25,7 +25,7 @@
           </q-card-section>
           <q-card-section v-else>
             <div class="row justify-center">
-              <div class="subtitle-1">Thread locked.</div>
+              <div class="subtitle-1">{{ t("messages.threadLocked") }}</div>
             </div>
           </q-card-section>
           <q-inner-loading :showing="loading"></q-inner-loading>
@@ -40,6 +40,7 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 import MessageContentItem from "src/components/MessageContentItem.vue";
 import MessagePageThread from "src/components/MessagePageThread.vue";
@@ -47,6 +48,7 @@ import MessagePageReply from "src/components/MessagePageReply.vue";
 
 const $q = useQuasar();
 const router = useRouter();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: String,
@@ -73,9 +75,9 @@ const getThread = async () => {
       $q.notify({
         type: "negative",
         position: "top",
-        message: "Loading of data failed",
+        message: t("dataLoadingFail"),
         timeout: 0,
-        actions: [{ label: "Dismiss", color: "white" }],
+        actions: [{ label: t("dismiss"), color: "white" }],
       });
     }
   }

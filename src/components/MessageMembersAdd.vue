@@ -1,7 +1,7 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h4">Add members</div>
+      <div class="text-h4">{{ t("messages.addMembers") }}</div>
     </q-card-section>
     <q-card-section>
       <div class="row q-col-gutter-x-md">
@@ -14,11 +14,11 @@
             use-input
             input-debounce="200"
             stack-label
-            label="Users"
+            :label="t('users')"
             :options="availableUsers"
             option-label="name"
             option-value="id"
-            hint="Minimum 4 characters"
+            :hint="t('minimumNCharacters', ['4'])"
             @filter="usersFilter"
           ></q-select>
         </div>
@@ -31,7 +31,7 @@
             use-input
             input-debounce="200"
             stack-label
-            label="Groups"
+            :label="t('groups')"
             :options="filteredGroups"
             option-label="name"
             option-value="id"
@@ -44,7 +44,7 @@
       <q-card-section>
         <q-btn
           color="primary"
-          label="add members"
+          :label="t('messages.addMembers')"
           :loading="addLoading"
           :disabled="!atLeastOneAdded"
           @click="addMembers"
@@ -58,8 +58,10 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, computed, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   userId: {
     type: Number,
@@ -124,9 +126,9 @@ const getUsers = async (search) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -145,9 +147,9 @@ const getGroups = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -173,14 +175,14 @@ const addMembers = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Adding members succeeded!",
+      message: t("messages.addingMembersSucceeded"),
       timeout: 3000,
     });
   } catch {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Adding members failed",
+      message: t("messages.addingMembersFailed"),
       timeout: 6000,
     });
   } finally {

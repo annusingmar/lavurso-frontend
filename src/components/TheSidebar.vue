@@ -32,7 +32,7 @@
           ></q-toggle>
         </q-item-section>
       </q-item>
-      <!-- <q-item>
+      <q-item>
         <q-item-section>
           <q-item-label>Language</q-item-label>
         </q-item-section>
@@ -46,7 +46,7 @@
             map-options
           ></q-select>
         </q-item-section>
-      </q-item> -->
+      </q-item>
       <q-separator></q-separator>
       <DrawerListItem
         v-for="(item, index) in menuItems"
@@ -82,8 +82,6 @@
 
 <script setup>
 import { useQuasar } from "quasar";
-// import enUS from "quasar/lang/en-US";
-// import et from "quasar/lang/et";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "../stores/user.js";
 import { ref, watch } from "vue";
@@ -177,27 +175,31 @@ const adminMenuItems = [
 
 const changeDarkMode = (val) => $q.dark.set(val);
 
-// const lang = ref(i18n.locale);
+const lang = ref(i18n.locale.value);
 
-// const availableLanguages = [
-//   {
-//     label: "Eesti keel",
-//     value: "et",
-//   },
-//   {
-//     label: "English",
-//     value: "en-US",
-//   },
-// ];
+const availableLanguages = [
+  {
+    label: "eesti",
+    value: "et",
+  },
+  {
+    label: "English",
+    value: "en-US",
+  },
+];
 
-// watch(lang, () => {
-//   i18n.locale = lang.value.value;
-//   if (lang.value.value === "en-US") {
-//     $q.lang.set(enUS);
-//   } else if (lang.value.value === "et") {
-//     $q.lang.set(et);
-//   }
-// });
+watch(lang, () => {
+  i18n.locale.value = lang.value.value;
+  if (lang.value.value === "en-US") {
+    import(`../../node_modules/quasar/lang/en-US.js`).then((l) =>
+      $q.lang.set(l.default)
+    );
+  } else if (lang.value.value === "et") {
+    import(`../../node_modules/quasar/lang/et.js`).then((l) =>
+      $q.lang.set(l.default)
+    );
+  }
+});
 
 const drawerStateChange = (val) => {
   emit("setLeftDrawer", val);

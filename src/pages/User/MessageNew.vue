@@ -4,7 +4,7 @@
       <div class="col-10">
         <q-card>
           <q-card-section>
-            <div class="text-h4">New Message</div>
+            <div class="text-h4">{{ t("messages.newMessage") }}</div>
           </q-card-section>
           <q-card-section>
             <q-input
@@ -12,8 +12,8 @@
               v-model="title"
               square
               outlined
-              label="Title"
-              :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
+              :label="t('messages.title')"
+              :rules="[(val) => (val && val.length > 0) || t('mustNotBeEmpty')]"
               lazy-rules="ondemand"
             ></q-input>
             <q-editor
@@ -29,7 +29,7 @@
               @paste="onPaste"
             ></q-editor>
             <div v-if="editorError" class="text-subtitle2 q-mt-sm">
-              Message content cannot be empty
+              {{ t("messages.messageContentEmpty") }}
             </div>
           </q-card-section>
           <q-card-section>
@@ -43,11 +43,11 @@
                   use-input
                   input-debounce="200"
                   stack-label
-                  label="Users"
+                  :label="t('users')"
                   :options="availableUsers"
                   option-label="name"
                   option-value="id"
-                  hint="Minimum 4 characters"
+                  :hint="t('minimumNCharacters', ['4'])"
                   @filter="usersFilter"
                 ></q-select>
               </div>
@@ -60,7 +60,7 @@
                   use-input
                   input-debounce="200"
                   stack-label
-                  label="Groups"
+                  :label="t('groups')"
                   :options="filteredGroups"
                   option-label="name"
                   option-value="id"
@@ -73,7 +73,7 @@
             <div class="row justify-end">
               <q-btn
                 color="primary"
-                label="Send"
+                :label="t('messages.send')"
                 icon-right="send"
                 :loading="sendLoading"
                 class="q-mt-md"
@@ -94,10 +94,12 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import { onEditorPaste } from "src/composables/editor";
 
 const $q = useQuasar();
 const router = useRouter();
+const { t } = useI18n({ useScope: "global" });
 const { id } = storeToRefs(useUserStore());
 
 const usersFilter = async (val, update, abort) => {
@@ -142,9 +144,9 @@ const getUsers = async (search) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -159,9 +161,9 @@ const getGroups = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -184,7 +186,7 @@ const sendMessage = async () => {
   editorError.value = false;
   if (!titleRef.value.validate()) {
     return;
-  } else if (message.value.trim() === "") {
+  } else if (message.value.trim() === "" || message.value.trim() === "<br>") {
     editorError.value = true;
     return;
   }
@@ -204,7 +206,7 @@ const sendMessage = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Sending message succeeded!",
+      message: t("messages.sendingMessageSucceeded"),
       timeout: 3000,
     });
     router.replace("/messages/" + response.data.thread.id);
@@ -212,7 +214,7 @@ const sendMessage = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Sending message failed",
+      message: t("messages.sendingMessageFailed"),
       timeout: 6000,
     });
   } finally {

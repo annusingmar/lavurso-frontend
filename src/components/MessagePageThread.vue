@@ -4,27 +4,27 @@
       <div class="text-h4">{{ thread.content.title }}</div>
       <q-btn
         color="info"
-        label="members"
+        :label="t('messages.members')"
         :to="'/messages/' + thread.content.id + '/members'"
       ></q-btn>
       <q-btn
         v-if="userID === thread.content.user.id && !thread.content.locked"
         color="warning"
-        label="lock"
+        :label="t('messages.lock')"
         :loading="lockLoading"
         @click="lockThread"
       ></q-btn>
       <q-btn
         v-else-if="userID === thread.content.user.id && thread.content.locked"
         color="secondary"
-        label="unlock"
+        :label="t('messages.unlock')"
         :loading="unlockLoading"
         @click="unlockThread"
       ></q-btn>
       <q-btn
         v-if="userID === thread.content.user.id"
         color="negative"
-        label="delete"
+        :label="t('messages.delete')"
         :loading="deleteLoading"
         @click="deleteThreadPrompt"
       ></q-btn>
@@ -39,9 +39,11 @@ import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
 const router = useRouter();
+const { t } = useI18n({ useScope: "global" });
 const userStore = storeToRefs(useUserStore());
 const props = defineProps({
   thread: {
@@ -61,14 +63,14 @@ const lockThread = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Locking thread succeeded!",
+      message: t("messages.lockingThreadSucceeded"),
       timeout: 3000,
     });
   } catch (error) {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Locking thread failed",
+      message: t("messages.lockingThreadFailed"),
       timeout: 6000,
     });
   } finally {
@@ -85,14 +87,14 @@ const unlockThread = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Unlocking thread succeeded!",
+      message: t("messages.unlockingThreadSucceeded"),
       timeout: 3000,
     });
   } catch (error) {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Unlocking thread failed",
+      message: t("messages.unlockingThreadFailed"),
       timeout: 6000,
     });
   } finally {
@@ -109,7 +111,7 @@ const deleteThread = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Deleting thread succeeded!",
+      message: t("messages.deletingThreadSucceeded"),
       timeout: 3000,
     });
     router.replace("/messages");
@@ -117,7 +119,7 @@ const deleteThread = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Deleting thread failed",
+      message: t("messages.deletingThreadFailed"),
       timeout: 6000,
     });
     deleteLoading.value = false;
@@ -127,7 +129,7 @@ const deleteThread = async () => {
 const deleteThreadPrompt = () => {
   $q.dialog({
     title: "Confirm",
-    message: "Are you sure you want to delete this thread?",
+    message: t("messages.deleteThreadConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {

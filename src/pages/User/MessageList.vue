@@ -5,10 +5,17 @@
         <q-card>
           <q-card-section>
             <div class="row justify-between">
-              <div class="text-h4 q-mr-sm">Messages</div>
+              <div class="text-h4 q-mr-sm">{{ t("messages.mailbox") }}</div>
               <div class="row q-gutter-x-sm">
-                <q-btn label="refresh" @click="getMessages"></q-btn>
-                <q-btn label="new" color="primary" to="/messages/new"></q-btn>
+                <q-btn
+                  :label="t('messages.refresh')"
+                  @click="getMessages"
+                ></q-btn>
+                <q-btn
+                  :label="t('new')"
+                  color="primary"
+                  to="/messages/new"
+                ></q-btn>
               </div>
             </div>
           </q-card-section>
@@ -20,7 +27,7 @@
                 :msg="msg"
               ></MessageListItem>
             </q-list>
-            <div v-else-if="!loading">No messages found.</div>
+            <div v-else-if="!loading">{{ t("messages.noMessagesFound") }}</div>
           </q-card-section>
           <q-inner-loading :showing="loading"></q-inner-loading>
         </q-card>
@@ -35,11 +42,13 @@ import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useUserStore } from "src/stores/user";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
 import MessageListItem from "src/components/MessageListItem.vue";
 
 const $q = useQuasar();
 const loading = ref(true);
 const messages = ref([]);
+const { t } = useI18n({ useScope: "global" });
 const { id } = storeToRefs(useUserStore());
 
 const getMessages = async () => {
@@ -53,9 +62,9 @@ const getMessages = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
