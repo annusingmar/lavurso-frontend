@@ -25,6 +25,7 @@
       </div>
     </div>
   </div>
+  <q-separator spaced="sm"></q-separator>
 </template>
 
 <script setup>

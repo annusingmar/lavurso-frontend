@@ -38,7 +38,10 @@ const course = ref(1);
 watch(
   props.journal,
   () => {
-    course.value = props.journal.content.current_course;
+    course.value =
+      props.journal.content.courses && props.journal.content.courses.length > 0
+        ? Math.max(...props.journal.content.courses)
+        : 1;
   },
   { immediate: true }
 );
