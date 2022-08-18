@@ -7,18 +7,23 @@
       </q-card-section>
       <q-card-section>
         <div class="q-gutter-y-md">
-          <q-field filled label="Date" stack-label>
-            <template #control>
-              <q-date
-                v-model="lesson.date"
-                minimal
-                no-unset
-                mask="YYYY-MM-DD"
-                first-day-of-week="1"
-                class="full-width q-mt-sm"
-              ></q-date>
+          <q-input filled readonly :model-value="formattedDate" label="Date">
+            <template #append>
+              <q-icon name="event" class="cursor-pointer">
+                <q-tooltip>Pick a date</q-tooltip>
+                <q-popup-proxy ref="popupRef" cover>
+                  <q-date
+                    v-model="lesson.date"
+                    mask="YYYY-MM-DD"
+                    first-day-of-week="1"
+                    minimal
+                    no-unset
+                    @update:model-value="popupRef.hide"
+                  ></q-date>
+                </q-popup-proxy>
+              </q-icon>
             </template>
-          </q-field>
+          </q-input>
           <q-input
             v-model="lesson.description"
             filled
@@ -42,7 +47,7 @@
 </template>
 
 <script setup>
-import { useDialogPluginComponent, useQuasar } from "quasar";
+import { useDialogPluginComponent, useQuasar, date } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref, reactive } from "vue";
 
@@ -81,6 +86,15 @@ const saveClicked = async () => {
 };
 
 const lesson = reactive({});
+
+const popupRef = ref(null);
+const formattedDate = computed(() => {
+  if (lesson.date) {
+    return date.formatDate(new Date(lesson.date), "DD. MMMM YYYY");
+  } else {
+    return "Pick a date by clicking to the right";
+  }
+});
 
 const saveButtonDisabled = computed(() => !lesson.date);
 
