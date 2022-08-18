@@ -23,13 +23,13 @@
       <div v-if="mark.comment && mark.comment.trim() !== ''">
         <div>Comment:</div>
         <div>
-          <q-input
-            filled
-            dense
-            autogrow
-            readonly
-            :model-value="mark.comment"
-          ></q-input>
+          <q-field filled dense readonly>
+            <template #control>
+              <div style="white-space: pre">
+                {{ mark.comment }}
+              </div>
+            </template>
+          </q-field>
         </div>
       </div>
 
@@ -45,13 +45,13 @@
         >
           <div>Description:</div>
           <div>
-            <q-input
-              filled
-              dense
-              autogrow
-              readonly
-              :model-value="mark.lesson.description"
-            ></q-input>
+            <q-field filled dense readonly>
+              <template #control>
+                <div style="white-space: pre">
+                  {{ mark.lesson.description }}
+                </div>
+              </template>
+            </q-field>
           </div>
         </div>
       </q-expansion-item>
