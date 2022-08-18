@@ -1,8 +1,8 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="row justify-between">
-        <div class="text-h4">Lesson</div>
+      <div class="row justify-between q-gutter-sm">
+        <div class="text-h5 text-weight-medium">{{ lessonDate }}</div>
         <q-btn
           v-if="!lesson.journal.archived"
           color="primary"
@@ -10,19 +10,17 @@
           @click="lessonEditDialog"
         ></q-btn>
       </div>
-    </q-card-section>
-    <q-separator></q-separator>
-    <q-card-section>
-      <div class="row justify-between">
-        <div class="text-h4">{{ lessonDate }}</div>
-        <div class="text-h6 text-weight-regular">{{ lesson.journal.name }}</div>
+
+      <div class="text-h6 text-weight-regular">{{ lesson.journal.name }}</div>
+
+      <div
+        v-if="!isDescriptionEmpty"
+        class="text-subtitle1"
+        style="white-space: pre"
+      >
+        {{ lesson.description }}
       </div>
-      <div>
-        <div v-if="!isDescriptionEmpty" class="text-subtitle1">
-          {{ lesson.description }}
-        </div>
-        <div v-else class="text-caption">No description for lesson</div>
-      </div>
+      <div v-else class="text-subtitle1 text-italic">No description</div>
     </q-card-section>
   </q-card>
 </template>
