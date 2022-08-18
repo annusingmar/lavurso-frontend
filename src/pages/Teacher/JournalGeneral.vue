@@ -1,7 +1,7 @@
 <template>
   <div
     class="row flex-center q-py-lg"
-    :style="{ 'min-height': isCreate ? 'inherit' : '75vh' }"
+    :style="{ 'min-height': isCreate ? '90vh' : '75vh' }"
   >
     <div class="col-md-6 col-xs-10">
       <q-card>

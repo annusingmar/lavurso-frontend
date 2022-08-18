@@ -1,27 +1,18 @@
 <template>
-  <div>
-    <div
-      v-if="icon !== ''"
-      class="mark"
-      :class="[mark.type, { clickable: editable }]"
-      @click="editMark"
-    >
+  <div :class="{ clickable: editable || extraInfo }">
+    <div v-if="icon !== ''" class="mark" :class="mark.type" @click="editMark">
       <q-icon :name="icon" size="sm"></q-icon>
     </div>
     <span
       v-else
       class="mark"
-      :class="[mark.type, { 'bad-grade': isBadGrade }, { clickable: editable }]"
+      :class="[mark.type, { 'bad-grade': isBadGrade }]"
       @click="editMark"
       >{{ mark.grade.identifier }}</span
     >
-    <q-tooltip
-      v-if="tooltip !== ''"
-      class="mark text-center"
-      style="white-space: pre-wrap"
-    >
-      {{ tooltip }}
-    </q-tooltip>
+    <q-popup-proxy v-if="!editable && extraInfo">
+      <MarkExtraInfo :mark="mark"></MarkExtraInfo>
+    </q-popup-proxy>
   </div>
 </template>
 
@@ -29,6 +20,7 @@
 import { useQuasar, date } from "quasar";
 import { computed } from "vue";
 import MarkDialog from "./MarkDialog.vue";
+import MarkExtraInfo from "./MarkExtraInfo.vue";
 
 const $q = useQuasar();
 
@@ -76,60 +68,6 @@ const isBadGrade = computed(() => {
   } else {
     return false;
   }
-});
-
-const tooltip = computed(() => {
-  let tt = "";
-  switch (props.mark.type) {
-    case "lesson_grade":
-      tt = "Lesson Grade";
-      break;
-    case "course_grade":
-      tt = "Course Grade";
-      break;
-    case "subject_grade":
-      tt = "Subject Grade";
-      break;
-    case "not_done":
-      tt = "Not Done";
-      break;
-    case "notice_good":
-      tt = "Notice (Good)";
-      break;
-    case "notice_neutral":
-      tt = "Notice (Neutral)";
-      break;
-    case "notice_bad":
-      tt = "Notice (Bad)";
-      break;
-    case "absent":
-      tt = "Absent";
-      break;
-    case "late":
-      tt = "Late";
-      break;
-  }
-
-  if (props.extraInfo) {
-    if (props.mark.lesson && props.mark.lesson.id) {
-      tt +=
-        "\n" +
-        date.formatDate(new Date(props.mark.lesson.date), "DD MMMM YYYY");
-      if (
-        props.mark.lesson.description &&
-        props.mark.lesson.description.trim() != ""
-      ) {
-        tt += "\n" + props.mark.lesson.description;
-      }
-    } else if (props.mark.type === "course_grade") {
-      tt += "\n" + props.mark.course + ". course";
-    }
-  }
-
-  if (props.mark.comment && props.mark.comment.trim() !== "") {
-    tt += "\n" + props.mark.comment;
-  }
-  return tt;
 });
 
 const editMark = () => {
