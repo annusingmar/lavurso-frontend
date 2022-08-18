@@ -8,17 +8,23 @@
       <StudentCourseItem
         v-for="(marks, course) in journal.marks"
         :key="course"
-        :course="course"
+        :course="Number(course)"
         :marks="marks"
+        :student-id="studentId"
+        :journal-id="journal.id"
       ></StudentCourseItem>
     </q-card-section>
-    <q-card-section v-else>No marks found.</q-card-section>
+    <q-card-section v-else>No courses found</q-card-section>
   </q-card>
 </template>
 
 <script setup>
 import StudentCourseItem from "./StudentCourseItem.vue";
 const props = defineProps({
+  studentId: {
+    type: Number,
+    required: true,
+  },
   journal: {
     type: Object,
     required: true,

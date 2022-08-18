@@ -1,7 +1,14 @@
 <template>
   <div class="row items-center q-gutter-x-sm">
     <div class="col-shrink">
-      <div v-if="course > 0">{{ course }}. course</div>
+      <div
+        v-if="course > 0"
+        style="cursor: pointer"
+        class="text-teal-8"
+        @click="courseLessonsDialog"
+      >
+        {{ course }}. course
+      </div>
       <div v-else>Summary</div>
     </div>
     <div class="col-grow row justify-between">
@@ -29,12 +36,24 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import { computed } from "vue";
+import StudentCourseLessonsDialog from "./StudentCourseLessonsDialog.vue";
 import MarkIcon from "./MarkIcon.vue";
 
+const $q = useQuasar();
+
 const props = defineProps({
+  journalId: {
+    type: Number,
+    required: true,
+  },
   course: {
-    type: String,
+    type: Number,
+    required: true,
+  },
+  studentId: {
+    type: Number,
     required: true,
   },
   marks: {
@@ -53,4 +72,15 @@ const lessonMarks = computed(() =>
     return m.lesson.id;
   })
 );
+
+const courseLessonsDialog = () => {
+  $q.dialog({
+    component: StudentCourseLessonsDialog,
+    componentProps: {
+      journalId: props.journalId,
+      course: props.course,
+      studentId: props.studentId,
+    },
+  });
+};
 </script>

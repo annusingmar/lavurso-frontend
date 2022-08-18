@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <q-expansion-item v-if="lessonDate" dense label="Lesson">
+      <q-expansion-item v-if="lessonDate && showLesson" dense label="Lesson">
         <div class="row justify-between">
           <span class="q-mr-sm">Date</span>
           <span>{{ lessonDate }}</span>
@@ -66,6 +66,10 @@ import { computed } from "vue";
 const props = defineProps({
   mark: {
     type: Object,
+    required: true,
+  },
+  showLesson: {
+    type: Boolean,
     required: true,
   },
 });

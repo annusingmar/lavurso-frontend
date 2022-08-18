@@ -11,6 +11,7 @@
               v-for="j in journals"
               :key="j.id"
               :journal="j"
+              :student-id="id"
             ></StudentJournalMarksItem>
           </div>
           <q-card v-else-if="!loading">

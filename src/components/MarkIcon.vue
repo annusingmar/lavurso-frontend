@@ -11,7 +11,7 @@
       >{{ mark.grade.identifier }}</span
     >
     <q-popup-proxy v-if="!editable && extraInfo">
-      <MarkExtraInfo :mark="mark"></MarkExtraInfo>
+      <MarkExtraInfo :mark="mark" :show-lesson="showLesson"></MarkExtraInfo>
     </q-popup-proxy>
   </div>
 </template>
@@ -37,6 +37,11 @@ const props = defineProps({
     type: Boolean,
     required: false,
     default: false,
+  },
+  showLesson: {
+    type: Boolean,
+    required: false,
+    default: true,
   },
 });
 const emit = defineEmits(["refreshAbove"]);
