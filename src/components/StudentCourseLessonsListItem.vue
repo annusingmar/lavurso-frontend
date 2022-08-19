@@ -11,8 +11,8 @@
       <div v-else class="text-italic">No description</div>
     </q-item-section>
     <q-item-section
-      class="col-shrink"
       v-if="lesson.marks && lesson.marks.length > 0"
+      class="col-shrink"
     >
       <div class="row justify-end q-gutter-x-sm">
         <MarkIcon

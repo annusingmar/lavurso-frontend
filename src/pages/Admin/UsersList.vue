@@ -86,6 +86,14 @@ const columns = [
     sortable: false,
   },
   {
+    name: "id_code",
+    required: false,
+    label: "ID code",
+    align: "left",
+    field: (row) => row.id_code,
+    sortable: false,
+  },
+  {
     name: "role",
     required: true,
     label: "Role",

@@ -28,8 +28,8 @@ const routes = [
       },
       {
         path: "admin/users/new",
-        component: () => import("pages/Admin/UserCreate.vue"),
-        props: true,
+        component: () => import("pages/Admin/UserEditGeneral.vue"),
+        props: { isCreate: true },
       },
       {
         path: "admin/users/:id",
