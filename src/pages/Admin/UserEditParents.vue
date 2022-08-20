@@ -107,7 +107,7 @@ const getAllParents = async () => {
 
 const getStudentParents = async () => {
   try {
-    const response = await api.get("/students/" + props.id + "/parents");
+    const response = await api.get("/students/" + props.id);
     studentParents.value =
       response.data.parents !== null ? response.data.parents : [];
   } catch (error) {

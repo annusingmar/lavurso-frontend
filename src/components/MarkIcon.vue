@@ -1,12 +1,12 @@
 <template>
   <div :class="{ clickable: editable || extraInfo }">
-    <div v-if="icon !== ''" class="mark" :class="mark.type" @click="editMark">
+    <div v-if="icon !== ''" class="mark" :class="markType" @click="editMark">
       <q-icon :name="icon" size="sm"></q-icon>
     </div>
     <span
       v-else
       class="mark"
-      :class="[mark.type, { 'bad-grade': isBadGrade }]"
+      :class="[markType, { 'bad-grade': isBadGrade }]"
       @click="editMark"
       >{{ mark.grade.identifier }}</span
     >
@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { useQuasar, date } from "quasar";
+import { useQuasar } from "quasar";
 import { computed } from "vue";
 import MarkDialog from "./MarkDialog.vue";
 import MarkExtraInfo from "./MarkExtraInfo.vue";
@@ -44,6 +44,7 @@ const props = defineProps({
     default: true,
   },
 });
+
 const emit = defineEmits(["refreshAbove"]);
 
 const icon = computed(() => {
@@ -60,6 +61,19 @@ const icon = computed(() => {
       return "message";
     default:
       return "";
+  }
+});
+
+const markType = computed(() => {
+  switch (props.mark.type) {
+    case "absent":
+      if (props.mark.absence_excuse && props.mark.absence_excuse.id) {
+        return "absent-excused";
+      } else {
+        return "absent";
+      }
+    default:
+      return props.mark.type;
   }
 });
 
@@ -135,6 +149,7 @@ $border: 2px solid;
   background: rgb(0, 105, 18, 0.25);
 }
 
+.absent-excused,
 .notice_good {
   border: $border rgb(33, 186, 69);
   background: rgba(33, 186, 69, 0.25);

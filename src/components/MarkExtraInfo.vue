@@ -55,6 +55,30 @@
           </div>
         </div>
       </q-expansion-item>
+
+      <q-expansion-item
+        v-if="mark.absence_excuse && mark.absence_excuse.id"
+        dense
+        label="Excuse"
+      >
+        <div>
+          <q-field filled dense readonly>
+            <template #control>
+              <div style="white-space: pre">
+                {{ mark.absence_excuse.excuse }}
+              </div>
+            </template>
+          </q-field>
+        </div>
+        <div class="row justify-between q-mt-sm">
+          <span class="q-mr-sm">By</span>
+          <span>{{ mark.absence_excuse.by.name }}</span>
+        </div>
+        <div class="row justify-between">
+          <span class="q-mr-sm">At</span>
+          <span>{{ excusedAt }}</span>
+        </div>
+      </q-expansion-item>
     </q-card-section>
   </q-card>
 </template>
@@ -93,6 +117,12 @@ const hasBeenEdited = computed(() =>
 const lessonDate = computed(() =>
   props.mark.lesson && props.mark.lesson.id
     ? date.formatDate(new Date(props.mark.lesson.date), "DD. MMM YYYY")
+    : null
+);
+
+const excusedAt = computed(() =>
+  props.mark.absence_excuse && props.mark.absence_excuse.id
+    ? date.formatDate(props.mark.absence_excuse.at, "DD. MMM YYYY HH:mm")
     : null
 );
 

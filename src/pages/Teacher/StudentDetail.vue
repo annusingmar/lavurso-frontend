@@ -2,7 +2,6 @@
   <q-page>
     <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
       <q-tab name="journals" label="Journals"></q-tab>
-      <q-tab name="absences" label="Absences"></q-tab>
       <q-tab name="info" label="Info"></q-tab>
     </q-tabs>
     <q-separator />
@@ -20,7 +19,6 @@
           :name="student.name"
         ></StudentJournals>
       </q-tab-panel>
-      <q-tab-panel name="absences"></q-tab-panel>
       <q-tab-panel name="info">
         <StudentInfo :student="student" :parents="parents"></StudentInfo>
       </q-tab-panel>
