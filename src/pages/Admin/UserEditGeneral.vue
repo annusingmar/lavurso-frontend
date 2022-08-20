@@ -110,7 +110,6 @@
                   use-input
                   hide-selected
                   fill-input
-                  input-debounce
                   label="Class"
                   :rules="[(val) => val || 'Must not be empty']"
                   :options="filteredClasses"
@@ -246,13 +245,13 @@ const saveUser = async () => {
     }
   } catch (error) {
     if (error.response && error.response.status == 409) {
-      (user.value.email = ""),
-        $q.notify({
-          type: "negative",
-          position: "top",
-          message: "Email already exists",
-          timeout: 6000,
-        });
+      user.value.email = "";
+      $q.notify({
+        type: "negative",
+        position: "top",
+        message: "Email already exists",
+        timeout: 6000,
+      });
     } else {
       $q.notify({
         type: "negative",

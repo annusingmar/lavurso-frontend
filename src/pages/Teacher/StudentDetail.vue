@@ -7,7 +7,7 @@
     </q-tabs>
     <q-separator />
     <q-tab-panels
-      v-if="student.content.id"
+      v-if="student.id"
       v-model="tab"
       animated
       keep-alive
@@ -16,12 +16,14 @@
     >
       <q-tab-panel name="journals">
         <StudentJournals
-          :id="student.content.id"
-          :name="student.content.name"
+          :id="student.id"
+          :name="student.name"
         ></StudentJournals>
       </q-tab-panel>
       <q-tab-panel name="absences"></q-tab-panel>
-      <q-tab-panel name="info"></q-tab-panel>
+      <q-tab-panel name="info">
+        <StudentInfo :student="student" :parents="parents"></StudentInfo>
+      </q-tab-panel>
     </q-tab-panels>
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
@@ -30,9 +32,10 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import StudentJournals from "./StudentJournals.vue";
+import StudentInfo from "src/components/StudentInfo.vue";
 
 const $q = useQuasar();
 const router = useRouter();
@@ -44,13 +47,15 @@ const props = defineProps({
 });
 
 const tab = ref("journals");
-const student = reactive({ content: {} });
+const student = ref({});
+const parents = ref([]);
 const loading = ref(true);
 const getStudent = async () => {
   loading.value = true;
   try {
-    const response = await api.get("/users/" + props.id);
-    student.content = response.data.user;
+    const response = await api.get("/students/" + props.id);
+    student.value = response.data.student;
+    parents.value = response.data.parents;
     loading.value = false;
   } catch (error) {
     if (error.response && error.response.status == 404) {
