@@ -19,6 +19,7 @@
           :editable="false"
           :extra-info="true"
           :mark="mark"
+          @refresh-above="emit('refreshAbove')"
         ></MarkIcon>
       </div>
       <div class="row q-gutter-x-sm">
@@ -61,6 +62,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits(["refreshAbove"]);
 
 const summaryMarks = computed(() =>
   props.marks.filter((m) => {

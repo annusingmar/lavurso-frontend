@@ -12,6 +12,7 @@
               :key="j.id"
               :journal="j"
               :student-id="id"
+              @refresh-above="getJournals"
             ></StudentJournalMarksItem>
           </div>
           <q-card v-else-if="!loading">

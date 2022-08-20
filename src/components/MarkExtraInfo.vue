@@ -57,19 +57,17 @@
       </q-expansion-item>
 
       <q-expansion-item
-        v-if="mark.excuse && mark.excuse.id"
+        v-if="mark.excuse && mark.excuse.mark_id"
         dense
         label="Excuse"
       >
-        <div>
-          <q-field filled dense readonly>
-            <template #control>
-              <div style="white-space: pre">
-                {{ mark.excuse.excuse }}
-              </div>
-            </template>
-          </q-field>
-        </div>
+        <q-field filled dense readonly>
+          <template #control>
+            <div style="white-space: pre">
+              {{ mark.excuse.excuse }}
+            </div>
+          </template>
+        </q-field>
         <div class="row justify-between q-mt-sm">
           <span class="q-mr-sm">By</span>
           <span>{{ mark.excuse.by.name }}</span>
@@ -78,14 +76,35 @@
           <span class="q-mr-sm">At</span>
           <span>{{ excusedAt }}</span>
         </div>
+
+        <q-btn
+          color="negative"
+          label="remove excuse"
+          class="q-mt-sm"
+          style="width: 100%"
+          @click="removeExcusePrompt"
+        ></q-btn>
       </q-expansion-item>
+      <q-btn
+        v-else-if="mark.type === 'absent'"
+        color="primary"
+        label="excuse"
+        class="q-mt-sm"
+        style="width: 100%"
+        rounded
+        dense
+        @click="excuseAbsenceDialog"
+      ></q-btn>
     </q-card-section>
   </q-card>
 </template>
 
 <script setup>
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
+import { api } from "src/boot/axios";
 import { computed } from "vue";
+
+const $q = useQuasar();
 
 const props = defineProps({
   mark: {
@@ -97,6 +116,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits(["refreshAbove"]);
 
 const createdAt = computed(() => {
   return date.formatDate(props.mark.created_at, "DD. MMM YYYY HH:mm");
@@ -121,7 +142,7 @@ const lessonDate = computed(() =>
 );
 
 const excusedAt = computed(() =>
-  props.mark.excuse && props.mark.excuse.id
+  props.mark.excuse && props.mark.excuse.mark_id
     ? date.formatDate(props.mark.excuse.at, "DD. MMM YYYY HH:mm")
     : null
 );
@@ -150,4 +171,73 @@ const markDisplayType = computed(() => {
       return null;
   }
 });
+
+const excuseAbsence = async (excuse) => {
+  try {
+    await api.post("/absences/" + props.mark.id + "/excuse", {
+      excuse,
+    });
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Excusing absence succeeded",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Excusing absence failed",
+      timeout: 5000,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  } finally {
+    emit("refreshAbove");
+  }
+};
+
+const excuseAbsenceDialog = () => {
+  $q.dialog({
+    title: "Excuse absence",
+    prompt: {
+      model: "",
+      isValid: (val) => val.trim() !== "",
+      type: "text",
+    },
+    cancel: true,
+  }).onOk((data) => excuseAbsence(data));
+};
+
+const removeExcuse = async () => {
+  try {
+    await api.delete("/absences/" + props.mark.id + "/excuse");
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: "Deleting excuse succeeded",
+      timeout: 3000,
+    });
+  } catch (error) {
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: "Deleting excuse failed",
+      timeout: 5000,
+      actions: [{ label: "Dismiss", color: "white" }],
+    });
+  } finally {
+    emit("refreshAbove");
+  }
+};
+
+const removeExcusePrompt = () => {
+  $q.dialog({
+    title: "Confirm",
+    message: "Are you sure you want to remove this excuse?",
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    removeExcuse();
+  });
+};
 </script>

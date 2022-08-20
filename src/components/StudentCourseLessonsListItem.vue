@@ -22,6 +22,7 @@
           :editable="false"
           :extra-info="true"
           :show-lesson="false"
+          @refresh-above="emit('refreshAbove')"
         ></MarkIcon>
       </div>
     </q-item-section>
@@ -39,6 +40,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits(["refreshAbove"]);
 
 const lessonDate = computed(() =>
   date.formatDate(new Date(props.lesson.date), "DD MMMM YYYY")

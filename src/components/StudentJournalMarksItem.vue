@@ -12,6 +12,7 @@
         :marks="marks"
         :student-id="studentId"
         :journal-id="journal.id"
+        @refresh-above="emit('refreshAbove')"
       ></StudentCourseItem>
     </q-card-section>
     <q-card-section v-else>No courses found</q-card-section>
@@ -30,4 +31,6 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits(["refreshAbove"]);
 </script>

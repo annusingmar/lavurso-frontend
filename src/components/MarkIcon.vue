@@ -11,7 +11,11 @@
       >{{ mark.grade.identifier }}</span
     >
     <q-popup-proxy v-if="!editable && extraInfo">
-      <MarkExtraInfo :mark="mark" :show-lesson="showLesson"></MarkExtraInfo>
+      <MarkExtraInfo
+        :mark="mark"
+        :show-lesson="showLesson"
+        @refresh-above="emit('refreshAbove')"
+      ></MarkExtraInfo>
     </q-popup-proxy>
   </div>
 </template>
@@ -67,7 +71,7 @@ const icon = computed(() => {
 const markType = computed(() => {
   switch (props.mark.type) {
     case "absent":
-      if (props.mark.excuse && props.mark.excuse.id) {
+      if (props.mark.excuse && props.mark.excuse.mark_id) {
         return "absent-excused";
       } else {
         return "absent";

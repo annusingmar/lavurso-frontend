@@ -11,6 +11,7 @@
             v-for="lesson in lessons"
             :key="lesson.id"
             :lesson="lesson"
+            @refresh-above="getLessons"
           ></StudentCourseLessonsListItem>
         </q-list>
       </q-card-section>
