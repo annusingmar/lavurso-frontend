@@ -38,6 +38,7 @@
         <q-card-section>
           <q-form
             ref="form"
+            greedy
             class="q-col-gutter-y-sm"
             @submit.prevent="submitJournal"
           >

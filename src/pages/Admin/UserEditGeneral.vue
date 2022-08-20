@@ -10,7 +10,7 @@
           <div v-else class="text-h4">Edit User</div>
         </q-card-section>
         <q-card-section>
-          <q-form @submit.prevent="saveUser" @reset="resetData">
+          <q-form greedy @submit.prevent="saveUser" @reset="resetData">
             <div class="row justify-between q-col-gutter-md">
               <div class="col-sm-6 col-xs-12 q-gutter-y-sm">
                 <q-input

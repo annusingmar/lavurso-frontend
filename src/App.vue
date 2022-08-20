@@ -2,10 +2,9 @@
   <router-view />
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup>
+import { useUserStore } from "./stores/user";
 
-export default defineComponent({
-  name: "App",
-});
+const store = useUserStore();
+store.tryLogin();
 </script>

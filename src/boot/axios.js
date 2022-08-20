@@ -5,19 +5,6 @@ import { useUserStore } from "src/stores/user";
 
 const store = useUserStore();
 
-let headers = {};
-
-if (store.token) {
-  headers = {
-    Authorization: "Bearer " + store.token,
-    "Content-Type": "application/json",
-  };
-} else {
-  headers = {
-    "Content-Type": "application/json",
-  };
-}
-
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
@@ -26,7 +13,18 @@ if (store.token) {
 // for each client)
 const api = axios.create({
   baseURL: "http://localhost:8888",
-  headers,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  transformRequest: [
+    function (data, headers) {
+      if (store.isAuthenticated) {
+        headers["Authorization"] = "Bearer " + store.token;
+      }
+      return data;
+    },
+    ...axios.defaults.transformRequest,
+  ],
 });
 
 export default boot(({ app }) => {
