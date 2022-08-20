@@ -67,7 +67,7 @@ const icon = computed(() => {
 const markType = computed(() => {
   switch (props.mark.type) {
     case "absent":
-      if (props.mark.absence_excuse && props.mark.absence_excuse.id) {
+      if (props.mark.excuse && props.mark.excuse.id) {
         return "absent-excused";
       } else {
         return "absent";
