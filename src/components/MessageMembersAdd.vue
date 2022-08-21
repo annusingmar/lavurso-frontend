@@ -20,7 +20,22 @@
             option-value="id"
             :hint="t('minimumNCharacters', ['4'])"
             @filter="usersFilter"
-          ></q-select>
+          >
+            <template #option="scope">
+              <q-item v-bind="scope.itemProps">
+                <q-item-section>
+                  <q-item-label>{{ scope.opt.name }}</q-item-label>
+                  <q-item-label v-if="scope.opt.role !== 'student'" caption>{{
+                    getRoleName(scope.opt.role)
+                  }}</q-item-label>
+                  <q-item-label v-else caption
+                    >{{ getRoleName(scope.opt.role) }} -
+                    {{ scope.opt.class.name }}</q-item-label
+                  >
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
         </div>
         <div class="col-sm col-xs-12">
           <q-select
@@ -59,6 +74,7 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import getRoleName from "src/composables/role";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });

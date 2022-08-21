@@ -49,7 +49,24 @@
                   option-value="id"
                   :hint="t('minimumNCharacters', ['4'])"
                   @filter="usersFilter"
-                ></q-select>
+                >
+                  <template #option="scope">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section>
+                        <q-item-label>{{ scope.opt.name }}</q-item-label>
+                        <q-item-label
+                          v-if="scope.opt.role !== 'student'"
+                          caption
+                          >{{ getRoleName(scope.opt.role) }}</q-item-label
+                        >
+                        <q-item-label v-else caption
+                          >{{ getRoleName(scope.opt.role) }} -
+                          {{ scope.opt.class.name }}</q-item-label
+                        >
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
               <div class="col-sm col-xs-12">
                 <q-select
@@ -95,6 +112,7 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user";
 import { useI18n } from "vue-i18n";
 import { onEditorPaste } from "src/composables/editor";
+import getRoleName from "src/composables/role";
 
 const $q = useQuasar();
 const router = useRouter();

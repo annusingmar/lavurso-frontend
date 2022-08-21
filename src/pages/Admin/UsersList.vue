@@ -51,22 +51,10 @@ import { ref } from "vue";
 import { api } from "boot/axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
+import getRoleName from "src/composables/role";
 
 const $q = useQuasar();
 const router = useRouter();
-
-const getRoleName = (val) => {
-  switch (val) {
-    case "admin":
-      return "Administrator";
-    case "teacher":
-      return "Teacher";
-    case "parent":
-      return "Parent";
-    case "student":
-      return "Student";
-  }
-};
 
 const columns = [
   {

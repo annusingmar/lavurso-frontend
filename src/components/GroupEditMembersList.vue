@@ -31,6 +31,7 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import getRoleName from "src/composables/role";
 
 const $q = useQuasar();
 const props = defineProps({
@@ -48,19 +49,6 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["refreshGroup"]);
-
-const getRoleName = (val) => {
-  switch (val) {
-    case "admin":
-      return "Administrator";
-    case "teacher":
-      return "Teacher";
-    case "parent":
-      return "Parent";
-    case "student":
-      return "Student";
-  }
-};
 
 const columns = [
   {

@@ -33,7 +33,22 @@
         option-value="id"
         hint="Minimum 4 characters"
         @filter="usersFilter"
-      ></q-select>
+      >
+        <template #option="scope">
+          <q-item v-bind="scope.itemProps">
+            <q-item-section>
+              <q-item-label>{{ scope.opt.name }}</q-item-label>
+              <q-item-label v-if="scope.opt.role !== 'student'" caption>{{
+                getRoleName(scope.opt.role)
+              }}</q-item-label>
+              <q-item-label v-else caption
+                >{{ getRoleName(scope.opt.role) }} -
+                {{ scope.opt.class.name }}</q-item-label
+              >
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
       <q-select
         v-model="chosenClasses"
         filled
@@ -63,6 +78,7 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
+import getRoleName from "src/composables/role";
 
 const $q = useQuasar();
 const props = defineProps({
