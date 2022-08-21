@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
@@ -42,14 +41,14 @@ import MessageMembersList from "src/components/MessageMembersList.vue";
 const $q = useQuasar();
 const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
-const userStore = storeToRefs(useUserStore());
+const userStore = useUserStore();
+const userID = userStore.id;
 const props = defineProps({
   id: {
     type: String,
     required: true,
   },
 });
-const userID = userStore.id;
 
 const users = ref([]);
 const groups = ref([]);
@@ -94,7 +93,7 @@ const getMembers = async () => {
 };
 
 const isUserThreadCreator = computed(
-  () => thread.content.user && thread.content.user.id === userStore.id.value
+  () => thread.content.user && thread.content.user.id === userID
 );
 
 getMembers();

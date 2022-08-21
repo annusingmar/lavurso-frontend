@@ -42,7 +42,6 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
@@ -51,7 +50,7 @@ import { computed, ref } from "vue";
 import JournalListItem from "src/components/JournalListItem.vue";
 
 const $q = useQuasar();
-const { id, role } = storeToRefs(useUserStore());
+const { id, role } = useUserStore();
 
 const archived = ref(false);
 
@@ -59,9 +58,9 @@ const loading = ref(true);
 const journals = ref([]);
 const getJournals = async () => {
   const endpoint =
-    role.value === "admin"
+    role === "admin"
       ? "/journals?archived=" + archived.value
-      : "/teachers/" + id.value + "/journals?archived=" + archived.value;
+      : "/teachers/" + id + "/journals?archived=" + archived.value;
   loading.value = true;
   try {
     const response = await api.get(endpoint);

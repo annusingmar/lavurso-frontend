@@ -9,8 +9,8 @@
     <q-img src="~assets/beach.jpg" style="height: 200px">
       <div class="absolute-bottom row items-end">
         <div class="col">
-          <div class="text-weight-bold">{{ userName }}</div>
-          <div>{{ userDisplayRole }}</div>
+          <div class="text-weight-bold">{{ name }}</div>
+          <div>{{ roleName }}</div>
         </div>
         <div class="col-auto">
           <q-btn color="primary" text-color="white">Log out</q-btn>
@@ -56,7 +56,7 @@
         :to="item.to"
         :separator="item.separator"
       ></DrawerListItem>
-      <template v-if="userRole === 'admin' || userRole === 'teacher'">
+      <template v-if="role === 'admin' || role === 'teacher'">
         <DrawerListItem
           v-for="(item, index) in teacherMenuItems"
           :key="index"
@@ -66,7 +66,7 @@
           :separator="item.separator"
         ></DrawerListItem>
       </template>
-      <template v-if="userRole === 'admin'">
+      <template v-if="role === 'admin'">
         <DrawerListItem
           v-for="(item, index) in adminMenuItems"
           :key="index"
@@ -82,16 +82,18 @@
 
 <script setup>
 import { useQuasar } from "quasar";
-import { storeToRefs } from "pinia";
 import { useUserStore } from "../stores/user.js";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { api } from "src/boot/axios.js";
+import { useRouter } from "vue-router";
 import DrawerListItem from "./DrawerListItem.vue";
 
 const $q = useQuasar();
+const router = useRouter();
 const i18n = useI18n({ useScope: "global" });
 
-const userStore = storeToRefs(useUserStore());
+const { name, role, roleName, session_id } = useUserStore();
 const props = defineProps({
   open: {
     type: Boolean,
@@ -99,10 +101,6 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["setLeftDrawer"]);
-
-const userName = userStore.name;
-const userRole = userStore.role;
-const userDisplayRole = userStore.roleName;
 
 const menuItems = [
   {
@@ -127,16 +125,16 @@ const menuItems = [
 
 const teacherMenuItems = [
   {
-    title: userRole.value === "admin" ? "Journals" : "My Journals",
+    title: role === "admin" ? "Journals" : "My Journals",
     icon: "library_books",
     to: "/teacher/journals",
     separator: false,
   },
   {
-    title: userRole.value === "admin" ? "Classes" : "My Classes",
+    title: role === "admin" ? "Classes" : "My Classes",
     icon: "class",
     to: "/teacher/classes",
-    separator: userRole.value === "admin" ? true : false,
+    separator: role === "admin" ? true : false,
   },
 ];
 

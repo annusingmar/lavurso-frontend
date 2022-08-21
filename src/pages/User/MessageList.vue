@@ -41,7 +41,6 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useUserStore } from "src/stores/user";
-import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import MessageListItem from "src/components/MessageListItem.vue";
 
@@ -49,12 +48,12 @@ const $q = useQuasar();
 const loading = ref(true);
 const messages = ref([]);
 const { t } = useI18n({ useScope: "global" });
-const { id } = storeToRefs(useUserStore());
+const { id } = useUserStore();
 
 const getMessages = async () => {
   loading.value = true;
   try {
-    const response = await api.get("/users/" + id.value + "/threads");
+    const response = await api.get("/users/" + id + "/threads");
     messages.value =
       response.data.threads !== null ? response.data.threads : [];
     loading.value = false;

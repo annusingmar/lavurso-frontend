@@ -93,14 +93,13 @@ import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user";
-import { storeToRefs } from "pinia";
 import { useI18n } from "vue-i18n";
 import { onEditorPaste } from "src/composables/editor";
 
 const $q = useQuasar();
 const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
-const { id } = storeToRefs(useUserStore());
+const { id } = useUserStore();
 
 const usersFilter = async (val, update, abort) => {
   if (val.length < 4) {
@@ -138,7 +137,7 @@ const getUsers = async (search) => {
     });
     availableUsers.value =
       response.data.result !== null
-        ? response.data.result.filter((u) => u.id !== id.value)
+        ? response.data.result.filter((u) => u.id !== id)
         : [];
   } catch (error) {
     $q.notify({
@@ -154,7 +153,7 @@ const getUsers = async (search) => {
 const availableGroups = ref(null);
 const getGroups = async () => {
   try {
-    const response = await api.get("/users/" + id.value + "/groups");
+    const response = await api.get("/users/" + id + "/groups");
     availableGroups.value =
       response.data.groups !== null ? response.data.groups : [];
   } catch (error) {

@@ -25,7 +25,6 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
@@ -47,7 +46,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["refreshStudents"]);
 
-const { role } = storeToRefs(useUserStore());
+const { role } = useUserStore();
 
 const removeStudent = async (id) => {
   try {

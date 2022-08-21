@@ -18,7 +18,7 @@
               :loading="archiveLoading"
               @click="archiveJournalPrompt"
             ></q-btn>
-            <div v-else-if="!isCreate && userRole === 'admin'" class="row">
+            <div v-else-if="!isCreate && role === 'admin'" class="row">
               <q-btn
                 color="secondary"
                 label="unarchive"
@@ -64,7 +64,7 @@
               option-label="name"
             ></q-select>
             <q-select
-              v-if="!isCreate && userRole === 'admin'"
+              v-if="!isCreate && role === 'admin'"
               v-model="journal.content.teacher"
               filled
               label="Teacher"
@@ -96,7 +96,6 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
@@ -118,8 +117,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["refreshJournal"]);
 
-const userStoreRef = storeToRefs(useUserStore());
-const userRole = userStoreRef.role;
+const { role } = useUserStore();
 
 const subjectsLoading = ref(true);
 const subjects = ref([]);
@@ -166,7 +164,7 @@ const submitJournal = async () => {
   if (props.isCreate) {
     data.subject_id = journal.content.subject.id;
   }
-  if (!props.isCreate && userRole.value === "admin") {
+  if (!props.isCreate && role === "admin") {
     data.teacher_id = journal.content.teacher.id;
   }
   try {

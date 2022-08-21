@@ -68,14 +68,13 @@
 import { useQuasar, date } from "quasar";
 import { computed, ref } from "vue";
 import { useUserStore } from "src/stores/user";
-import { storeToRefs } from "pinia";
 import { api } from "src/boot/axios";
 import { onEditorPaste } from "src/composables/editor";
 import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
-const { id } = storeToRefs(useUserStore());
+const { id } = useUserStore();
 const props = defineProps({
   msg: {
     type: Object,

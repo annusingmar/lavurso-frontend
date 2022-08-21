@@ -24,7 +24,6 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
@@ -32,13 +31,13 @@ import { ref } from "vue";
 import ClassListItem from "../../components/ClassListItem.vue";
 
 const $q = useQuasar();
-const { id, role } = storeToRefs(useUserStore());
+const { id, role } = useUserStore();
 
 const loading = ref(true);
 const classes = ref([]);
 const getClasses = async () => {
   const endpoint =
-    role.value === "admin" ? "/classes" : "/teachers/" + id.value + "/classes";
+    role === "admin" ? "/classes" : "/teachers/" + id + "/classes";
   loading.value = true;
   try {
     const response = await api.get(endpoint);

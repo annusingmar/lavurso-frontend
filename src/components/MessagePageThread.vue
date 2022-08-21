@@ -8,21 +8,21 @@
         :to="'/messages/' + thread.content.id + '/members'"
       ></q-btn>
       <q-btn
-        v-if="userID === thread.content.user.id && !thread.content.locked"
+        v-if="id === thread.content.user.id && !thread.content.locked"
         color="warning"
         :label="t('messages.lock')"
         :loading="lockLoading"
         @click="lockThread"
       ></q-btn>
       <q-btn
-        v-else-if="userID === thread.content.user.id && thread.content.locked"
+        v-else-if="id === thread.content.user.id && thread.content.locked"
         color="secondary"
         :label="t('messages.unlock')"
         :loading="unlockLoading"
         @click="unlockThread"
       ></q-btn>
       <q-btn
-        v-if="userID === thread.content.user.id"
+        v-if="id === thread.content.user.id"
         color="negative"
         :label="t('messages.delete')"
         :loading="deleteLoading"
@@ -36,7 +36,6 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -44,7 +43,7 @@ import { useI18n } from "vue-i18n";
 const $q = useQuasar();
 const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
-const userStore = storeToRefs(useUserStore());
+const { id } = useUserStore();
 const props = defineProps({
   thread: {
     type: Object,
@@ -52,8 +51,6 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["refreshThread"]);
-
-const userID = userStore.id;
 
 const lockLoading = ref(false);
 const lockThread = async () => {
