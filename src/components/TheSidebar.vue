@@ -13,7 +13,9 @@
           <div>{{ roleName }}</div>
         </div>
         <div class="col-auto">
-          <q-btn color="primary" text-color="white">Log out</q-btn>
+          <q-btn color="primary" text-color="white" @click="logOut"
+            >Log out</q-btn
+          >
         </div>
       </div>
     </q-img>
@@ -201,5 +203,15 @@ watch(lang, () => {
 
 const drawerStateChange = (val) => {
   emit("setLeftDrawer", val);
+};
+
+const logOut = async () => {
+  try {
+    await api.delete("/sessions/" + session_id);
+    userStore.clearUser();
+    router.replace("/login");
+  } catch (error) {
+    console.log("fail");
+  }
 };
 </script>

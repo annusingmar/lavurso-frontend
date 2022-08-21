@@ -58,6 +58,7 @@ export const useUserStore = defineStore("user", {
       this.session_id = null;
       this.token = null;
       this.expires = null;
+      LocalStorage.clear();
     },
   },
 });

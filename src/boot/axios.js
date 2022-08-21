@@ -2,6 +2,7 @@ import { boot } from "quasar/wrappers";
 import axios from "axios";
 
 import { useUserStore } from "src/stores/user";
+import router from "src/router";
 
 const store = useUserStore();
 
@@ -12,20 +13,36 @@ const store = useUserStore();
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
-  baseURL: "http://localhost:8888",
+  baseURL: process.env.API,
   headers: {
     "Content-Type": "application/json",
   },
-  transformRequest: [
-    function (data, headers) {
-      if (store.isAuthenticated) {
-        headers["Authorization"] = "Bearer " + store.token;
-      }
-      return data;
-    },
-    ...axios.defaults.transformRequest,
-  ],
 });
+
+api.interceptors.request.use((req) => {
+  if (store.isAuthenticated) {
+    req.headers["Authorization"] = "Bearer " + store.token;
+  }
+  return req;
+});
+
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response) {
+      switch (err.response.status) {
+        case 401:
+          store.clearUser();
+          router.replace("/login");
+        case 403:
+          router.replace("/access-denied");
+        case 404:
+          router.replace("/not-found");
+      }
+    }
+    return Promise.reject(err);
+  }
+);
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
