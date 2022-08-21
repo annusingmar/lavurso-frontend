@@ -1,4 +1,3 @@
-import { route } from "quasar/wrappers";
 import { useUserStore } from "src/stores/user";
 import {
   createRouter,
@@ -37,7 +36,9 @@ const Router = createRouter({
 Router.beforeEach((to, from) => {
   const store = useUserStore();
   if (to.path !== "/login" && !store.isAuthenticated) {
-    return { path: "/login" };
+    return { path: "/login", query: { redirect: to.path } };
+  } else if (to.path === "/login" && store.isAuthenticated) {
+    return { path: "/" };
   }
   switch (to.meta.level) {
     case "admin":

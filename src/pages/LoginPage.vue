@@ -70,6 +70,14 @@ const validateEmail = (email) => {
   return re.test(email) || "Invalid email";
 };
 
+const props = defineProps({
+  redirect: {
+    type: String,
+    required: false,
+    default: "/",
+  },
+});
+
 const email = ref("");
 const password = ref("");
 const errorText = ref(null);
@@ -85,7 +93,7 @@ const submitLogin = async () => {
       password: password.value,
     });
     userStore.setUser(response.data.session);
-    router.replace("/");
+    router.replace(props.redirect);
   } catch (error) {
     formRef.value.resetValidation();
     password.value = "";

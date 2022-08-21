@@ -13,7 +13,11 @@
           <div>{{ roleName }}</div>
         </div>
         <div class="col-auto">
-          <q-btn color="primary" text-color="white" @click="logOut"
+          <q-btn
+            color="primary"
+            text-color="white"
+            :loading="logoutLoading"
+            @click="logOut"
             >Log out</q-btn
           >
         </div>
@@ -95,7 +99,8 @@ const $q = useQuasar();
 const router = useRouter();
 const i18n = useI18n({ useScope: "global" });
 
-const { name, role, roleName, session_id } = useUserStore();
+const { name, role, roleName, session_id, clearUser } = useUserStore();
+
 const props = defineProps({
   open: {
     type: Boolean,
@@ -205,13 +210,17 @@ const drawerStateChange = (val) => {
   emit("setLeftDrawer", val);
 };
 
+const logoutLoading = ref(false);
 const logOut = async () => {
+  logoutLoading.value = true;
   try {
     await api.delete("/sessions/" + session_id);
-    userStore.clearUser();
+    clearUser();
     router.replace("/login");
   } catch (error) {
     console.log("fail");
+  } finally {
+    logoutLoading.value = false;
   }
 };
 </script>
