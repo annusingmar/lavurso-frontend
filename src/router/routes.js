@@ -124,6 +124,11 @@ const routes = [
         component: () => import("pages/Student/JournalsList.vue"),
         meta: { level: "student" },
       },
+      {
+        path: "student/home",
+        component: () => import("pages/Student/HomePage.vue"),
+        meta: { level: "student" },
+      },
     ],
   },
 

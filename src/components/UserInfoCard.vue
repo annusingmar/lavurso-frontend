@@ -36,6 +36,7 @@
 </template>
 
 <script setup>
+import getRoleName from "src/composables/role";
 import { computed } from "vue";
 
 const props = defineProps({
@@ -47,18 +48,7 @@ const props = defineProps({
 
 const role = computed(() => {
   if (props.user.role) {
-    switch (props.user.role) {
-      case "admin":
-        return "Administrator";
-      case "teacher":
-        return "Teacher";
-      case "parent":
-        return "Parent";
-      case "student":
-        return "Student";
-      default:
-        return null;
-    }
+    return getRoleName(props.user.role);
   } else {
     return null;
   }

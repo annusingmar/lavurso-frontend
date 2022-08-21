@@ -39,6 +39,15 @@ Router.beforeEach((to, from) => {
     return { path: "/login", query: { redirect: to.path } };
   } else if (to.path === "/login" && store.isAuthenticated) {
     return { path: "/" };
+  } else if (to.path === "/") {
+    switch (store.role) {
+      case "admin":
+      case "teacher":
+        return { path: "/teacher/journals" };
+      case "student":
+      case "parent":
+        return { path: "/student/home" };
+    }
   }
   switch (to.meta.level) {
     case "admin":

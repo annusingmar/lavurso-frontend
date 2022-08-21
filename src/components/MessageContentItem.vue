@@ -5,7 +5,7 @@
         <q-card-section>
           <div class="text-subtitle2">{{ msg.user.name }}</div>
           <div class="text-caption">{{ createdAt }}</div>
-          <div v-if="hasBeenEdited" class="text-caption">
+          <div v-if="updatedAt" class="text-caption">
             {{ t("messages.edited") }} {{ updatedAt }}
           </div>
           <div v-if="msg.user.id === id" class="row q-col-gutter-x-md">
@@ -87,16 +87,14 @@ const createdAt = computed(() => {
   return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
 });
 
-const updatedAt = computed(() => {
-  return date.formatDate(props.msg.updated_at, "DD. MMM YYYY HH:mm");
-});
-
-const hasBeenEdited = computed(() =>
+const updatedAt = computed(() =>
   date.getDateDiff(
     new Date(props.msg.updated_at),
     new Date(props.msg.created_at),
     "seconds"
   )
+    ? date.formatDate(props.msg.updated_at, "DD. MMM YYYY HH:mm")
+    : null
 );
 
 // deleting message

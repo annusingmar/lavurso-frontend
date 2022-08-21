@@ -137,7 +137,10 @@ const menuItems = [
   {
     title: "Home",
     icon: "home",
-    to: "/home",
+    to:
+      role === "admin" || role === "teacher"
+        ? "/teacher/journals"
+        : "/student/home",
     separator: false,
   },
   {
