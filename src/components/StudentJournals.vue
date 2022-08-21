@@ -2,8 +2,8 @@
   <div class="row flex-center">
     <div class="col-md-6 col-xs-10">
       <q-card>
-        <q-card-section>
-          <div class="text-h5">Journals - {{ name }}</div>
+        <q-card-section class="row justify-between">
+          <div class="text-h5">Journals — {{ name }}</div>
         </q-card-section>
         <q-card-section>
           <div v-if="journals && journals.length > 0" class="q-gutter-y-md">

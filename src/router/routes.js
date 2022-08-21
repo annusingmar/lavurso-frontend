@@ -27,6 +27,7 @@ const routes = [
         component: () => import("pages/User/MessageMembers.vue"),
         props: true,
       },
+      // admin routes
       {
         path: "admin/users",
         component: () => import("pages/Admin/UsersList.vue"),
@@ -82,6 +83,7 @@ const routes = [
         meta: { level: "admin" },
         props: true,
       },
+      // teacher routes
       {
         path: "teacher/journals",
         component: () => import("pages/Teacher/JournalsList.vue"),
@@ -115,6 +117,12 @@ const routes = [
         component: () => import("pages/Teacher/StudentDetail.vue"),
         meta: { level: "teacher" },
         props: true,
+      },
+      // student routes
+      {
+        path: "student/journals",
+        component: () => import("pages/Student/JournalsList.vue"),
+        meta: { level: "student" },
       },
     ],
   },

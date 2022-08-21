@@ -31,12 +31,10 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
-import StudentJournals from "./StudentJournals.vue";
+import StudentJournals from "src/components/StudentJournals.vue";
 import StudentInfo from "src/components/StudentInfo.vue";
 
 const $q = useQuasar();
-const router = useRouter();
 const props = defineProps({
   id: {
     type: String,

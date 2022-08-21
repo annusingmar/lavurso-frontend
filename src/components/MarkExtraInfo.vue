@@ -78,6 +78,7 @@
         </div>
 
         <q-btn
+          v-if="canExcuse"
           color="negative"
           label="remove excuse"
           class="q-mt-sm"
@@ -86,7 +87,7 @@
         ></q-btn>
       </q-expansion-item>
       <q-btn
-        v-else-if="mark.type === 'absent'"
+        v-else-if="mark.type === 'absent' && canExcuse"
         color="primary"
         label="excuse"
         class="q-mt-sm"
@@ -103,6 +104,8 @@
 import { date, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { computed } from "vue";
+
+const { role } = useUserStore();
 
 const $q = useQuasar();
 
@@ -171,6 +174,8 @@ const markDisplayType = computed(() => {
       return null;
   }
 });
+
+const canExcuse = computed(() => role === "teacher");
 
 const excuseAbsence = async (excuse) => {
   try {

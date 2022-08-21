@@ -62,6 +62,16 @@
         :to="item.to"
         :separator="item.separator"
       ></DrawerListItem>
+      <template v-if="role === 'student'">
+        <DrawerListItem
+          v-for="(item, index) in studentMenuItems"
+          :key="index"
+          :title="item.title"
+          :icon="item.icon"
+          :to="item.to"
+          :separator="item.separator"
+        ></DrawerListItem
+      ></template>
       <template v-if="role === 'admin' || role === 'teacher'">
         <DrawerListItem
           v-for="(item, index) in teacherMenuItems"
@@ -127,6 +137,14 @@ const menuItems = [
     icon: "chat",
     to: "/messages",
     separator: true,
+  },
+];
+
+const studentMenuItems = [
+  {
+    title: "Lessons and Marks",
+    icon: "grade",
+    to: "/student/journals",
   },
 ];
 
