@@ -107,6 +107,9 @@ const getUserSessions = async () => {
       : (sessions.value = []);
     loading.value = false;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -126,15 +129,17 @@ const removeUserSession = async (id) => {
       message: "Deleting session succeeded!",
       timeout: 3000,
     });
+    getUserSessions();
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
       message: "Deleting session failed",
       timeout: 6000,
     });
-  } finally {
-    await getUserSessions();
   }
 };
 
@@ -147,15 +152,17 @@ const removeAllSessions = async () => {
       message: "Deleting sessions succeeded!",
       timeout: 3000,
     });
+    getUserSessions();
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
       message: "Deleting sessions failed",
       timeout: 6000,
     });
-  } finally {
-    await getUserSessions();
   }
 };
 

@@ -95,6 +95,9 @@ const getAllParents = async () => {
       }
     });
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -111,6 +114,9 @@ const getStudentParents = async () => {
     studentParents.value =
       response.data.parents !== null ? response.data.parents : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -149,7 +155,13 @@ const addParent = async () => {
       message: "Parent added successfully",
       timeout: 5000,
     });
+    chosenParent.value = null;
+    allParents.value = null;
+    getStudentParents();
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -158,9 +170,6 @@ const addParent = async () => {
       actions: [{ label: "Dismiss", color: "white" }],
     });
   } finally {
-    chosenParent.value = null;
-    allParents.value = null;
-    await getStudentParents();
     addingLoading.value = false;
   }
 };
@@ -178,7 +187,11 @@ const removeParent = async (pid) => {
       message: "Parent removed successfully",
       timeout: 5000,
     });
+    getStudentParents();
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -188,7 +201,6 @@ const removeParent = async (pid) => {
     });
   } finally {
     allParents.value = null;
-    await getStudentParents();
   }
 };
 

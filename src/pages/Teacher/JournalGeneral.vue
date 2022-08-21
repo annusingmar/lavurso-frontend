@@ -129,6 +129,9 @@ const getSubjects = async () => {
       response.data.subjects !== null ? response.data.subjects : [];
     subjectsLoading.value = false;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -187,6 +190,9 @@ const submitJournal = async () => {
       emit("refreshJournal");
     }
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -213,6 +219,9 @@ const getTeachers = async (search) => {
           )
         : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -248,6 +257,9 @@ const archiveJournal = async () => {
     archiveLoading.value = false;
     router.replace("/teacher/journals");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -281,7 +293,11 @@ const unarchiveJournal = async () => {
       message: "Unarchiving journal succeeded",
       timeout: 3000,
     });
+    emit("refreshJournal");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -290,7 +306,6 @@ const unarchiveJournal = async () => {
     });
   } finally {
     unarchiveLoading.value = false;
-    emit("refreshJournal");
   }
 };
 
@@ -308,6 +323,9 @@ const deleteJournal = async () => {
     deleteLoading.value = false;
     router.replace("/teacher/journals");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",

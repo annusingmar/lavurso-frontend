@@ -67,6 +67,9 @@ const getLessons = async () => {
     lessons.value = response.data.lessons !== null ? response.data.lessons : [];
     loading.value = false;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",

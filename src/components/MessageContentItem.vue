@@ -112,7 +112,11 @@ const deleteMessage = async () => {
       message: t("messages.deletingMessageSucceeded"),
       timeout: 3000,
     });
+    emit("refreshThread");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -121,7 +125,6 @@ const deleteMessage = async () => {
     });
   } finally {
     deleteMessageLoading.value = false;
-    emit("refreshThread");
   }
 };
 
@@ -171,7 +174,11 @@ const updateMessage = async () => {
       timeout: 3000,
     });
     messageEditorVisible.value = false;
+    emit("refreshThread");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -180,7 +187,6 @@ const updateMessage = async () => {
     });
   } finally {
     saveLoading.value = false;
-    emit("refreshThread");
   }
 };
 </script>

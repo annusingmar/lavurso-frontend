@@ -63,7 +63,11 @@ const lockThread = async () => {
       message: t("messages.lockingThreadSucceeded"),
       timeout: 3000,
     });
+    emit("refreshThread");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -72,7 +76,6 @@ const lockThread = async () => {
     });
   } finally {
     lockLoading.value = false;
-    emit("refreshThread");
   }
 };
 
@@ -87,7 +90,11 @@ const unlockThread = async () => {
       message: t("messages.unlockingThreadSucceeded"),
       timeout: 3000,
     });
+    emit("refreshThread");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -96,7 +103,6 @@ const unlockThread = async () => {
     });
   } finally {
     unlockLoading.value = false;
-    emit("refreshThread");
   }
 };
 
@@ -113,6 +119,9 @@ const deleteThread = async () => {
     });
     router.replace("/messages");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",

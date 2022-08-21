@@ -61,7 +61,11 @@ const removeStudent = async (id) => {
       message: "Student removed successfully",
       timeout: 3000,
     });
+    emit("refreshStudents");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -69,8 +73,6 @@ const removeStudent = async (id) => {
       timeout: 0,
       actions: [{ label: "Dismiss", color: "white" }],
     });
-  } finally {
-    emit("refreshStudents");
   }
 };
 </script>

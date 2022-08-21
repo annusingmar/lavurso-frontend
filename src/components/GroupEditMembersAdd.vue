@@ -141,6 +141,9 @@ const getUsers = async (search) => {
           )
         : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -158,6 +161,9 @@ const getClasses = async () => {
     availableClasses.value =
       response.data.classes !== null ? response.data.classes : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -199,7 +205,14 @@ const addMembers = async () => {
       message: "Users successfully added",
       timeout: 3000,
     });
+    chosenClasses.value = [];
+    chosenRoles.value = [];
+    chosenUsers.value = [];
+    emit("refreshGroup");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -207,11 +220,7 @@ const addMembers = async () => {
       timeout: 6000,
     });
   } finally {
-    chosenClasses.value = [];
-    chosenRoles.value = [];
-    chosenUsers.value = [];
     addLoading.value = false;
-    emit("refreshGroup");
   }
 };
 </script>

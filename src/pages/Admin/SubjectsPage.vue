@@ -78,6 +78,9 @@ const getSubjects = async () => {
       response.data.subjects !== null ? response.data.subjects : [];
     loading.value = false;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -106,15 +109,17 @@ const saveName = async (id, val) => {
       message: "Subject changed successfully",
       timeout: 3000,
     });
+    getSubjects();
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
       message: "Subject change failed",
       timeout: 6000,
     });
-  } finally {
-    await getSubjects();
   }
 };
 
@@ -129,15 +134,17 @@ const newSubject = async (val) => {
       message: "Subject created successfully",
       timeout: 3000,
     });
+    getSubjects();
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
       message: "Subject creation failed",
       timeout: 6000,
     });
-  } finally {
-    await getSubjects();
   }
 };
 

@@ -80,7 +80,11 @@ const updateGroup = async () => {
       message: "Updating group succeeded!",
       timeout: 3000,
     });
+    emit("refreshGroup");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -89,7 +93,6 @@ const updateGroup = async () => {
     });
   } finally {
     updateLoading.value = false;
-    emit("refreshGroup");
   }
 };
 
@@ -106,6 +109,9 @@ const deleteGroup = async () => {
     });
     router.replace("/admin/groups");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",

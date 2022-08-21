@@ -128,7 +128,13 @@ const removeMembers = async () => {
       message: t("messages.removingMembersSucceeded"),
       timeout: 3000,
     });
+    removedUserIDs.value = [];
+    removedGroupIDs.value = [];
+    emit("refreshMembers");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -136,10 +142,7 @@ const removeMembers = async () => {
       timeout: 6000,
     });
   } finally {
-    removedUserIDs.value = [];
-    removedGroupIDs.value = [];
     removeLoading.value = false;
-    emit("refreshMembers");
   }
 };
 

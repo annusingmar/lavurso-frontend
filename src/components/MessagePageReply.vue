@@ -81,7 +81,11 @@ const sendMessage = async () => {
     });
     userReply.value = "";
     showReplyBox.value = false;
+    emit("refreshThread");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -90,7 +94,6 @@ const sendMessage = async () => {
     });
   } finally {
     sendLoading.value = false;
-    emit("refreshThread");
   }
 };
 </script>

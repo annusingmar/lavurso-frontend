@@ -242,6 +242,8 @@ const saveUser = async () => {
     saveLoading.value = false;
     if (props.isCreate) {
       router.replace("/admin/users");
+    } else {
+      emit("refreshUser");
     }
   } catch (error) {
     if (error.response && error.response.status == 409) {
@@ -252,6 +254,11 @@ const saveUser = async () => {
         message: "Email already exists",
         timeout: 6000,
       });
+    } else if (
+      error.response &&
+      [401, 403, 404].indexOf(error.response.status) > -1
+    ) {
+      return;
     } else {
       $q.notify({
         type: "negative",
@@ -261,10 +268,6 @@ const saveUser = async () => {
       });
     }
     saveLoading.value = false;
-  } finally {
-    if (!props.isCreate) {
-      emit("refreshUser");
-    }
   }
 };
 
@@ -275,6 +278,9 @@ const getAllClasses = async () => {
     allClasses.value =
       response.data.classes !== null ? response.data.classes : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",

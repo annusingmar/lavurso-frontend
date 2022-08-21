@@ -115,6 +115,9 @@ const getStudents = async (search) => {
           )
         : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -132,6 +135,9 @@ const getClasses = async () => {
     availableClasses.value =
       response.data.classes !== null ? response.data.classes : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -167,7 +173,13 @@ const addMembers = async () => {
       message: "Students successfully added",
       timeout: 3000,
     });
+    chosenClasses.value = [];
+    chosenStudents.value = [];
+    emit("refreshStudents");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -175,10 +187,7 @@ const addMembers = async () => {
       timeout: 6000,
     });
   } finally {
-    chosenClasses.value = [];
-    chosenStudents.value = [];
     addLoading.value = false;
-    emit("refreshStudents");
   }
 };
 </script>

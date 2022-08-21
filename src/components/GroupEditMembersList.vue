@@ -101,7 +101,12 @@ const removeUsers = async () => {
       message: "Users successfully removed",
       timeout: 3000,
     });
+    selectedUsers.value = [];
+    emit("refreshGroup");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -110,8 +115,6 @@ const removeUsers = async () => {
     });
   } finally {
     removeLoading.value = false;
-    selectedUsers.value = [];
-    emit("refreshGroup");
   }
 };
 

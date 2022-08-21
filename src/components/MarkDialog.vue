@@ -158,6 +158,9 @@ const getGrades = async () => {
     const response = await api.get("/grades");
     grades.value = response.data.grades !== null ? response.data.grades : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -238,6 +241,9 @@ const submitMark = async () => {
     });
     saveLoading.value = false;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -267,6 +273,9 @@ const deleteMark = async () => {
     });
     deleteLoading.value = false;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",

@@ -140,6 +140,9 @@ const getUsers = async (search) => {
         ? response.data.result.filter((u) => u.id !== id)
         : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -157,6 +160,9 @@ const getGroups = async () => {
     availableGroups.value =
       response.data.groups !== null ? response.data.groups : [];
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -210,6 +216,9 @@ const sendMessage = async () => {
     });
     router.replace("/messages/" + response.data.thread.id);
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",

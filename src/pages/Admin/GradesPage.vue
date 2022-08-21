@@ -68,6 +68,9 @@ const getGrades = async () => {
     grades.value = response.data.grades !== null ? response.data.grades : [];
     loading.value = false;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",

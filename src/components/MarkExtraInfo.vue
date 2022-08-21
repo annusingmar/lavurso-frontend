@@ -183,7 +183,11 @@ const excuseAbsence = async (excuse) => {
       message: "Excusing absence succeeded",
       timeout: 3000,
     });
+    emit("refreshAbove");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -191,8 +195,6 @@ const excuseAbsence = async (excuse) => {
       timeout: 5000,
       actions: [{ label: "Dismiss", color: "white" }],
     });
-  } finally {
-    emit("refreshAbove");
   }
 };
 
@@ -217,7 +219,11 @@ const removeExcuse = async () => {
       message: "Deleting excuse succeeded",
       timeout: 3000,
     });
+    emit("refreshAbove");
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -225,8 +231,6 @@ const removeExcuse = async () => {
       timeout: 5000,
       actions: [{ label: "Dismiss", color: "white" }],
     });
-  } finally {
-    emit("refreshAbove");
   }
 };
 

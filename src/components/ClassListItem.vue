@@ -24,8 +24,11 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+
+const $q = useQuasar();
 
 const props = defineProps({
   classs: {
@@ -49,6 +52,9 @@ const getStudents = async () => {
     students.value = response.data.users !== null ? response.data.users : [];
     loading.value = false;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",

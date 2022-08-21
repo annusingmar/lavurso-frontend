@@ -70,6 +70,9 @@ const getGroups = async () => {
     groups.value = response.data.groups !== null ? response.data.groups : [];
     loading.value = false;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -91,15 +94,17 @@ const newGroup = async (val) => {
       message: "Group created successfully",
       timeout: 3000,
     });
+    getGroups();
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
       message: "Group creation failed",
       timeout: 6000,
     });
-  } finally {
-    await getGroups();
   }
 };
 

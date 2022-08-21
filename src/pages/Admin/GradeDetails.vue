@@ -76,8 +76,7 @@ const getGrade = async () => {
     grade.content = response.data.grade;
     loading.value = false;
   } catch (error) {
-    if (error.response && error.response.status == 404) {
-      router.replace("/not-found");
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
       return;
     }
     $q.notify({
@@ -128,8 +127,13 @@ const submitGrade = async () => {
     submitLoading.value = false;
     if (isCreate.value) {
       router.replace("/admin/grades");
+    } else {
+      getGrade();
     }
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
@@ -137,10 +141,6 @@ const submitGrade = async () => {
       timeout: 6000,
     });
     submitLoading.value = false;
-  } finally {
-    if (!isCreate.value) {
-      getGrade();
-    }
   }
 };
 </script>
