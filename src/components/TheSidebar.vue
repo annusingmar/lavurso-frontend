@@ -230,15 +230,9 @@ const availableLanguages = [
 
 watch(lang, () => {
   i18n.locale.value = lang.value.value;
-  if (lang.value.value === "en-US") {
-    import(`../../node_modules/quasar/lang/en-US.js`).then((l) =>
-      $q.lang.set(l.default)
-    );
-  } else if (lang.value.value === "et") {
-    import(`../../node_modules/quasar/lang/et.js`).then((l) =>
-      $q.lang.set(l.default)
-    );
-  }
+  import(`../../node_modules/quasar/lang/${lang.value.value}.mjs`).then((l) =>
+    $q.lang.set(l.default)
+  );
 });
 
 const drawerStateChange = (val) => {

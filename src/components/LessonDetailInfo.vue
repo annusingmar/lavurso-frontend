@@ -41,7 +41,7 @@ const emit = defineEmits(["refreshLesson"]);
 
 const lessonDate = computed(() => {
   const jsDate = new Date(props.lesson.date);
-  return date.formatDate(jsDate, "DD MMMM YYYY");
+  return date.formatDate(jsDate, "DD MMMM YYYY", $q.lang.date);
 });
 
 const isDescriptionEmpty = computed(

@@ -12,7 +12,9 @@
 
 <script setup>
 import { computed } from "vue";
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
+
+const $q = useQuasar();
 
 const props = defineProps({
   lesson: {
@@ -23,7 +25,7 @@ const props = defineProps({
 
 const lessonDate = computed(() => {
   const jsDate = new Date(props.lesson.date);
-  return date.formatDate(jsDate, "DD MMMM YYYY");
+  return date.formatDate(jsDate, "DD MMMM YYYY", $q.lang.date);
 });
 
 const isDescriptionEmpty = computed(

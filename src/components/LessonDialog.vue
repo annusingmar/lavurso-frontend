@@ -90,7 +90,11 @@ const lesson = reactive({});
 const popupRef = ref(null);
 const formattedDate = computed(() => {
   if (lesson.date) {
-    return date.formatDate(new Date(lesson.date), "DD. MMMM YYYY");
+    return date.formatDate(
+      new Date(lesson.date),
+      "DD. MMMM YYYY",
+      $q.lang.date
+    );
   } else {
     return "Pick a date by clicking to the right";
   }

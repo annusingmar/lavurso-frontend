@@ -82,7 +82,11 @@ const setDone = async (val) => {
 };
 
 const createdAt = computed(() =>
-  date.formatDate(props.assignment.created_at, "DD. MMM YYYY HH:mm")
+  date.formatDate(
+    props.assignment.created_at,
+    "DD. MMM YYYY HH:mm",
+    $q.lang.date
+  )
 );
 
 const updatedAt = computed(() =>
@@ -91,7 +95,11 @@ const updatedAt = computed(() =>
     new Date(props.assignment.created_at),
     "seconds"
   )
-    ? date.formatDate(props.assignment.updated_at, "DD. MMM YYYY HH:mm")
+    ? date.formatDate(
+        props.assignment.updated_at,
+        "DD. MMM YYYY HH:mm",
+        $q.lang.date
+      )
     : null
 );
 </script>

@@ -46,7 +46,11 @@ const emit = defineEmits(["refreshAssignments"]);
 
 const deadline = computed(() => {
   const deadlineDate = new Date(props.assignment.deadline);
-  let formattedDate = date.formatDate(deadlineDate, "DD. MMMM YYYY");
+  let formattedDate = date.formatDate(
+    deadlineDate,
+    "DD. MMMM YYYY",
+    $q.lang.date
+  );
   if (date.isSameDate(new Date(), deadlineDate, "date")) {
     formattedDate += " (today)";
   }

@@ -124,11 +124,19 @@ const props = defineProps({
 const emit = defineEmits(["refreshAbove"]);
 
 const createdAt = computed(() => {
-  return date.formatDate(props.mark.created_at, "DD. MMM YYYY HH:mm");
+  return date.formatDate(
+    props.mark.created_at,
+    "DD. MMM YYYY HH:mm",
+    $q.lang.date
+  );
 });
 
 const updatedAt = computed(() => {
-  return date.formatDate(props.mark.updated_at, "DD. MMM YYYY HH:mm");
+  return date.formatDate(
+    props.mark.updated_at,
+    "DD. MMM YYYY HH:mm",
+    $q.lang.date
+  );
 });
 
 const hasBeenEdited = computed(() =>
@@ -141,13 +149,17 @@ const hasBeenEdited = computed(() =>
 
 const lessonDate = computed(() =>
   props.mark.lesson && props.mark.lesson.id
-    ? date.formatDate(new Date(props.mark.lesson.date), "DD. MMM YYYY")
+    ? date.formatDate(
+        new Date(props.mark.lesson.date),
+        "DD. MMM YYYY",
+        $q.lang.date
+      )
     : null
 );
 
 const excusedAt = computed(() =>
   props.mark.excuse && props.mark.excuse.mark_id
-    ? date.formatDate(props.mark.excuse.at, "DD. MMM YYYY HH:mm")
+    ? date.formatDate(props.mark.excuse.at, "DD. MMM YYYY HH:mm", $q.lang.date)
     : null
 );
 

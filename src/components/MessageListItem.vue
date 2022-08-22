@@ -34,9 +34,11 @@
 </template>
 
 <script setup>
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+
+const $q = useQuasar();
 
 const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
@@ -47,6 +49,10 @@ const props = defineProps({
 });
 
 const formatDate = computed(() => {
-  return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
+  return date.formatDate(
+    props.msg.created_at,
+    "DD. MMM YYYY HH:mm",
+    $q.lang.date
+  );
 });
 </script>

@@ -1,9 +1,9 @@
 <template>
   <q-card>
-    <q-card-section class="q-pb-none">
+    <q-card-section class="q-pb-none q-pt-xs">
       <div class="text-h6">{{ day }}</div>
     </q-card-section>
-    <q-card-section class="q-pt-none">
+    <q-card-section class="q-pt-none q-pb-none">
       <q-list v-if="assignments.length > 0">
         <StudentAssignmentItem
           v-for="a in assignments"
@@ -18,9 +18,11 @@
 </template>
 
 <script setup>
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
 import { computed } from "vue";
 import StudentAssignmentItem from "./StudentAssignmentItem.vue";
+
+const $q = useQuasar();
 
 const props = defineProps({
   assignments: {
@@ -39,6 +41,6 @@ const props = defineProps({
 });
 
 const day = computed(() =>
-  date.formatDate(new Date(props.date), "dddd, DD. MMMM")
+  date.formatDate(new Date(props.date), "dddd, DD. MMMM", $q.lang.date)
 );
 </script>

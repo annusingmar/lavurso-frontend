@@ -203,7 +203,8 @@ const formattedDate = computed(() => {
   if (assignment.value.deadline) {
     return date.formatDate(
       new Date(assignment.value.deadline),
-      "DD. MMMM YYYY"
+      "DD. MMMM YYYY",
+      $q.lang.date
     );
   } else {
     return "Pick a date by clicking to the right";

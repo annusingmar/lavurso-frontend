@@ -30,9 +30,11 @@
 </template>
 
 <script setup>
-import { date } from "quasar";
+import { date, useQuasar } from "quasar";
 import { computed } from "vue";
 import MarkIcon from "./MarkIcon.vue";
+
+const $q = useQuasar();
 
 const props = defineProps({
   lesson: {
@@ -44,6 +46,6 @@ const props = defineProps({
 const emit = defineEmits(["refreshAbove"]);
 
 const lessonDate = computed(() =>
-  date.formatDate(new Date(props.lesson.date), "DD MMMM YYYY")
+  date.formatDate(new Date(props.lesson.date), "DD MMMM YYYY", $q.lang.date)
 );
 </script>

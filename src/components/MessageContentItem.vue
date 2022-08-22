@@ -84,7 +84,11 @@ const props = defineProps({
 const emit = defineEmits(["refreshThread"]);
 
 const createdAt = computed(() => {
-  return date.formatDate(props.msg.created_at, "DD. MMM YYYY HH:mm");
+  return date.formatDate(
+    props.msg.created_at,
+    "DD. MMM YYYY HH:mm",
+    $q.lang.date
+  );
 });
 
 const updatedAt = computed(() =>
@@ -93,7 +97,7 @@ const updatedAt = computed(() =>
     new Date(props.msg.created_at),
     "seconds"
   )
-    ? date.formatDate(props.msg.updated_at, "DD. MMM YYYY HH:mm")
+    ? date.formatDate(props.msg.updated_at, "DD. MMM YYYY HH:mm", $q.lang.date)
     : null
 );
 
