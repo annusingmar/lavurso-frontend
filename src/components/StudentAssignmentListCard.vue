@@ -2,35 +2,19 @@
   <q-card>
     <q-card-section class="q-pb-none">
       <div class="text-h6">Assignments</div>
-      <div class="row justify-end items-center">
-        <q-btn
-          v-if="showOlderButton"
-          dense
-          size="sm"
-          label="show older"
-          @click="showOlder"
-        ></q-btn>
-        <div v-else>No more to show.</div>
+      <div class="row justify-end items-center q-gutter-sm">
+        <div v-if="showingFrom">Showing from {{ showingFrom }}</div>
+        <q-btn dense size="sm" label="show older" @click="showOlder"></q-btn>
       </div>
     </q-card-section>
     <q-card-section class="q-gutter-y-sm">
       <StudentAssignmentListDayItem
-        v-for="[key, val] in sortedAssignments"
+        v-for="(a, d) in assignments"
         :id="id"
-        :key="key"
-        :date="key"
-        :assignments="val"
+        :key="d"
+        :date="d"
+        :assignments="a"
       />
-      <div class="row justify-end items-center">
-        <q-btn
-          v-if="showMoreButton"
-          dense
-          size="sm"
-          label="show more"
-          @click="showMore"
-        ></q-btn>
-        <div v-else>No more to show.</div>
-      </div>
     </q-card-section>
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-card>
@@ -46,69 +30,50 @@ import StudentAssignmentListDayItem from "./StudentAssignmentListDayItem.vue";
 const $q = useQuasar();
 const { id } = useUserStore();
 
-// i got no clue whether or not this is efficient
-// but it's the best i could come up with
-const sortedAssignments = computed(
-  () =>
-    new Map(
-      Array.from(assignments.value).sort((a, b) =>
-        date.getDateDiff(new Date(a[0]), new Date(b[0]), "date")
-      )
-    )
+const loading = ref(true);
+const assignments = ref({});
+
+const showingFrom = computed(() =>
+  currentFrom.value !== null
+    ? date.formatDate(currentFrom.value, "DD. MMM YYYY")
+    : null
 );
 
-const showOlderButton = ref(true);
-const showMoreButton = ref(true);
-
-const showOlder = async () => {
-  const [f] = sortedAssignments.value.keys();
-  const datesAdded = await getAssignments(
-    "desc",
-    date.subtractFromDate(new Date(f), { days: 1 })
-  );
-  if (datesAdded < 4) {
-    showOlderButton.value = false;
-  }
+const showOlder = () => {
+  getAssignments(oldFrom, oldUntil);
+  oldFrom = date.subtractFromDate(oldFrom, { months: 1 });
+  oldUntil = date.subtractFromDate(oldUntil, { months: 1 });
+  currentFrom.value = oldFrom;
 };
 
-const showMore = async () => {
-  const datesAdded = await getAssignments(
-    "asc",
-    date.addToDate(new Date(Array.from(sortedAssignments.value.keys()).pop()), {
-      days: 1,
-    })
-  );
-  if (datesAdded < 4) {
-    showMoreButton.value = false;
-  }
-};
+let oldFrom = date.subtractFromDate(new Date(), { months: 1 });
+let oldUntil = new Date();
+let currentFrom = ref(new Date());
 
-const loading = ref(true);
-const assignments = ref(new Map());
-const getAssignments = async (direction = "asc", startDate = new Date()) => {
+const getAssignments = async (from = new Date(), until) => {
   loading.value = true;
-  let datesAdded = 0;
+
+  let params = {
+    from: date.formatDate(from, "YYYY-MM-DD"),
+  };
+
+  if (until) {
+    params.until = date.formatDate(until, "YYYY-MM-DD");
+  }
+
   try {
     const response = await api.get("/students/" + id + "/assignments", {
-      params: {
-        start_date: date.formatDate(startDate, "YYYY-MM-DD"),
-        direction,
-        limit: 4,
-      },
+      params,
     });
-    if (response.data.assignments) {
-      response.data.assignments.forEach((a) => {
-        let date = assignments.value.get(a.deadline);
-        if (date === undefined) {
-          datesAdded += 1;
-          date = [];
-          assignments.value.set(a.deadline, date);
-        }
-        date.push(a);
-      });
+
+    if (response.data.assignments !== null) {
+      assignments.value = {
+        ...response.data.assignments,
+        ...assignments.value,
+      };
     }
+
     loading.value = false;
-    return datesAdded;
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
       return;
