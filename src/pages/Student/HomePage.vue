@@ -5,15 +5,16 @@
       style="min-height: inherit"
     >
       <div class="col-md-5 col-xs-10">
-        <div>x</div>
+        <StudentLatest></StudentLatest>
       </div>
       <div class="col-md-5 col-xs-10">
-        <StudentAssignmentListCard></StudentAssignmentListCard>
+        <StudentAssignmentList></StudentAssignmentList>
       </div>
     </div>
   </q-page>
 </template>
 
 <script setup>
-import StudentAssignmentListCard from "src/components/StudentAssignmentListCard.vue";
+import StudentAssignmentList from "src/components/StudentAssignmentList.vue";
+import StudentLatest from "../../components/StudentLatest.vue";
 </script>

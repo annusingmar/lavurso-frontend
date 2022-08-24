@@ -1,20 +1,23 @@
 <template>
   <q-card>
-    <q-card-section class="q-pb-none">
-      <div class="text-h6">Assignments</div>
-      <div class="row justify-end items-center q-gutter-sm">
-        <div v-if="showingFrom">Showing from {{ showingFrom }}</div>
-        <q-btn dense size="sm" label="show older" @click="showOlder"></q-btn>
-      </div>
+    <q-card-section class="q-pb-none row justify-end items-center q-gutter-sm">
+      <div v-if="showingFrom">Showing from {{ showingFrom }}</div>
+      <q-btn dense size="sm" label="show older" @click="showOlder"></q-btn>
     </q-card-section>
-    <q-card-section class="q-gutter-y-sm">
+    <q-card-section
+      v-if="Object.keys(assignments).length > 0"
+      class="q-gutter-y-sm"
+    >
       <StudentAssignmentListDayItem
-        v-for="(a, d) in assignments"
+        v-for="a in assignments"
         :id="id"
-        :key="d"
-        :date="d"
-        :assignments="a"
+        :key="a.date"
+        :date="a.date"
+        :assignments="a.assignments"
       />
+    </q-card-section>
+    <q-card-section v-else>
+      <div>Nothing to show</div>
     </q-card-section>
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-card>
@@ -31,7 +34,7 @@ const $q = useQuasar();
 const { id } = useUserStore();
 
 const loading = ref(true);
-const assignments = ref({});
+const assignments = ref([]);
 
 const showingFrom = computed(() =>
   currentFrom.value !== null
@@ -67,10 +70,7 @@ const getAssignments = async (from = new Date(), until) => {
     });
 
     if (response.data.assignments !== null) {
-      assignments.value = {
-        ...response.data.assignments,
-        ...assignments.value,
-      };
+      assignments.value.unshift(...response.data.assignments);
     }
 
     loading.value = false;
