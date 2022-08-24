@@ -110,6 +110,9 @@ const getAssignments = async (direction = "asc", startDate = new Date()) => {
     loading.value = false;
     return datesAdded;
   } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
     $q.notify({
       type: "negative",
       position: "top",
