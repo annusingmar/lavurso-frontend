@@ -12,10 +12,7 @@
       <q-item-label class="text-weight-bold">{{
         mark.subject.name
       }}</q-item-label>
-      <q-item-label>{{ mark.comment }}</q-item-label>
-    </q-item-section>
-    <q-item-section side top>
-      <q-item-label>{{ mark.by.name }}</q-item-label>
+      <q-item-label style="white-space: pre">{{ mark.comment }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>

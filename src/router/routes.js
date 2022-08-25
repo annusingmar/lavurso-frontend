@@ -1,3 +1,5 @@
+import { Platform } from "quasar";
+
 const routes = [
   {
     path: "/login",
@@ -126,7 +128,10 @@ const routes = [
       },
       {
         path: "student/home",
-        component: () => import("pages/Student/HomePage.vue"),
+        component: () =>
+          Platform.is.mobile
+            ? import("pages/Student/HomePageMobile.vue")
+            : import("pages/Student/HomePage.vue"),
         meta: { level: "student" },
       },
     ],
