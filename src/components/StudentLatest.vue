@@ -2,17 +2,22 @@
   <q-card>
     <q-card-section
       v-if="showFutureButton"
-      class="q-pt-sm q-pb-none row justify-end items-center"
+      class="q-pb-none q-pt-xs row justify-end items-center"
     >
       <q-btn dense size="sm" label="show future" @click="showFuture"></q-btn>
     </q-card-section>
-    <q-card-section class="q-gutter-y-sm q-pt-sm">
+    <q-card-section class="q-py-xs q-gutter-y-sm">
       <StudentLatestDayCard
         v-for="d in latest"
         :key="d.date"
         :day="d"
       ></StudentLatestDayCard>
+      <div class="row justify-end items-center q-gutter-sm">
+        <div>Showing from {{ showingFrom }}</div>
+        <q-btn dense size="sm" label="show older" @click="showOlder"></q-btn>
+      </div>
     </q-card-section>
+    <q-inner-loading :showing="loading"></q-inner-loading>
   </q-card>
 </template>
 
@@ -20,7 +25,7 @@
 import { date, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import StudentLatestDayCard from "./StudentLatestDayCard.vue";
 
 const $q = useQuasar();
@@ -35,11 +40,18 @@ const showFuture = () => {
   showFutureButton.value = false;
 };
 
-const getLatest = async (
-  from = date.subtractFromDate(new Date(), { days: 7 }),
-  until = new Date(),
-  way = "prepend"
-) => {
+const showingFrom = computed(() => date.formatDate(from.value, "DD. MMM YYYY"));
+
+let from = ref(date.subtractFromDate(new Date(), { days: 7 }));
+let until = new Date();
+
+const showOlder = () => {
+  from.value = date.subtractFromDate(from.value, { days: 7 });
+  until = date.subtractFromDate(until, { days: 7 });
+  getLatest(from.value, until, "append");
+};
+
+const getLatest = async (from, until, way = "prepend") => {
   loading.value = true;
 
   let params = {
@@ -78,5 +90,5 @@ const getLatest = async (
   }
 };
 
-getLatest();
+getLatest(from.value, until);
 </script>

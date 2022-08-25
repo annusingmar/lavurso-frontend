@@ -1,9 +1,9 @@
 <template>
-  <q-card>
-    <q-card-section class="q-pb-none q-pt-xs">
+  <q-card flat>
+    <q-card-section class="q-py-none">
       <div class="text-h6">{{ day }}</div>
     </q-card-section>
-    <q-card-section class="q-pt-none q-pb-none">
+    <q-card-section class="q-py-none">
       <q-list v-if="assignments.length > 0">
         <StudentAssignmentItem
           v-for="a in assignments"

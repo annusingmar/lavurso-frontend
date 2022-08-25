@@ -1,14 +1,14 @@
 <template>
-  <q-card>
-    <q-card-section class="q-pb-none">
+  <q-card flat>
+    <q-card-section class="q-py-none">
       <div class="text-h6">{{ dayText }}</div>
     </q-card-section>
-    <q-card-section v-if="day.marks && day.marks.length > 0" class="q-py-xs">
+    <q-card-section v-if="day.marks && day.marks.length > 0" class="q-py-none">
       <q-card flat>
         <q-card-section class="q-py-none">
           <div class="text-subtitle2">Marks</div>
         </q-card-section>
-        <q-card-section class="q-pt-xs q-pb-none">
+        <q-card-section class="q-py-none">
           <q-list separator>
             <StudentDayMarkItem
               v-for="m in day.marks"
@@ -21,13 +21,13 @@
     </q-card-section>
     <q-card-section
       v-if="day.lessons && day.lessons.length > 0"
-      class="q-py-xs"
+      class="q-py-none"
     >
       <q-card flat>
         <q-card-section class="q-py-none">
           <div class="text-subtitle2">Lessons</div>
         </q-card-section>
-        <q-card-section class="q-pt-xs q-pb-none">
+        <q-card-section class="q-py-none">
           <q-list separator>
             <StudentDayLessonItem
               v-for="l in day.lessons"

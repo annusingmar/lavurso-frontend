@@ -1,5 +1,5 @@
 <template>
-  <q-item>
+  <q-item :class="{ done: done }">
     <q-item-section avatar top>
       <q-checkbox
         :model-value="done"
@@ -103,3 +103,9 @@ const updatedAt = computed(() =>
     : null
 );
 </script>
+
+<style scoped>
+.done {
+  opacity: 0.4;
+}
+</style>

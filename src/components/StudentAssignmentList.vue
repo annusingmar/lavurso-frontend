@@ -1,12 +1,14 @@
 <template>
   <q-card>
-    <q-card-section class="q-pb-none row justify-end items-center q-gutter-sm">
+    <q-card-section
+      class="q-pb-none q-pt-xs row justify-end items-center q-gutter-sm"
+    >
       <div v-if="showingFrom">Showing from {{ showingFrom }}</div>
       <q-btn dense size="sm" label="show older" @click="showOlder"></q-btn>
     </q-card-section>
     <q-card-section
       v-if="Object.keys(assignments).length > 0"
-      class="q-gutter-y-sm"
+      class="q-py-xs q-gutter-y-sm"
     >
       <StudentAssignmentListDayItem
         v-for="a in assignments"
@@ -37,9 +39,7 @@ const loading = ref(true);
 const assignments = ref([]);
 
 const showingFrom = computed(() =>
-  currentFrom.value !== null
-    ? date.formatDate(currentFrom.value, "DD. MMM YYYY")
-    : null
+  date.formatDate(currentFrom.value, "DD. MMM YYYY")
 );
 
 const showOlder = () => {
