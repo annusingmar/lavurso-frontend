@@ -24,12 +24,17 @@
 <script setup>
 import { date, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { useUserStore } from "src/stores/user";
 import { computed, ref } from "vue";
 import StudentLatestDayCard from "./StudentLatestDayCard.vue";
 
 const $q = useQuasar();
-const { id } = useUserStore();
+
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+});
 
 const loading = ref(true);
 const showFutureButton = ref(true);
@@ -63,7 +68,7 @@ const getLatest = async (from, until, way = "prepend") => {
   }
 
   try {
-    const response = await api.get("/students/" + id + "/latest", {
+    const response = await api.get("/students/" + props.id + "/latest", {
       params,
     });
 

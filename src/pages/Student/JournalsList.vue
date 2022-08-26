@@ -1,17 +1,21 @@
 <template>
   <q-page>
     <StudentJournals
-      :id="id"
-      :name="name"
+      :id="Number(id)"
       class="q-py-lg"
       style="min-height: inherit"
+      :key="$route.fullPath"
     ></StudentJournals>
   </q-page>
 </template>
 
 <script setup>
 import StudentJournals from "src/components/StudentJournals.vue";
-import { useUserStore } from "src/stores/user";
 
-const { id, name } = useUserStore();
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+});
 </script>

@@ -6,6 +6,7 @@
 
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
+      <q-item-label v-if="caption" caption>{{ caption }}</q-item-label>
     </q-item-section>
   </q-item>
   <q-separator v-if="separator" />
@@ -21,16 +22,23 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    caption: {
+      type: String,
+      required: false,
+      default: null,
+    },
     to: {
       type: String,
-      default: "",
+      required: true,
     },
     icon: {
       type: String,
-      default: "",
+      required: false,
+      default: null,
     },
     separator: {
       type: Boolean,
+      required: false,
       default: false,
     },
   },

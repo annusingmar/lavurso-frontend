@@ -45,17 +45,20 @@ Router.beforeEach((to, from) => {
       case "teacher":
         return { path: "/teacher/journals" };
       case "student":
+        return { path: "/students/" + store.id };
       case "parent":
-        return { path: "/student/home" };
+        if (store.children && store.children.length > 0) {
+          return { path: "/students/" + store.children[0].id };
+        }
     }
   }
   switch (to.meta.level) {
     case "admin":
-      if (!store.isAdmin) {
+      if (!store.role === "admin") {
         return { path: "/access-denied" };
       }
     case "teacher":
-      if (!store.isTeacher) {
+      if (!store.role === "teacher" && !store.role === "admin") {
         return { path: "/access-denied" };
       }
   }

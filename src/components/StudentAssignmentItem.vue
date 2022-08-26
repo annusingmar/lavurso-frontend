@@ -1,9 +1,8 @@
 <template>
   <q-item :class="{ done: done }">
-    <q-item-section avatar top>
+    <q-item-section avatar top v-if="id">
       <q-checkbox
         :model-value="done"
-        :disable="!id"
         @update:model-value="setDone"
       ></q-checkbox>
     </q-item-section>

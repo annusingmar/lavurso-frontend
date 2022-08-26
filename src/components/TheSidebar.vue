@@ -54,44 +54,21 @@
         </q-item-section>
       </q-item>
       <q-separator></q-separator>
-      <DrawerListItem
-        v-for="(item, index) in menuItems"
-        :key="index"
-        :title="item.title"
-        :icon="item.icon"
-        :to="item.to"
-        :separator="item.separator"
-      ></DrawerListItem>
-      <template v-if="role === 'student'">
-        <DrawerListItem
-          v-for="(item, index) in studentMenuItems"
-          :key="index"
-          :title="item.title"
-          :icon="item.icon"
-          :to="item.to"
-          :separator="item.separator"
-        ></DrawerListItem
-      ></template>
-      <template v-if="role === 'admin' || role === 'teacher'">
-        <DrawerListItem
-          v-for="(item, index) in teacherMenuItems"
-          :key="index"
-          :title="item.title"
-          :icon="item.icon"
-          :to="item.to"
-          :separator="item.separator"
-        ></DrawerListItem>
+      <DrawerUserItems />
+      <DrawerStudentItems v-if="role === 'student'" :id="id" />
+      <template v-else-if="role === 'parent'">
+        <DrawerStudentItems
+          v-for="c in children"
+          :id="c.id"
+          :key="c.id"
+          :name="c.name"
+        ></DrawerStudentItems>
       </template>
-      <template v-if="role === 'admin'">
-        <DrawerListItem
-          v-for="(item, index) in adminMenuItems"
-          :key="index"
-          :title="item.title"
-          :icon="item.icon"
-          :to="item.to"
-          :separator="item.separator"
-        ></DrawerListItem>
-      </template>
+      <DrawerTeacherItems
+        v-if="role === 'admin' || role === 'teacher'"
+        :role="role"
+      />
+      <DrawerAdminItems v-if="role === 'admin'" />
     </q-list>
     <div
       class="row justify-center items-end absolute-bottom q-mb-sm q-gutter-x-sm"
@@ -117,13 +94,17 @@ import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { api } from "src/boot/axios.js";
 import { useRouter } from "vue-router";
-import DrawerListItem from "./DrawerListItem.vue";
+import DrawerUserItems from "./DrawerUserItems.vue";
+import DrawerStudentItems from "./DrawerStudentItems.vue";
+import DrawerTeacherItems from "./DrawerTeacherItems.vue";
+import DrawerAdminItems from "./DrawerAdminItems.vue";
 
 const $q = useQuasar();
 const router = useRouter();
 const i18n = useI18n({ useScope: "global" });
 
-const { name, role, roleName, session_id, clearUser } = useUserStore();
+const { id, name, role, roleName, session_id, children, clearUser } =
+  useUserStore();
 
 const props = defineProps({
   open: {
@@ -132,86 +113,6 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["setLeftDrawer"]);
-
-const menuItems = [
-  {
-    title: "Home",
-    icon: "home",
-    to:
-      role === "admin" || role === "teacher"
-        ? "/teacher/journals"
-        : "/student/home",
-    separator: false,
-  },
-  {
-    title: "Account",
-    icon: "settings",
-    to: "/account",
-    separator: false,
-  },
-  {
-    title: "Messages",
-    icon: "chat",
-    to: "/messages",
-    separator: true,
-  },
-];
-
-const studentMenuItems = [
-  {
-    title: "Lessons and Marks",
-    icon: "grade",
-    to: "/student/journals",
-  },
-];
-
-const teacherMenuItems = [
-  {
-    title: role === "admin" ? "Journals" : "My Journals",
-    icon: "library_books",
-    to: "/teacher/journals",
-    separator: false,
-  },
-  {
-    title: role === "admin" ? "Classes" : "My Classes",
-    icon: "class",
-    to: "/teacher/classes",
-    separator: role === "admin" ? true : false,
-  },
-];
-
-const adminMenuItems = [
-  {
-    title: "Users",
-    icon: "account_circle",
-    to: "/admin/users",
-    separator: false,
-  },
-  {
-    title: "Groups",
-    icon: "groups",
-    to: "/admin/groups",
-    separator: false,
-  },
-  {
-    title: "Classes",
-    icon: "class",
-    to: "/admin/classes",
-    separator: false,
-  },
-  {
-    title: "Grades",
-    icon: "tag",
-    to: "/admin/grades",
-    separator: false,
-  },
-  {
-    title: "Subjects",
-    icon: "format_list_numbered",
-    to: "/admin/subjects",
-    separator: false,
-  },
-];
 
 const changeDarkMode = (val) => $q.dark.set(val);
 

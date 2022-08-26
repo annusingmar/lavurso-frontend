@@ -122,17 +122,17 @@ const routes = [
       },
       // student routes
       {
-        path: "student/journals",
+        path: "students/:id/journals",
         component: () => import("pages/Student/JournalsList.vue"),
-        meta: { level: "student" },
+        props: true,
       },
       {
-        path: "student/home",
+        path: "students/:id",
         component: () =>
           Platform.is.mobile
             ? import("pages/Student/HomePageMobile.vue")
             : import("pages/Student/HomePage.vue"),
-        meta: { level: "student" },
+        props: true,
       },
     ],
   },

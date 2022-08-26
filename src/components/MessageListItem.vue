@@ -3,13 +3,9 @@
     <div class="row justify-between items-center" style="width: 100%">
       <div>
         <q-item-section avatar>
-          <q-badge
-            v-if="!msg.read"
-            color="red"
-            style="max-width: 5em"
-            class="q-mb-sm"
-            >{{ t("messages.unread") }}</q-badge
-          >
+          <q-badge v-if="!msg.read" color="red" class="q-mb-sm">{{
+            t("messages.unread")
+          }}</q-badge>
           <q-item-label>{{ msg.user.name }}</q-item-label>
           <q-item-label caption>{{ formatDate }}</q-item-label>
         </q-item-section>

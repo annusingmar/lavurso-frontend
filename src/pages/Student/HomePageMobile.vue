@@ -7,10 +7,13 @@
     style="min-height: 89vh; align-items: center"
   >
     <q-tab-panel name="latest">
-      <StudentLatest></StudentLatest>
+      <StudentLatest :id="Number(id)" :key="$route.fullPath"></StudentLatest>
     </q-tab-panel>
     <q-tab-panel name="assignments">
-      <StudentAssignmentList></StudentAssignmentList>
+      <StudentAssignmentList
+        :id="Number(id)"
+        :key="$route.fullPath"
+      ></StudentAssignmentList>
     </q-tab-panel>
   </q-tab-panels>
 
@@ -28,4 +31,11 @@ import StudentLatest from "src/components/StudentLatest.vue";
 import StudentAssignmentList from "src/components/StudentAssignmentList.vue";
 
 const tab = ref("latest");
+
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+});
 </script>

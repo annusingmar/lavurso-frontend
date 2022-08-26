@@ -12,7 +12,7 @@
     >
       <StudentAssignmentListDayItem
         v-for="a in assignments"
-        :id="id"
+        :id="userID === id ? id : null"
         :key="a.date"
         :date="a.date"
         :assignments="a.assignments"
@@ -27,13 +27,21 @@
 
 <script setup>
 import { api } from "src/boot/axios";
-import { useUserStore } from "src/stores/user";
 import { computed, ref } from "vue";
 import { useQuasar, date } from "quasar";
 import StudentAssignmentListDayItem from "./StudentAssignmentListDayItem.vue";
+import { useUserStore } from "src/stores/user";
 
 const $q = useQuasar();
-const { id } = useUserStore();
+
+const userID = useUserStore().id;
+
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+});
 
 const loading = ref(true);
 const assignments = ref([]);
@@ -65,7 +73,7 @@ const getAssignments = async (from = new Date(), until) => {
   }
 
   try {
-    const response = await api.get("/students/" + id + "/assignments", {
+    const response = await api.get("/students/" + props.id + "/assignments", {
       params,
     });
 

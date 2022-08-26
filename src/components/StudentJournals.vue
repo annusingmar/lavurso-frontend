@@ -3,7 +3,7 @@
     <div class="col-md-6 col-xs-10">
       <q-card>
         <q-card-section class="row justify-between">
-          <div class="text-h5">Journals — {{ name }}</div>
+          <div class="text-h5">{{ topText }}</div>
         </q-card-section>
         <q-card-section>
           <div v-if="journals && journals.length > 0" class="q-gutter-y-md">
@@ -28,7 +28,7 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import StudentJournalMarksItem from "src/components/StudentJournalMarksItem.vue";
 
@@ -41,9 +41,14 @@ const props = defineProps({
   },
   name: {
     type: String,
-    required: true,
+    required: false,
+    default: null,
   },
 });
+
+const topText = computed(() =>
+  props.name ? "Journals - " + props.name : "Journals"
+);
 
 const loading = ref(true);
 const journals = ref([]);

@@ -1,6 +1,6 @@
 <template>
   <div class="row main flex-center">
-    <div class="col-sm-5 col-xs-10">
+    <div class="col-sm-4 col-xs-10">
       <q-card>
         <q-card-section class="q-pb-none">
           <div class="text-h4 row justify-between">

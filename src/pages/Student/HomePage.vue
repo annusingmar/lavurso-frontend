@@ -5,10 +5,13 @@
       style="min-height: inherit"
     >
       <div class="col-md-5 col-xs-10">
-        <StudentLatest></StudentLatest>
+        <StudentLatest :id="Number(id)" :key="$route.fullPath"></StudentLatest>
       </div>
       <div class="col-md-5 col-xs-10">
-        <StudentAssignmentList></StudentAssignmentList>
+        <StudentAssignmentList
+          :id="Number(id)"
+          :key="$route.fullPath"
+        ></StudentAssignmentList>
       </div>
     </div>
   </q-page>
@@ -16,5 +19,15 @@
 
 <script setup>
 import StudentAssignmentList from "src/components/StudentAssignmentList.vue";
+import { useRoute } from "vue-router";
 import StudentLatest from "../../components/StudentLatest.vue";
+
+const route = useRoute();
+
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+});
 </script>
