@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
+import { date, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 
@@ -188,8 +188,8 @@ const removeAllSessionsPrompt = () => {
   });
 };
 
-const formatDate = (date) => {
-  return new Date(date).toLocaleString("et");
+const formatDate = (val) => {
+  return date.formatDate(new Date(val), "DD. MMMM YYYY HH:mm:ss", $q.lang.date);
 };
 
 getUserSessions();

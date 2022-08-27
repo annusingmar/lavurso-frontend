@@ -2,9 +2,9 @@
   <q-page>
     <StudentJournals
       :id="Number(id)"
+      :key="$route.fullPath"
       class="q-py-lg"
       style="min-height: inherit"
-      :key="$route.fullPath"
     ></StudentJournals>
   </q-page>
 </template>

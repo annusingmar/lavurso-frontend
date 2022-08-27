@@ -45,7 +45,9 @@ const showFuture = () => {
   showFutureButton.value = false;
 };
 
-const showingFrom = computed(() => date.formatDate(from.value, "DD. MMM YYYY"));
+const showingFrom = computed(() =>
+  date.formatDate(from.value, "DD. MMM YYYY", $q.lang.date)
+);
 
 let from = ref(date.subtractFromDate(new Date(), { days: 7 }));
 let until = new Date();

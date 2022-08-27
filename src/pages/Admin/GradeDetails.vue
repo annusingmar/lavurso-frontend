@@ -8,7 +8,7 @@
             <div v-else class="text-h4">Update Grade</div>
           </q-card-section>
           <q-card-section>
-            <q-form @submit.prevent="submitGrade" greedy>
+            <q-form greedy @submit.prevent="submitGrade">
               <q-input
                 v-model.trim="identifier"
                 filled

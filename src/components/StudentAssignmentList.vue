@@ -47,7 +47,7 @@ const loading = ref(true);
 const assignments = ref([]);
 
 const showingFrom = computed(() =>
-  date.formatDate(currentFrom.value, "DD. MMM YYYY")
+  date.formatDate(currentFrom.value, "DD. MMM YYYY", $q.lang.date)
 );
 
 const showOlder = () => {
