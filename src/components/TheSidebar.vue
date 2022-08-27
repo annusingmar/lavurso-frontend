@@ -70,20 +70,6 @@
       />
       <DrawerAdminItems v-if="role === 'admin'" />
     </q-list>
-    <div
-      class="row justify-center items-end absolute-bottom q-mb-sm q-gutter-x-sm"
-    >
-      <div>Lavurso</div>
-      <q-btn
-        href="https://github.com/annusingmar/lavurso"
-        target="_blank"
-        label="Source Code"
-        icon="build"
-        dense
-        square
-        size="sm"
-      ></q-btn>
-    </div>
   </q-drawer>
 </template>
 

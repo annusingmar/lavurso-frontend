@@ -1,6 +1,6 @@
 <template>
   <q-item :class="{ done: done }">
-    <q-item-section avatar top v-if="id">
+    <q-item-section v-if="id" avatar top>
       <q-checkbox
         :model-value="done"
         @update:model-value="setDone"
