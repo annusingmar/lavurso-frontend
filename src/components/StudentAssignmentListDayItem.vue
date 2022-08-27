@@ -4,7 +4,7 @@
       <div class="text-h6">{{ day }}</div>
     </q-card-section>
     <q-card-section class="q-py-none">
-      <q-list v-if="assignments.length > 0">
+      <q-list>
         <StudentAssignmentItem
           v-for="a in assignments"
           :id="id"
@@ -12,7 +12,6 @@
           :assignment="a"
         />
       </q-list>
-      <div v-else class="text-italic">No assignments</div>
     </q-card-section>
   </q-card>
 </template>

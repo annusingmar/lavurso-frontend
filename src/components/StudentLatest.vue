@@ -4,7 +4,12 @@
       v-if="showFutureButton"
       class="q-pb-none q-pt-xs row justify-end items-center"
     >
-      <q-btn dense size="sm" label="show future" @click="showFuture"></q-btn>
+      <q-btn
+        dense
+        size="sm"
+        :label="t('showFuture')"
+        @click="showFuture"
+      ></q-btn>
     </q-card-section>
     <q-card-section class="q-py-xs q-gutter-y-sm">
       <StudentLatestDayCard
@@ -13,8 +18,13 @@
         :day="d"
       ></StudentLatestDayCard>
       <div class="row justify-end items-center q-gutter-sm">
-        <div>Showing from {{ showingFrom }}</div>
-        <q-btn dense size="sm" label="show older" @click="showOlder"></q-btn>
+        <div>{{ t("showingFrom") }} {{ showingFrom }}</div>
+        <q-btn
+          dense
+          size="sm"
+          :label="t('showOlder')"
+          @click="showOlder"
+        ></q-btn>
       </div>
     </q-card-section>
     <q-inner-loading :showing="loading"></q-inner-loading>
@@ -25,9 +35,11 @@
 import { date, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import StudentLatestDayCard from "./StudentLatestDayCard.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   id: {
@@ -90,9 +102,9 @@ const getLatest = async (from, until, way = "prepend") => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

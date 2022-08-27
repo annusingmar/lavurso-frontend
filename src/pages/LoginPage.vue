@@ -26,9 +26,9 @@
           <q-card-section class="q-pb-none">
             <q-input
               v-model="email"
-              label="Email"
+              :label="t('email')"
               :rules="[
-                (val) => val.length > 0 || 'Must not be empty',
+                (val) => val.length > 0 || t('mustNotBeEmpty'),
                 validateEmail,
               ]"
               lazy-rules
@@ -36,16 +36,21 @@
             ></q-input>
             <q-input
               v-model="password"
-              label="Password"
+              :label="t('password')"
               type="password"
-              :rules="[(val) => val.length > 0 || 'Must not be empty']"
+              :rules="[(val) => val.length > 0 || t('mustNotBeEmpty')]"
               lazy-rules
               outlined
               class="q-mt-sm"
             ></q-input>
           </q-card-section>
-          <q-card-actions align="right">
-            <q-btn color="primary" label="login" type="submit"></q-btn>
+          <q-card-actions class="row justify-between">
+            <LanguagePicker class="q-ml-md" />
+            <q-btn
+              color="primary"
+              :label="t('login.login')"
+              type="submit"
+            ></q-btn>
           </q-card-actions>
         </q-form>
         <q-inner-loading :showing="loading"></q-inner-loading>
@@ -59,15 +64,18 @@ import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useUserStore } from "src/stores/user";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import LanguagePicker from "src/components/LanguagePicker.vue";
 
 const router = useRouter();
 const userStore = useUserStore();
+const { t } = useI18n({ useScope: "global" });
 
 const validateEmail = (email) => {
   const re =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-  return re.test(email) || "Invalid email";
+  return re.test(email) || t("invalidEmail");
 };
 
 const props = defineProps({
@@ -98,9 +106,9 @@ const submitLogin = async () => {
     formRef.value.resetValidation();
     password.value = "";
     if (error.response && error.response.status == 403) {
-      errorText.value = "Invalid email or password";
+      errorText.value = t("login.incorrectEmailPassword");
     } else {
-      errorText.value = "Logging in failed, please try again later";
+      errorText.value = t("login.loginFailed");
     }
   } finally {
     loading.value = false;

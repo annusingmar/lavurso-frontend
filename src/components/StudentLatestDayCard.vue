@@ -6,7 +6,7 @@
     <q-card-section v-if="day.marks && day.marks.length > 0" class="q-py-none">
       <q-card flat>
         <q-card-section class="q-py-none">
-          <div class="text-subtitle2">Marks</div>
+          <div class="text-subtitle2">{{ t("learning.mark_s") }}</div>
         </q-card-section>
         <q-card-section class="q-py-none">
           <q-list separator>
@@ -25,7 +25,7 @@
     >
       <q-card flat>
         <q-card-section class="q-py-none">
-          <div class="text-subtitle2">Lessons</div>
+          <div class="text-subtitle2">{{ t("learning.lessons") }}</div>
         </q-card-section>
         <q-card-section class="q-py-none">
           <q-list separator>
@@ -44,10 +44,12 @@
 <script setup>
 import { date, useQuasar } from "quasar";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import StudentDayLessonItem from "./StudentDayLessonItem.vue";
 import StudentDayMarkItem from "./StudentDayMarkItem.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   day: {

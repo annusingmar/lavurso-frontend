@@ -6,7 +6,7 @@
           <div class="text-subtitle2">{{ msg.user.name }}</div>
           <div class="text-caption">{{ createdAt }}</div>
           <div v-if="updatedAt" class="text-caption">
-            {{ t("messages.edited") }} {{ updatedAt }}
+            {{ t("edited") }} {{ updatedAt }}
           </div>
           <div v-if="msg.user.id === id" class="row q-col-gutter-x-md">
             <div

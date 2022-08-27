@@ -7,9 +7,9 @@
         class="text-teal-8"
         @click="courseLessonsDialog"
       >
-        {{ course }}. course
+        {{ course }}. {{ t("learning.course") }}
       </div>
-      <div v-else>Summary</div>
+      <div v-else>{{ t("learning.summary") }}</div>
     </div>
     <div class="col-grow row justify-between">
       <div class="row q-gutter-x-sm">
@@ -39,10 +39,12 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import StudentCourseLessonsDialog from "./StudentCourseLessonsDialog.vue";
 import MarkIcon from "./MarkIcon.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   journalId: {

@@ -8,7 +8,7 @@
       >
         {{ lesson.description }}
       </div>
-      <div v-else class="text-italic">No description</div>
+      <div v-else class="text-italic">{{ t("learning.noDescription") }}</div>
     </q-item-section>
     <q-item-section
       v-if="lesson.marks && lesson.marks.length > 0"
@@ -32,9 +32,11 @@
 <script setup>
 import { date, useQuasar } from "quasar";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
 import MarkIcon from "./MarkIcon.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   lesson: {
@@ -46,6 +48,6 @@ const props = defineProps({
 const emit = defineEmits(["refreshAbove"]);
 
 const lessonDate = computed(() =>
-  date.formatDate(new Date(props.lesson.date), "DD MMMM YYYY", $q.lang.date)
+  date.formatDate(new Date(props.lesson.date), "DD. MMMM YYYY", $q.lang.date)
 );
 </script>

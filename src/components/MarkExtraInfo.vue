@@ -6,22 +6,22 @@
       <q-separator />
 
       <div class="row justify-between q-mt-sm">
-        <span class="q-mr-sm">Teacher</span>
+        <span class="q-mr-sm">{{ t("learning.teacher") }}</span>
         <span>{{ mark.by.name }}</span>
       </div>
 
       <div class="row justify-between">
-        <span class="q-mr-sm">Added</span>
+        <span class="q-mr-sm">{{ t("added") }}</span>
         <span>{{ createdAt }}</span>
       </div>
 
       <div v-if="hasBeenEdited" class="row justify-between">
-        <span class="q-mr-sm">Edited</span>
+        <span class="q-mr-sm">{{ t("edited") }}</span>
         <span>{{ updatedAt }}</span>
       </div>
 
       <div v-if="mark.comment && mark.comment.trim() !== ''">
-        <div>Comment:</div>
+        <div>{{ t("learning.comment") }}:</div>
         <div>
           <q-field filled dense readonly>
             <template #control>
@@ -33,9 +33,13 @@
         </div>
       </div>
 
-      <q-expansion-item v-if="lessonDate && showLesson" dense label="Lesson">
+      <q-expansion-item
+        v-if="lessonDate && showLesson"
+        dense
+        :label="t('learning.lesson')"
+      >
         <div class="row justify-between">
-          <span class="q-mr-sm">Date</span>
+          <span class="q-mr-sm">{{ t("date") }}</span>
           <span>{{ lessonDate }}</span>
         </div>
         <div
@@ -43,7 +47,7 @@
             mark.lesson.description && mark.lesson.description.trim() !== ''
           "
         >
-          <div>Description:</div>
+          <div>{{ t("description") }}:</div>
           <div>
             <q-field filled dense readonly>
               <template #control>
@@ -59,7 +63,7 @@
       <q-expansion-item
         v-if="mark.excuse && mark.excuse.mark_id"
         dense
-        label="Excuse"
+        :label="t('learning.excuse')"
       >
         <q-field filled dense readonly>
           <template #control>
@@ -69,18 +73,18 @@
           </template>
         </q-field>
         <div class="row justify-between q-mt-sm">
-          <span class="q-mr-sm">By</span>
+          <span class="q-mr-sm">{{ t("learning.excuser") }}</span>
           <span>{{ mark.excuse.by.name }}</span>
         </div>
         <div class="row justify-between">
-          <span class="q-mr-sm">At</span>
+          <span class="q-mr-sm">{{ t("date") }}</span>
           <span>{{ excusedAt }}</span>
         </div>
 
         <q-btn
           v-if="canExcuse"
           color="negative"
-          label="remove excuse"
+          :label="t('learning.removeExcuse')"
           class="q-mt-sm"
           style="width: 100%"
           @click="removeExcusePrompt"
@@ -89,7 +93,7 @@
       <q-btn
         v-else-if="mark.type === 'absent' && canExcuse"
         color="primary"
-        label="excuse"
+        :label="t('learning.excuseAbsence')"
         class="q-mt-sm"
         style="width: 100%"
         rounded
@@ -104,8 +108,10 @@
 import { date, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
+import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 
+const { t } = useI18n({ useScope: "global" });
 const { role } = useUserStore();
 
 const $q = useQuasar();
@@ -166,23 +172,23 @@ const excusedAt = computed(() =>
 const markDisplayType = computed(() => {
   switch (props.mark.type) {
     case "lesson_grade":
-      return "Lesson Grade";
+      return t("learning.marks.lessonGrade");
     case "course_grade":
-      return "Course Grade";
+      return t("learning.marks.courseGrade");
     case "subject_grade":
-      return "Subject Grade";
+      return t("learning.marks.subjectGrade");
     case "not_done":
-      return "Not Done";
+      return t("learning.marks.notDone");
     case "notice_good":
-      return "Notice (Good)";
+      return t("learning.marks.noticeGood");
     case "notice_neutral":
-      return "Notice (Neutral)";
+      return t("learning.marks.noticeNeutral");
     case "notice_bad":
-      return "Notice (Bad)";
+      return t("learning.marks.noticeBad");
     case "absent":
-      return "Absent";
+      return t("learning.marks.absent");
     case "late":
-      return "Late";
+      return t("learning.marks.late");
     default:
       return null;
   }
@@ -195,12 +201,6 @@ const excuseAbsence = async (excuse) => {
     await api.post("/absences/" + props.mark.id + "/excuse", {
       excuse,
     });
-    $q.notify({
-      type: "positive",
-      position: "top",
-      message: "Excusing absence succeeded",
-      timeout: 3000,
-    });
     emit("refreshAbove");
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
@@ -209,16 +209,16 @@ const excuseAbsence = async (excuse) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Excusing absence failed",
+      message: t("learning.excusingAbsenceFailed"),
       timeout: 5000,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
 
 const excuseAbsenceDialog = () => {
   $q.dialog({
-    title: "Excuse absence",
+    title: t("learning.excuseAbsence"),
     prompt: {
       model: "",
       isValid: (val) => val.trim() !== "",
@@ -231,12 +231,6 @@ const excuseAbsenceDialog = () => {
 const removeExcuse = async () => {
   try {
     await api.delete("/absences/" + props.mark.id + "/excuse");
-    $q.notify({
-      type: "positive",
-      position: "top",
-      message: "Deleting excuse succeeded",
-      timeout: 3000,
-    });
     emit("refreshAbove");
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
@@ -245,7 +239,7 @@ const removeExcuse = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Deleting excuse failed",
+      message: t("learning.removingExcuseFailed"),
       timeout: 5000,
       actions: [{ label: "Dismiss", color: "white" }],
     });
@@ -254,8 +248,8 @@ const removeExcuse = async () => {
 
 const removeExcusePrompt = () => {
   $q.dialog({
-    title: "Confirm",
-    message: "Are you sure you want to remove this excuse?",
+    title: t("confirm"),
+    message: t("learning.removingExcuseConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {

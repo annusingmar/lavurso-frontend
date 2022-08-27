@@ -1,5 +1,5 @@
 <template>
-  <q-item :class="{ done: done }">
+  <q-item :class="{ done: done && id }">
     <q-item-section v-if="id" avatar top>
       <q-checkbox
         :model-value="done"
@@ -11,9 +11,13 @@
         <q-badge
           v-if="assignment.type === 'test'"
           color="orange"
-          label="TEST"
+          :label="t('learning.assignments.test_label')"
         ></q-badge>
-        <q-badge v-else color="blue" label="HOMEWORK"></q-badge>
+        <q-badge
+          v-else
+          color="blue"
+          :label="t('learning.assignments.homework_label')"
+        ></q-badge>
         <div class="text-weight-bold">{{ assignment.subject.name }}</div>
       </div>
       <q-item-label class="q-mt-sm" style="white-space: pre">{{
@@ -23,8 +27,8 @@
     <q-item-section side top>
       <q-icon name="schedule" size="xs">
         <q-tooltip>
-          <div>Added at {{ createdAt }}</div>
-          <div v-if="updatedAt">Edited at {{ updatedAt }}</div>
+          <div>{{ t("added") }} {{ createdAt }}</div>
+          <div v-if="updatedAt">{{ t("edited") }} {{ updatedAt }}</div>
         </q-tooltip>
       </q-icon>
     </q-item-section>
@@ -35,8 +39,10 @@
 import { date, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   assignment: {
     type: Object,
@@ -74,7 +80,7 @@ const setDone = async (val) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Setting assignment done status failed",
+      message: t("savingFailed"),
       timeout: 6000,
     });
   }

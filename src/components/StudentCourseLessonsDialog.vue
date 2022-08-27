@@ -2,7 +2,9 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
       <q-card-section class="row items-center justify-between q-pb-sm">
-        <div class="text-h6">Lessons: {{ course }}. course</div>
+        <div class="text-h6">
+          {{ t("learning.lessons") }}: {{ course }}. {{ t("learning.course") }}
+        </div>
         <q-btn icon="close" flat round dense @click="closeDialog"></q-btn>
       </q-card-section>
       <q-card-section>
@@ -24,8 +26,10 @@
 import { useDialogPluginComponent, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import StudentCourseLessonsListItem from "./StudentCourseLessonsListItem.vue";
 
+const { t } = useI18n({ useScope: "global" });
 const $q = useQuasar();
 
 defineEmits([...useDialogPluginComponent.emits]);
@@ -73,9 +77,9 @@ const getLessons = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

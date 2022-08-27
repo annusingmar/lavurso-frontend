@@ -43,14 +43,7 @@
           <q-item-label>Language</q-item-label>
         </q-item-section>
         <q-item-section avatar>
-          <q-select
-            v-model="lang"
-            :options="availableLanguages"
-            dense
-            borderless
-            options-dense
-            map-options
-          ></q-select>
+          <LanguagePicker />
         </q-item-section>
       </q-item>
       <q-separator></q-separator>
@@ -76,18 +69,17 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { useUserStore } from "../stores/user.js";
-import { ref, watch } from "vue";
-import { useI18n } from "vue-i18n";
+import { ref } from "vue";
 import { api } from "src/boot/axios.js";
 import { useRouter } from "vue-router";
 import DrawerUserItems from "./DrawerUserItems.vue";
 import DrawerStudentItems from "./DrawerStudentItems.vue";
 import DrawerTeacherItems from "./DrawerTeacherItems.vue";
 import DrawerAdminItems from "./DrawerAdminItems.vue";
+import LanguagePicker from "./LanguagePicker.vue";
 
 const $q = useQuasar();
 const router = useRouter();
-const i18n = useI18n({ useScope: "global" });
 
 const { id, name, role, roleName, session_id, children, clearUser } =
   useUserStore();
@@ -101,26 +93,6 @@ const props = defineProps({
 const emit = defineEmits(["setLeftDrawer"]);
 
 const changeDarkMode = (val) => $q.dark.set(val);
-
-const lang = ref(i18n.locale.value);
-
-const availableLanguages = [
-  {
-    label: "eesti",
-    value: "et",
-  },
-  {
-    label: "English",
-    value: "en-US",
-  },
-];
-
-watch(lang, () => {
-  i18n.locale.value = lang.value.value;
-  import(`../../node_modules/quasar/lang/${lang.value.value}.mjs`).then((l) =>
-    $q.lang.set(l.default)
-  );
-});
 
 const drawerStateChange = (val) => {
   emit("setLeftDrawer", val);

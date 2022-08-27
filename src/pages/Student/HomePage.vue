@@ -19,10 +19,7 @@
 
 <script setup>
 import StudentAssignmentList from "src/components/StudentAssignmentList.vue";
-import { useRoute } from "vue-router";
 import StudentLatest from "../../components/StudentLatest.vue";
-
-const route = useRoute();
 
 const props = defineProps({
   id: {

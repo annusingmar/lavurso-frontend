@@ -3,8 +3,8 @@
     <q-card-section
       class="q-pb-none q-pt-xs row justify-end items-center q-gutter-sm"
     >
-      <div v-if="showingFrom">Showing from {{ showingFrom }}</div>
-      <q-btn dense size="sm" label="show older" @click="showOlder"></q-btn>
+      <div v-if="showingFrom">{{ t("showingFrom") }} {{ showingFrom }}</div>
+      <q-btn dense size="sm" :label="t('showOlder')" @click="showOlder"></q-btn>
     </q-card-section>
     <q-card-section
       v-if="Object.keys(assignments).length > 0"
@@ -19,7 +19,7 @@
       />
     </q-card-section>
     <q-card-section v-else>
-      <div>Nothing to show</div>
+      <div>{{ t("nothingToShow") }}</div>
     </q-card-section>
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-card>
@@ -29,10 +29,12 @@
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
 import { useQuasar, date } from "quasar";
-import StudentAssignmentListDayItem from "./StudentAssignmentListDayItem.vue";
+import { useI18n } from "vue-i18n";
 import { useUserStore } from "src/stores/user";
+import StudentAssignmentListDayItem from "./StudentAssignmentListDayItem.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const userID = useUserStore().id;
 
@@ -89,9 +91,9 @@ const getAssignments = async (from = new Date(), until) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

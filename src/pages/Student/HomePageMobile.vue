@@ -20,17 +20,19 @@
   <q-separator></q-separator>
 
   <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
-    <q-tab name="latest" label="Latest"></q-tab>
-    <q-tab name="assignments" label="Assignments"></q-tab>
+    <q-tab name="latest" :label="t('learning.latest')"></q-tab>
+    <q-tab name="assignments" :label="t('learning.assignments')"></q-tab>
   </q-tabs>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import StudentLatest from "src/components/StudentLatest.vue";
 import StudentAssignmentList from "src/components/StudentAssignmentList.vue";
 
 const tab = ref("latest");
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   id: {

@@ -15,12 +15,15 @@
         @refresh-above="emit('refreshAbove')"
       ></StudentCourseItem>
     </q-card-section>
-    <q-card-section v-else>No courses found</q-card-section>
+    <q-card-section v-else>{{ t("learning.noCoursesFound") }}</q-card-section>
   </q-card>
 </template>
 
 <script setup>
 import StudentCourseItem from "./StudentCourseItem.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   studentId: {
     type: Number,

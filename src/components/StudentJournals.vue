@@ -16,7 +16,9 @@
             ></StudentJournalMarksItem>
           </div>
           <q-card v-else-if="!loading">
-            <q-card-section><div>No journals found</div></q-card-section>
+            <q-card-section
+              ><div>{{ t("learning.noJournalsFound") }}</div></q-card-section
+            >
           </q-card>
         </q-card-section>
         <q-inner-loading :showing="loading"></q-inner-loading>
@@ -29,11 +31,11 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import StudentJournalMarksItem from "src/components/StudentJournalMarksItem.vue";
 
 const $q = useQuasar();
-const router = useRouter();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: Number,
@@ -47,7 +49,9 @@ const props = defineProps({
 });
 
 const topText = computed(() =>
-  props.name ? "Journals - " + props.name : "Journals"
+  props.name
+    ? `${t("learning.journals")} - ` + props.name
+    : t("learning.journals")
 );
 
 const loading = ref(true);
@@ -67,9 +71,9 @@ const getJournals = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
