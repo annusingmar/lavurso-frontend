@@ -3,8 +3,12 @@
     <q-card class="q-dialog-plugin" style="width: 100%">
       <q-card-section>
         <div class="row justify-between">
-          <div v-if="type === 'lesson'" class="text-h5">Lesson Grades</div>
-          <div v-else-if="type === 'course'" class="text-h5">Course Grades</div>
+          <div v-if="type === 'lesson'" class="text-h5">
+            {{ t("learning.marks.lessonGrades") }}
+          </div>
+          <div v-else-if="type === 'course'" class="text-h5">
+            {{ t("learning.marks.courseGrades") }}
+          </div>
           <q-btn flat round dense icon="close" @click="cancelClicked"></q-btn>
         </div>
       </q-card-section>
@@ -15,7 +19,7 @@
           :editable="false"
           :extra-info="true"
         ></StudentsMarksList>
-        <div v-else-if="!loading">No students in journal.</div>
+        <div v-else-if="!loading">{{ t("learning.noStudentsInJournal") }}</div>
       </q-card-section>
       <q-inner-loading :showing="loading"></q-inner-loading>
     </q-card>
@@ -26,9 +30,11 @@
 import { useDialogPluginComponent, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import StudentsMarksList from "./StudentsMarksList.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 defineEmits([...useDialogPluginComponent.emits]);
 
@@ -80,9 +86,9 @@ const getGrades = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

@@ -6,9 +6,11 @@
           <q-card-section>
             <div class="row justify-between">
               <div v-if="!archived" class="text-h4 q-mr-sm">
-                Active Journals
+                {{ t("learning.journals") }}
               </div>
-              <div v-else class="text-h4 q-mr-sm">Archived Journals</div>
+              <div v-else class="text-h4 q-mr-sm">
+                {{ t("learning.archivedJournals") }}
+              </div>
               <div class="q-gutter-x-md">
                 <q-btn
                   :label="archivedButtonLabel"
@@ -17,7 +19,7 @@
                 ></q-btn>
                 <q-btn
                   v-if="!archived"
-                  label="new"
+                  :label="t('new')"
                   to="/teacher/journals/new"
                   color="primary"
                 ></q-btn>
@@ -32,7 +34,7 @@
                 :journal="journal"
               ></JournalListItem>
             </q-list>
-            <div v-else-if="!loading">No journals found.</div>
+            <div v-else-if="!loading">{{ t("learning.noJournalsFound") }}</div>
           </q-card-section>
           <q-inner-loading :showing="loading"></q-inner-loading>
         </q-card>
@@ -46,10 +48,11 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
 import { computed, ref } from "vue";
-
+import { useI18n } from "vue-i18n";
 import JournalListItem from "src/components/JournalListItem.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const { id, role } = useUserStore();
 
 const archived = ref(false);
@@ -57,6 +60,7 @@ const archived = ref(false);
 const loading = ref(true);
 const journals = ref([]);
 const getJournals = async () => {
+  journals.value = [];
   const endpoint =
     role === "admin"
       ? "/journals?archived=" + archived.value
@@ -74,9 +78,9 @@ const getJournals = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -87,7 +91,7 @@ const toggleArchived = () => {
 };
 
 const archivedButtonLabel = computed(() =>
-  archived.value ? "Active Journals" : "Archived Journals"
+  archived.value ? t("learning.activeJournals") : t("learning.archivedJournals")
 );
 
 getJournals();

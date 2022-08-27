@@ -7,7 +7,7 @@
       :disabled="course < 2"
       @click="$emit('changeCourse', 'down')"
     ></q-btn>
-    <div class="text-h4">{{ course }}. course</div>
+    <div class="text-h4">{{ course }}. {{ t("learning.course") }}</div>
     <q-btn
       square
       color="primary"
@@ -22,19 +22,20 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "JournalCourseDisplay",
-  props: {
-    journal: {
-      type: Object,
-      required: true,
-    },
-    course: {
-      type: Number,
-      required: true,
-    },
+<script setup>
+import { useI18n } from "vue-i18n";
+const { t } = useI18n({ useScope: "global" });
+
+const props = defineProps({
+  journal: {
+    type: Object,
+    required: true,
   },
-  emits: ["changeCourse"],
-};
+  course: {
+    type: Number,
+    required: true,
+  },
+});
+
+const emit = defineEmits(["changeCourse"]);
 </script>

@@ -10,9 +10,13 @@
         <q-badge
           v-if="assignment.type === 'test'"
           color="orange"
-          label="TEST"
+          :label="t('learning.assignments.test_label')"
         ></q-badge>
-        <q-badge v-else color="blue" label="HOMEWORK"></q-badge>
+        <q-badge
+          v-else
+          color="blue"
+          :label="t('learning.assignments.homework_label')"
+        ></q-badge>
         <q-item-label>
           {{ deadline }}
         </q-item-label>
@@ -27,9 +31,11 @@
 <script setup>
 import { computed } from "vue";
 import { date, useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 import AssignmentDialog from "./AssignmentDialog.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   assignment: {
@@ -52,7 +58,7 @@ const deadline = computed(() => {
     $q.lang.date
   );
   if (date.isSameDate(new Date(), deadlineDate, "date")) {
-    formattedDate += " (today)";
+    formattedDate += ` (${t("today")})`;
   }
   return formattedDate;
 });

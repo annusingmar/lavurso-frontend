@@ -1,11 +1,14 @@
 <template>
   <q-page>
     <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
-      <q-tab name="courses" label="Courses"></q-tab>
-      <q-tab name="assignments" label="assignments"></q-tab>
-      <q-tab name="students" label="Students"></q-tab>
-      <q-tab name="subject_grades" label="subject grades"></q-tab>
-      <q-tab name="general" label="general"></q-tab>
+      <q-tab name="courses" :label="t('learning.courses')"></q-tab>
+      <q-tab name="assignments" :label="t('learning.assignment_s')"></q-tab>
+      <q-tab name="students" :label="t('learning.students')"></q-tab>
+      <q-tab
+        name="subject_grades"
+        :label="t('learning.marks.subjectGrades')"
+      ></q-tab>
+      <q-tab name="general" :label="t('general')"></q-tab>
     </q-tabs>
 
     <q-separator />
@@ -56,6 +59,7 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import JournalGeneral from "./JournalGeneral.vue";
 import JournalStudents from "./JournalStudents.vue";
 import JournalCourses from "./JournalCourses.vue";
@@ -63,6 +67,7 @@ import JournalSubjectGrades from "./JournalSubjectGrades.vue";
 import JournalAssignments from "./JournalAssignments.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: String,
@@ -87,9 +92,9 @@ const getJournal = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

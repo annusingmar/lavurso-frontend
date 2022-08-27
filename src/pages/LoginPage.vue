@@ -28,7 +28,7 @@
               v-model="email"
               :label="t('email')"
               :rules="[
-                (val) => val.length > 0 || t('mustNotBeEmpty'),
+                (val) => val.length > 0 || t('mandatoryField'),
                 validateEmail,
               ]"
               lazy-rules
@@ -38,7 +38,7 @@
               v-model="password"
               :label="t('password')"
               type="password"
-              :rules="[(val) => val.length > 0 || t('mustNotBeEmpty')]"
+              :rules="[(val) => val.length > 0 || t('mandatoryField')]"
               lazy-rules
               outlined
               class="q-mt-sm"

@@ -15,7 +15,7 @@
             >
               <q-btn
                 color="negative"
-                :label="t('messages.delete')"
+                :label="t('delete')"
                 size="sm"
                 :loading="deleteMessageLoading"
                 @click="deleteMessagePrompt"

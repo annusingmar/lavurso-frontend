@@ -17,7 +17,7 @@
     </q-item-section>
     <q-item-section v-if="editable" side>
       <q-btn flat round icon="add_circle" @click="addMark">
-        <q-tooltip>Add a mark</q-tooltip>
+        <q-tooltip>{{ t("learning.marks.addAMark") }}</q-tooltip>
       </q-btn>
     </q-item-section>
   </q-item>
@@ -25,10 +25,12 @@
 
 <script setup>
 import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 import MarkDialog from "./MarkDialog.vue";
 import MarkIcon from "./MarkIcon.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   student: {
     type: Object,

@@ -2,12 +2,16 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
       <q-card-section>
-        <div v-if="!isUpdateDialog" class="text-h5">Create Assignment</div>
+        <div v-if="!isUpdateDialog" class="text-h5">
+          {{ t("learning.assignments.createAssignment") }}
+        </div>
         <div v-else class="row justify-between items-center">
-          <div class="text-h5">Update Assignment</div>
+          <div class="text-h5">
+            {{ t("learning.assignments.updateAssignment") }}
+          </div>
           <q-btn
             color="negative"
-            label="delete"
+            :label="t('delete')"
             :loading="deleteLoading"
             @click="deleteAssignmentPrompt"
           ></q-btn>
@@ -18,12 +22,17 @@
           v-model="assignment.type"
           filled
           :options="assignmentTypes"
-          label="Assignment Type"
+          :label="t('learning.assignments.assignmentType')"
         ></q-select>
-        <q-input filled readonly :model-value="formattedDate" label="Deadline">
+        <q-input
+          filled
+          readonly
+          :model-value="formattedDate"
+          :label="t('learning.assignments.deadline')"
+        >
           <template #append>
             <q-icon name="event" class="cursor-pointer">
-              <q-tooltip>Pick a date</q-tooltip>
+              <q-tooltip>{{ t("pickADate") }}</q-tooltip>
               <q-popup-proxy ref="popupRef" cover>
                 <q-date
                   v-model="assignment.deadline"
@@ -42,18 +51,18 @@
           v-model="assignment.description"
           filled
           autogrow
-          label="Description"
+          :label="t('description')"
         ></q-input>
       </q-card-section>
       <q-card-actions align="right">
         <q-btn
           color="primary"
-          label="Save"
+          :label="t('save')"
           :loading="saveLoading"
           :disabled="saveButtonDisabled"
           @click="saveClicked"
         ></q-btn>
-        <q-btn label="cancel" @click="cancelClicked"></q-btn>
+        <q-btn :label="t('cancel')" @click="cancelClicked"></q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -63,8 +72,10 @@
 import { useDialogPluginComponent, useQuasar, date } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 defineEmits([...useDialogPluginComponent.emits]);
 
@@ -103,11 +114,11 @@ const popupRef = ref(null);
 const assignment = ref({});
 const assignmentTypes = [
   {
-    label: "Homework",
+    label: t("learning.assignments.homework"),
     value: "homework",
   },
   {
-    label: "Test",
+    label: t("learning.assignments.test"),
     value: "test",
   },
 ];
@@ -136,7 +147,7 @@ const submitAssignment = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Saving assignment succeeded",
+      message: t("learning.assignments.savingAssignmentSucceeded"),
       timeout: 3000,
     });
     saveLoading.value = false;
@@ -147,9 +158,9 @@ const submitAssignment = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Saving assignment failed",
+      message: t("learning.assignments.savingAssignmentFailed"),
       timeout: 5000,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
     saveLoading.value = false;
     throw new Error();
@@ -164,7 +175,7 @@ const deleteAssignment = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Deleting assignment succeeded",
+      message: t("learning.assignments.deletingAssignmentSucceeded"),
       timeout: 3000,
     });
     deleteLoading.value = false;
@@ -175,9 +186,9 @@ const deleteAssignment = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Deleting assignment failed",
+      message: t("learning.assignments.deletingAssignmentFailed"),
       timeout: 5000,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
     deleteLoading.value = false;
     throw new Error();
@@ -186,8 +197,8 @@ const deleteAssignment = async () => {
 
 const deleteAssignmentPrompt = () => {
   $q.dialog({
-    title: "Confirm",
-    message: "Are you sure you want to delete this assignment?",
+    title: t("confirm"),
+    message: t("learning.assignments.deletingAssignmentConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {
@@ -207,7 +218,7 @@ const formattedDate = computed(() => {
       $q.lang.date
     );
   } else {
-    return "Pick a date by clicking to the right";
+    return t("pickADateRight");
   }
 });
 

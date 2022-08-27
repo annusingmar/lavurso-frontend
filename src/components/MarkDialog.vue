@@ -2,12 +2,14 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
       <q-card-section>
-        <div v-if="!isUpdateDialog" class="text-h5">Add Mark</div>
+        <div v-if="!isUpdateDialog" class="text-h5">
+          {{ t("learning.marks.addAMark") }}
+        </div>
         <div v-else class="row justify-between items-center">
-          <div class="text-h5">Update Mark</div>
+          <div class="text-h5">{{ t("learning.marks.updateMark") }}</div>
           <q-btn
             color="negative"
-            label="delete"
+            :label="t('delete')"
             :loading="deleteLoading"
             @click="deleteMarkPrompt"
           ></q-btn>
@@ -20,8 +22,8 @@
             v-model="mark.type"
             filled
             :options="markTypes"
-            label="Mark Type"
-            :rules="[(val) => val || 'Must be chosen']"
+            :label="t('learning.marks.markType')"
+            :rules="[(val) => val || t('mandatoryField')]"
             :disable="
               isUpdateDialog ||
               props.type === 'course' ||
@@ -34,28 +36,28 @@
             v-model="mark.grade"
             filled
             :options="grades"
-            label="Grade"
+            :label="t('learning.marks.grade')"
             option-value="id"
             option-label="identifier"
-            :rules="[(val) => val || 'Must be chosen']"
+            :rules="[(val) => val || t('mandatoryField')]"
             @filter="gradeFilter"
           ></q-select>
           <q-input
             v-model="mark.comment"
             filled
             autogrow
-            label="Comment (optional)"
+            :label="t('learning.marks.commentOptional')"
           ></q-input>
         </div>
       </q-card-section>
       <q-card-actions align="right">
         <q-btn
           color="primary"
-          label="Save"
+          :label="t('save')"
           :loading="saveLoading"
           @click="saveClicked"
         ></q-btn>
-        <q-btn label="cancel" @click="cancelClicked"></q-btn>
+        <q-btn :label="t('cancel')" @click="cancelClicked"></q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -64,9 +66,11 @@
 <script setup>
 import { useDialogPluginComponent, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
+import { useI18n } from "vue-i18n";
 import { computed, reactive, ref } from "vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   student: {
     type: Object,
@@ -123,31 +127,31 @@ const mark = reactive({});
 
 const markTypes = [
   {
-    label: "Grade",
+    label: t("learning.marks.grade"),
     value: "grade",
   },
   {
-    label: "Not done",
+    label: t("learning.marks.notDone"),
     value: "not_done",
   },
   {
-    label: "Notice (Good)",
+    label: t("learning.marks.noticeGood"),
     value: "notice_good",
   },
   {
-    label: "Notice (Neutral)",
+    label: t("learning.marks.noticeNeutral"),
     value: "notice_neutral",
   },
   {
-    label: "Notice (Bad)",
+    label: t("learning.marks.noticeBad"),
     value: "notice_bad",
   },
   {
-    label: "Absent",
+    label: t("learning.marks.absent"),
     value: "absent",
   },
   {
-    label: "Late",
+    label: t("learning.marks.late"),
     value: "late",
   },
 ];
@@ -164,9 +168,9 @@ const getGrades = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -236,7 +240,7 @@ const submitMark = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Saving mark succeeded",
+      message: t("learning.marks.savingMarkSucceeded"),
       timeout: 3000,
     });
     saveLoading.value = false;
@@ -247,7 +251,7 @@ const submitMark = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Saving mark failed",
+      message: t("learning.marks.savingMarkFailed"),
       timeout: 5000,
       actions: [{ label: "Dismiss", color: "white" }],
     });
@@ -268,7 +272,7 @@ const deleteMark = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Deleting mark succeeded",
+      message: t("learning.marks.deletingMarkSucceeded"),
       timeout: 3000,
     });
     deleteLoading.value = false;
@@ -279,9 +283,9 @@ const deleteMark = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Deleting mark failed",
+      message: t("learning.marks.deletingMarkFailed"),
       timeout: 5000,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
     deleteLoading.value = false;
     throw new Error();
@@ -290,8 +294,8 @@ const deleteMark = async () => {
 
 const deleteMarkPrompt = () => {
   $q.dialog({
-    title: "Confirm",
-    message: "Are you sure you want to delete this mark?",
+    title: t("confirm"),
+    message: t("learning.marks.deletingMarkConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {

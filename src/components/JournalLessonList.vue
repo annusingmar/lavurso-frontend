@@ -2,11 +2,11 @@
   <q-card>
     <q-card-section>
       <div class="row justify-between">
-        <div class="text-h6 q-mr-sm">Lessons</div>
+        <div class="text-h6 q-mr-sm">{{ t("learning.lessons") }}</div>
         <q-btn
           v-if="!journal.content.archived"
           color="primary"
-          label="create lesson"
+          :label="t('learning.createLesson')"
           @click="lessonCreateDialog"
         ></q-btn>
       </div>
@@ -19,7 +19,7 @@
           :lesson="lesson"
         ></JournalLessonsListItem>
       </q-list>
-      <div v-else-if="!loading">No lessons found.</div>
+      <div v-else-if="!loading">{{ t("learning.noLessonsFound") }}</div>
     </q-card-section>
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-card>
@@ -29,10 +29,12 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import JournalLessonsListItem from "./JournalLessonsListItem.vue";
 import LessonDialog from "./LessonDialog.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   journal: {
     type: Object,
@@ -77,9 +79,9 @@ const getLessons = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

@@ -24,7 +24,7 @@
       <q-btn
         v-if="id === thread.content.user.id"
         color="negative"
-        :label="t('messages.delete')"
+        :label="t('delete')"
         :loading="deleteLoading"
         @click="deleteThreadPrompt"
       ></q-btn>

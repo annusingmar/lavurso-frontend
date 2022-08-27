@@ -13,7 +13,7 @@
               square
               outlined
               :label="t('messages.title')"
-              :rules="[(val) => (val && val.length > 0) || t('mustNotBeEmpty')]"
+              :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
               lazy-rules="ondemand"
             ></q-input>
             <q-editor

@@ -1,7 +1,7 @@
 <template>
   <q-tabs v-model="tab" dense active-color="primary" indicator-color="primary">
-    <q-tab name="lessons" label="lessons"></q-tab>
-    <q-tab name="grades" label="grades"></q-tab>
+    <q-tab name="lessons" :label="t('learning.lessons')"></q-tab>
+    <q-tab name="grades" :label="t('learning.grades')"></q-tab>
   </q-tabs>
   <q-separator></q-separator>
   <q-tab-panels v-model="tab" animated keep-alive>
@@ -23,9 +23,11 @@
 
 <script setup>
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import JournalLessonList from "./JournalLessonList.vue";
 import JournalCourseGradesList from "./JournalCourseGradesList.vue";
 
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   journal: {
     type: Object,
