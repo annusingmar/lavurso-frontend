@@ -10,7 +10,7 @@
       <div class="absolute-bottom row items-end">
         <div class="col">
           <div class="text-weight-bold">{{ name }}</div>
-          <div>{{ roleName }}</div>
+          <div>{{ t(`roles.${role}`) }}</div>
         </div>
         <div class="col-auto">
           <q-btn
@@ -72,6 +72,7 @@ import { useUserStore } from "../stores/user.js";
 import { ref } from "vue";
 import { api } from "src/boot/axios.js";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import DrawerUserItems from "./DrawerUserItems.vue";
 import DrawerStudentItems from "./DrawerStudentItems.vue";
 import DrawerTeacherItems from "./DrawerTeacherItems.vue";
@@ -79,10 +80,10 @@ import DrawerAdminItems from "./DrawerAdminItems.vue";
 import LanguagePicker from "./LanguagePicker.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 
-const { id, name, role, roleName, session_id, children, clearUser } =
-  useUserStore();
+const { id, name, role, session_id, children, clearUser } = useUserStore();
 
 const props = defineProps({
   open: {

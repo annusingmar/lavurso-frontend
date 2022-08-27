@@ -12,18 +12,6 @@ export const useUserStore = defineStore("user", {
     expires: null,
   }),
   getters: {
-    roleName: (state) => {
-      switch (state.role) {
-        case "admin":
-          return "Administrator";
-        case "teacher":
-          return "Teacher";
-        case "parent":
-          return "Parent";
-        case "student":
-          return "Student";
-      }
-    },
     isAuthenticated: (state) => state.token && state.expires > new Date(),
   },
   actions: {

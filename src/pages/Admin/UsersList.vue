@@ -51,9 +51,10 @@ import { ref } from "vue";
 import { api } from "boot/axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
-import getRoleName from "src/composables/role";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 
 const columns = [
@@ -87,7 +88,7 @@ const columns = [
     label: "Role",
     align: "left",
     field: (row) => row.role,
-    format: (val) => getRoleName(val),
+    format: (val) => t(`roles.${val}`),
     sortable: true,
   },
   { name: "actions", label: "Action" },

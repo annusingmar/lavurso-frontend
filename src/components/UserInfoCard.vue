@@ -36,8 +36,10 @@
 </template>
 
 <script setup>
-import getRoleName from "src/composables/role";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   user: {
@@ -48,7 +50,7 @@ const props = defineProps({
 
 const role = computed(() => {
   if (props.user.role) {
-    return getRoleName(props.user.role);
+    return t(`roles.${props.user.role}`);
   } else {
     return null;
   }

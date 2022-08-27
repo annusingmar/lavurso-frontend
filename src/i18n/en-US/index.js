@@ -76,6 +76,12 @@ export default {
       homework: "Homework",
     },
   },
+  roles: {
+    admin: "Administrator",
+    teacher: "Teacher",
+    parent: "Parent",
+    student: "Student",
+  },
   messages: {
     mailbox: "Mailbox",
     newMessage: "New thread",

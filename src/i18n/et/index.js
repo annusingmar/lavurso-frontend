@@ -76,6 +76,12 @@ export default {
       homework: "Kodutöö",
     },
   },
+  roles: {
+    admin: "Administraator",
+    teacher: "Õpetaja",
+    parent: "Lapsevanem",
+    student: "Õpilane",
+  },
   messages: {
     mailbox: "Postkast",
     newMessage: "Uus kiri",

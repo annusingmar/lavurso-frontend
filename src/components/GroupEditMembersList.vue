@@ -31,9 +31,10 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
-import getRoleName from "src/composables/role";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   users: {
     type: Array,
@@ -65,7 +66,7 @@ const columns = [
     label: "Role",
     align: "left",
     field: (row) => row.role,
-    format: (val) => getRoleName(val),
+    format: (val) => t(`roles.${val}`),
     sortable: true,
   },
 ];

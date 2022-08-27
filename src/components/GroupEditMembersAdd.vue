@@ -39,10 +39,10 @@
             <q-item-section>
               <q-item-label>{{ scope.opt.name }}</q-item-label>
               <q-item-label v-if="scope.opt.role !== 'student'" caption>{{
-                getRoleName(scope.opt.role)
+                t(`roles.${scope.opt.role}`)
               }}</q-item-label>
               <q-item-label v-else caption
-                >{{ getRoleName(scope.opt.role) }} -
+                >{{ t(`roles.${scope.opt.role}`) }} -
                 {{ scope.opt.class.name }}</q-item-label
               >
             </q-item-section>
@@ -78,9 +78,10 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
-import getRoleName from "src/composables/role";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   users: {
     type: Array,
