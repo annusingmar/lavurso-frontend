@@ -1,22 +1,26 @@
 <template>
   <DrawerListItem
-    title="Users"
+    :title="t('users')"
     to="/admin/users"
     icon="account_circle"
   ></DrawerListItem>
   <DrawerListItem
-    title="Groups"
+    :title="t('groups')"
     to="/admin/groups"
     icon="groups"
   ></DrawerListItem>
   <DrawerListItem
-    title="Classes"
+    :title="t('learning.classes')"
     to="/admin/classes"
     icon="class"
   ></DrawerListItem>
-  <DrawerListItem title="Grades" to="/admin/grades" icon="tag"></DrawerListItem>
   <DrawerListItem
-    title="Subjects"
+    :title="t('learning.grades')"
+    to="/admin/grades"
+    icon="tag"
+  ></DrawerListItem>
+  <DrawerListItem
+    :title="t('learning.subjects')"
     to="/admin/subjects"
     icon="format_list_numbered"
   ></DrawerListItem>
@@ -24,4 +28,7 @@
 
 <script setup>
 import DrawerListItem from "./DrawerListItem.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({ useScope: "global" });
 </script>

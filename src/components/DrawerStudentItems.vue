@@ -1,12 +1,12 @@
 <template>
   <DrawerListItem
-    title="Latest"
+    :title="t('learning.journal')"
     :to="'/students/' + id"
     :caption="name"
     icon="library_books"
   ></DrawerListItem>
   <DrawerListItem
-    title="Lessons and Marks"
+    :title="t('sidebar.student.subjectsAndMarks')"
     :caption="name"
     :to="'/students/' + id + '/journals'"
     icon="grade"
@@ -16,6 +16,9 @@
 
 <script setup>
 import DrawerListItem from "./DrawerListItem.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   id: {

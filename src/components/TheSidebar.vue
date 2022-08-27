@@ -17,16 +17,16 @@
             color="primary"
             text-color="white"
             :loading="logoutLoading"
+            :label="t('sidebar.logOut')"
             @click="logOut"
-            >Log out</q-btn
-          >
+          ></q-btn>
         </div>
       </div>
     </q-img>
     <q-list>
       <q-item>
         <q-item-section>
-          <q-item-label>Dark mode</q-item-label>
+          <q-item-label>{{ t("sidebar.darkMode") }}</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <q-toggle
@@ -40,7 +40,7 @@
       </q-item>
       <q-item>
         <q-item-section>
-          <q-item-label>Language</q-item-label>
+          <q-item-label>{{ t("sidebar.language") }}</q-item-label>
         </q-item-section>
         <q-item-section avatar>
           <LanguagePicker />
