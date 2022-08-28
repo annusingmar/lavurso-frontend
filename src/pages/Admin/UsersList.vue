@@ -3,7 +3,7 @@
     <div class="row flex-center q-py-lg" style="min-height: inherit">
       <div class="col-md-8 col-xs-10" style="min-width: 0px">
         <q-table
-          title="Users"
+          :title="t('users')"
           :rows="users"
           :columns="columns"
           row-key="id"
@@ -14,7 +14,7 @@
           <template #top-right>
             <div class="row items-end justify-between">
               <div class="col">
-                <q-input v-model="filter" placeholder="Search">
+                <q-input v-model="filter" :placeholder="t('search')">
                   <template #append>
                     <q-icon name="search"></q-icon>
                   </template>
@@ -23,7 +23,7 @@
               <div class="col-auto q-ml-lg">
                 <q-btn
                   color="primary"
-                  label="Create User"
+                  :label="t('user.createUser')"
                   to="/admin/users/new"
                 >
                 </q-btn>
@@ -61,7 +61,7 @@ const columns = [
   {
     name: "name",
     required: true,
-    label: "Name",
+    label: t("name"),
     align: "left",
     field: (row) => row.name,
     sortable: false,
@@ -69,7 +69,7 @@ const columns = [
   {
     name: "email",
     required: true,
-    label: "Email",
+    label: t("email"),
     align: "left",
     field: (row) => row.email,
     sortable: false,
@@ -77,7 +77,7 @@ const columns = [
   {
     name: "id_code",
     required: false,
-    label: "ID code",
+    label: t("user.idCode"),
     align: "left",
     field: (row) => row.id_code,
     sortable: false,
@@ -85,36 +85,39 @@ const columns = [
   {
     name: "role",
     required: true,
-    label: "Role",
+    label: t("user.role"),
     align: "left",
     field: (row) => row.role,
     format: (val) => t(`roles.${val}`),
     sortable: true,
   },
-  { name: "actions", label: "Action" },
+  { name: "actions", label: t("action") },
 ];
 
 const users = ref([]);
 
 const loading = ref(true);
 
-api
-  .get("/users")
-  .then((response) => {
+const getUsers = async () => {
+  loading.value = true;
+  try {
+    const response = await api.get("/users");
     users.value = response.data.users;
     loading.value = false;
-  })
-  .catch((error) => {
+  } catch (error) {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
-  });
+  }
+};
 
 const filter = ref("");
 
 const editUser = (id) => router.push("/admin/users/" + id);
+
+getUsers();
 </script>

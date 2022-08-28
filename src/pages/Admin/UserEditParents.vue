@@ -6,7 +6,7 @@
     <div class="col-md-4 col-xs-10">
       <q-card>
         <q-card-section>
-          <div class="text-h4">Parents</div>
+          <div class="text-h4">{{ t("roles.parents") }}</div>
         </q-card-section>
         <q-card-section>
           <q-list v-if="studentParents.length > 0" bordered separator>
@@ -19,31 +19,35 @@
                   icon="highlight_off"
                   @click="removeParent(parent.id)"
                 >
-                  <q-tooltip>Remove parent from student</q-tooltip>
+                  <q-tooltip>{{
+                    t("user.student.removeParentFromStudent")
+                  }}</q-tooltip>
                 </q-btn>
               </q-item-section>
             </q-item>
           </q-list>
-          <div v-else>No parents for student</div>
+          <div v-else>{{ t("user.student.noParentsForStudent") }}</div>
         </q-card-section>
       </q-card>
     </div>
     <div class="col-md-4 col-xs-10">
       <q-card>
         <q-card-section>
-          <div class="text-h4">Add Parent</div>
+          <div class="text-h4">{{ t("user.student.addParent") }}</div>
         </q-card-section>
         <q-card-section>
           <q-select
             v-model="chosenParent"
             filled
             use-input
-            hide-selected
             fill-input
-            input-debounce
+            hide-selected
+            input-debounce="200"
+            stack-label
             :options="filteredParents"
             option-label="name"
             option-value="id"
+            :hint="t('minimumNCharacters', [4])"
             @filter="filter"
           ></q-select>
         </q-card-section>
@@ -52,7 +56,7 @@
             :loading="addingLoading"
             :disable="chosenParent === null"
             color="primary"
-            label="Add"
+            :label="t('add')"
             @click="addParent"
           ></q-btn>
         </q-card-actions>
@@ -63,11 +67,12 @@
 
 <script setup>
 import { ref } from "vue";
-
 import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: Number,
@@ -75,25 +80,31 @@ const props = defineProps({
   },
 });
 
-const allParents = ref(null);
 const studentParents = ref([]);
 const filteredParents = ref(null);
 const chosenParent = ref(null);
 const addingLoading = ref(false);
 
-const getAllParents = async () => {
+const getParents = async (search) => {
   try {
-    const response = await api.get("/users");
-    allParents.value = [];
-    allParents.value = response.data.users.filter((user) => {
-      if (user.role === "parent" && !studentParents.value) {
-        return true;
-      } else if (user.role === "parent") {
-        return !studentParents.value.some((sp) => sp.id == user.id);
-      } else {
-        return false;
-      }
+    const response = await api.get("/users/search", {
+      params: {
+        name: search,
+      },
     });
+    filteredParents.value = [];
+    filteredParents.value =
+      response.data.result !== null
+        ? response.data.result.filter((user) => {
+            if (user.role === "parent" && !studentParents.value) {
+              return true;
+            } else if (user.role === "parent") {
+              return !studentParents.value.some((sp) => sp.id == user.id);
+            } else {
+              return false;
+            }
+          })
+        : [];
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
       return;
@@ -101,9 +112,9 @@ const getAllParents = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -120,27 +131,20 @@ const getStudentParents = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
 
-const filter = async (val, update) => {
-  if (allParents.value !== null) {
-    update(() => {
-      const v = val.toLowerCase();
-      filteredParents.value = allParents.value.filter(
-        (p) => p.name.toLowerCase().indexOf(v) > -1
-      );
-    });
-  } else {
-    await getAllParents();
-    update(() => {
-      filteredParents.value = allParents.value;
-    });
+const filter = async (val, update, abort) => {
+  if (val.length < 4) {
+    abort();
+    return;
   }
+  await getParents(val);
+  update();
 };
 
 const addParent = async () => {
@@ -152,11 +156,11 @@ const addParent = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Parent added successfully",
-      timeout: 5000,
+      message: t("user.student.addingParentSucceeded"),
+      timeout: 3000,
     });
     chosenParent.value = null;
-    allParents.value = null;
+    filteredParents.value = null;
     getStudentParents();
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
@@ -165,9 +169,8 @@ const addParent = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Adding parent failed",
-      timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      message: t("user.student.addingParentFailed"),
+      timeout: 6000,
     });
   } finally {
     addingLoading.value = false;
@@ -184,8 +187,8 @@ const removeParent = async (pid) => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Parent removed successfully",
-      timeout: 5000,
+      message: t("user.student.removingParentSucceeded"),
+      timeout: 3000,
     });
     getStudentParents();
   } catch (error) {
@@ -195,12 +198,11 @@ const removeParent = async (pid) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Removing parent failed",
-      timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      message: t("user.student.removingParentFailed"),
+      timeout: 6000,
     });
   } finally {
-    allParents.value = null;
+    filteredParents.value = null;
   }
 };
 

@@ -1,16 +1,16 @@
 <template>
   <q-page>
     <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
-      <q-tab name="general" label="General"></q-tab>
-      <q-tab name="sessions" label="Sessions"></q-tab>
+      <q-tab name="general" :label="t('general')"></q-tab>
+      <q-tab name="sessions" :label="t('user.session.sessions')"></q-tab>
       <q-tab
         v-if="user.user.role === 'student'"
         name="parents"
-        label="Parents"
+        :label="t('roles.parents')"
       ></q-tab>
       <q-route-tab
         v-if="user.user.role === 'student'"
-        label="teacher page"
+        :label="t('user.student.teacherPage')"
         :to="'/teacher/students/' + user.user.id"
       ></q-route-tab>
     </q-tabs>
@@ -45,14 +45,13 @@
 import { ref, reactive } from "vue";
 import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";
-import { useRouter } from "vue-router";
-
+import { useI18n } from "vue-i18n";
 import UserEditGeneral from "./UserEditGeneral.vue";
 import UserEditParents from "./UserEditParents.vue";
 import UserEditSessions from "./UserEditSessions.vue";
 
 const $q = useQuasar();
-const router = useRouter();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: String,

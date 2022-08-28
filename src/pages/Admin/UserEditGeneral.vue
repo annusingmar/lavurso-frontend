@@ -6,8 +6,8 @@
     <div class="col-md-6 col-xs-10">
       <q-card>
         <q-card-section>
-          <div v-if="isCreate" class="text-h4">Create User</div>
-          <div v-else class="text-h4">Edit User</div>
+          <div v-if="isCreate" class="text-h4">{{ t("user.createUser") }}</div>
+          <div v-else class="text-h4">{{ t("user.editUser") }}</div>
         </q-card-section>
         <q-card-section>
           <q-form greedy @submit.prevent="saveUser" @reset="resetData">
@@ -16,24 +16,24 @@
                 <q-input
                   v-model.trim="user.name"
                   filled
-                  label="Name"
+                  :label="t('name')"
                   :rules="[
-                    (val) => (val && val.length > 0) || 'Must not be empty',
+                    (val) => (val && val.length > 0) || t('mandatoryField'),
                   ]"
                 ></q-input>
                 <q-input
                   v-model.trim="user.email"
                   filled
-                  label="Email"
+                  :label="t('email')"
                   :rules="[
-                    (val) => (val && val.length > 0) || 'Must not be empty',
+                    (val) => (val && val.length > 0) || t('mandatoryField'),
                     validateEmail,
                   ]"
                 ></q-input>
                 <q-input
                   v-model="user.password"
                   filled
-                  label="Password"
+                  :label="t('password')"
                   :type="hidePwd ? 'password' : 'text'"
                   :rules="[
                     (val) =>
@@ -41,7 +41,7 @@
                         ? true
                         : val && val.length > 0
                         ? true
-                        : 'Must not be empty',
+                        : t('mandatoryField'),
                   ]"
                 >
                   <template #append>
@@ -55,7 +55,7 @@
                 <q-input
                   v-model="user.phone_number"
                   filled
-                  label="Phone Number"
+                  :label="t('user.phoneNumber')"
                   :rules="[(val) => true]"
                 >
                 </q-input>
@@ -68,22 +68,22 @@
                   emit-value
                   :disable="!isCreate"
                   :options="roles"
-                  label="Role"
-                  :rules="[(val) => val != null || 'Must not be empty']"
+                  :label="t('user.role')"
+                  :rules="[(val) => val != null || t('mandatoryField')]"
                 >
                 </q-select>
                 <q-input
                   v-model.number="user.id_code"
                   filled
                   mask="###########"
-                  label="ID Code"
+                  :label="t('user.idCode')"
                   :rules="[
                     (val) =>
                       !(
                         val &&
                         val.toString().length != 0 &&
                         val.toString().length != 11
-                      ) || 'Must be 11 digits long',
+                      ) || t('mustBeNDigitsLong', [11]),
                   ]"
                 >
                 </q-input>
@@ -91,15 +91,15 @@
                   v-model="user.birth_date"
                   filled
                   mask="####-##-##"
-                  hint="Format: YYYY-MM-DD"
-                  label="Birth date"
+                  :hint="t('format') + ': ' + t('yearMonthDate')"
+                  :label="t('user.birthDate')"
                   lazy-rules
                   :rules="[
                     (val) =>
                       val &&
                       val.length != 0 &&
                       (!date.isValid(val) || new Date(val) > new Date())
-                        ? 'Invalid date'
+                        ? t('invalidDate')
                         : true,
                   ]"
                 ></q-input>
@@ -110,8 +110,8 @@
                   use-input
                   hide-selected
                   fill-input
-                  label="Class"
-                  :rules="[(val) => val || 'Must not be empty']"
+                  :label="t('learning.class')"
+                  :rules="[(val) => val || t('mandatoryField')]"
                   :options="filteredClasses"
                   option-label="name"
                   option-value="id"
@@ -124,9 +124,9 @@
                 :loading="saveLoading"
                 type="submit"
                 color="primary"
-                label="Save"
+                :label="t('save')"
               ></q-btn>
-              <q-btn type="reset" label="Reset"></q-btn>
+              <q-btn type="reset" :label="t('reset')"></q-btn>
             </div>
           </q-form>
         </q-card-section>
@@ -139,9 +139,11 @@
 import { useQuasar, date } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 const props = defineProps({
   isCreate: {
@@ -172,19 +174,19 @@ const resetData = () => {
 
 const roles = [
   {
-    label: "Administrator",
+    label: t("roles.admin"),
     value: "admin",
   },
   {
-    label: "Teacher",
+    label: t("roles.teacher"),
     value: "teacher",
   },
   {
-    label: "Parent",
+    label: t("roles.parent"),
     value: "parent",
   },
   {
-    label: "Student",
+    label: t("roles.student"),
     value: "student",
   },
 ];
@@ -193,7 +195,7 @@ const validateEmail = (email) => {
   const re =
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-  return re.test(email) || "Invalid email";
+  return re.test(email) || t("invalidEmail");
 };
 
 const saveUser = async () => {
@@ -236,7 +238,7 @@ const saveUser = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Saving user succeeded!",
+      message: t("user.savingUserSucceeded"),
       timeout: 3000,
     });
     saveLoading.value = false;
@@ -251,7 +253,7 @@ const saveUser = async () => {
       $q.notify({
         type: "negative",
         position: "top",
-        message: "Email already exists",
+        message: t("user.emailAlreadyInUse"),
         timeout: 6000,
       });
     } else if (
@@ -263,7 +265,7 @@ const saveUser = async () => {
       $q.notify({
         type: "negative",
         position: "top",
-        message: "Saving user failed",
+        message: t("user.savingUserFailed"),
         timeout: 6000,
       });
     }
@@ -284,9 +286,9 @@ const getAllClasses = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

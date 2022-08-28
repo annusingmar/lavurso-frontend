@@ -2,7 +2,7 @@
   <div class="row flex-center" style="min-height: 75vh">
     <div class="col-md-8 col-xs-10" style="min-width: 0px">
       <q-table
-        title="Sessions"
+        :title="t('user.session.sessions')"
         :rows="sessions"
         :columns="columns"
         row-key="id"
@@ -13,7 +13,7 @@
             <div class="col-auto">
               <q-btn
                 color="negative"
-                label="Remove All"
+                :label="t('user.session.deleteAllSessions')"
                 @click="removeAllSessionsPrompt"
               >
               </q-btn>
@@ -26,7 +26,7 @@
             <q-btn
               flat
               icon="clear"
-              @click="removeUserSessionPrompt(actionProps.row.id)"
+              @click="removeUserSession(actionProps.row.id)"
             ></q-btn>
           </q-td>
         </template>
@@ -39,8 +39,10 @@
 import { date, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: Number,
@@ -55,7 +57,7 @@ const columns = [
   {
     name: "expires",
     required: true,
-    label: "Expires",
+    label: t("user.session.expires"),
     align: "left",
     field: (row) => row.expires,
     format: (val) => formatDate(val),
@@ -64,7 +66,7 @@ const columns = [
   {
     name: "login_ip",
     required: true,
-    label: "Login IP",
+    label: t("user.session.loginIP"),
     align: "left",
     field: (row) => row.login_ip,
     sortable: true,
@@ -72,7 +74,7 @@ const columns = [
   {
     name: "login_browser",
     required: true,
-    label: "Login Browser",
+    label: t("user.session.loginBrowser"),
     align: "left",
     field: (row) => row.login_browser,
     sortable: true,
@@ -80,7 +82,7 @@ const columns = [
   {
     name: "logged_in",
     required: true,
-    label: "Logged In",
+    label: t("user.session.loggedIn"),
     align: "left",
     field: (row) => row.logged_in,
     format: (val) => formatDate(val),
@@ -89,13 +91,13 @@ const columns = [
   {
     name: "last_seen",
     required: true,
-    label: "Last Seen",
+    label: t("user.session.lastSeen"),
     align: "left",
     field: (row) => row.last_seen,
     format: (val) => formatDate(val),
     sortable: true,
   },
-  { name: "actions", label: "Action" },
+  { name: "actions", label: t("action") },
 ];
 
 const getUserSessions = async () => {
@@ -113,9 +115,9 @@ const getUserSessions = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -126,7 +128,7 @@ const removeUserSession = async (id) => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Deleting session succeeded!",
+      message: t("user.session.deletingSessionSucceeded"),
       timeout: 3000,
     });
     getUserSessions();
@@ -137,7 +139,7 @@ const removeUserSession = async (id) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Deleting session failed",
+      message: t("user.session.deletingSessionFailed"),
       timeout: 6000,
     });
   }
@@ -149,7 +151,7 @@ const removeAllSessions = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Deleting sessions succeeded!",
+      message: t("user.session.deletingSessionSucceeded"),
       timeout: 3000,
     });
     getUserSessions();
@@ -160,27 +162,16 @@ const removeAllSessions = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Deleting sessions failed",
+      message: t("user.session.deletingSessionFailed"),
       timeout: 6000,
     });
   }
 };
 
-const removeUserSessionPrompt = (id) => {
-  $q.dialog({
-    title: "Confirm",
-    message: "Are you sure you want to delete this session?",
-    cancel: true,
-    persistent: true,
-  }).onOk(() => {
-    removeUserSession(id);
-  });
-};
-
 const removeAllSessionsPrompt = () => {
   $q.dialog({
-    title: "Confirm",
-    message: "Are you sure you want to delete ALL sessions for this user?",
+    title: t("confirm"),
+    message: t("user.session.deletingAllSessionsConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {
