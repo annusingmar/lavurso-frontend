@@ -1,4 +1,5 @@
 export default {
+  sourceCode: "Source Code",
   succeeded: "succeeded",
   failed: "failed",
   dataLoadingFail: "Loading of data failed",

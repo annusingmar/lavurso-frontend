@@ -47,7 +47,7 @@
         </q-item-section>
       </q-item>
       <q-separator></q-separator>
-      <DrawerUserItems />
+      <DrawerUserItems :unread="unread" />
       <DrawerStudentItems v-if="role === 'student'" :id="id" />
       <template v-else-if="role === 'parent'">
         <DrawerStudentItems
@@ -71,7 +71,7 @@ import { useQuasar } from "quasar";
 import { useUserStore } from "../stores/user.js";
 import { ref } from "vue";
 import { api } from "src/boot/axios.js";
-import { useRouter } from "vue-router";
+import { onBeforeRouteUpdate, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import DrawerUserItems from "./DrawerUserItems.vue";
 import DrawerStudentItems from "./DrawerStudentItems.vue";
@@ -104,6 +104,7 @@ const logOut = async () => {
   logoutLoading.value = true;
   try {
     await api.delete("/sessions/" + session_id);
+    clearInterval(unreadInterval);
     clearUser();
     router.replace("/login");
   } catch (error) {
@@ -112,4 +113,14 @@ const logOut = async () => {
     logoutLoading.value = false;
   }
 };
+
+const checkUnread = () =>
+  api
+    .get("/users/" + id + "/unread")
+    .then((response) => (unread.value = response.data.unread))
+    .catch(() => console.log("failed to check if user has unread messages"));
+
+const unread = ref(false);
+checkUnread();
+const unreadInterval = setInterval(checkUnread, 120000);
 </script>

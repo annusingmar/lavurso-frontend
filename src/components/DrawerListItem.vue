@@ -1,7 +1,15 @@
 <template>
   <q-item clickable ripple tag="a" :to="to">
     <q-item-section v-if="icon" avatar>
-      <q-icon :name="icon" />
+      <q-icon :name="icon">
+        <q-badge
+          v-if="redBadge"
+          color="red"
+          floating
+          rounded
+          class="q-py-none"
+        ></q-badge>
+      </q-icon>
     </q-item-section>
 
     <q-item-section>
@@ -37,6 +45,11 @@ export default defineComponent({
       default: null,
     },
     separator: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    redBadge: {
       type: Boolean,
       required: false,
       default: false,

@@ -7,7 +7,7 @@
       <q-btn
         href="https://github.com/annusingmar/lavurso"
         target="_blank"
-        label="Source Code"
+        :label="t('sourceCode')"
         icon="build"
         dense
         color="secondary"
@@ -17,9 +17,10 @@
   </q-header>
 </template>
 
-<script>
-export default {
-  name: "TheHeader",
-  emits: ["toggleLeftDrawer"],
-};
+<script setup>
+import { useI18n } from "vue-i18n";
+
+const emit = defineEmits(["toggleLeftDrawer"]);
+
+const { t } = useI18n({ useScope: "global" });
 </script>

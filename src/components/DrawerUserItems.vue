@@ -9,6 +9,7 @@
     icon="chat"
     to="/messages"
     :separator="true"
+    :red-badge="unread"
   ></DrawerListItem>
 </template>
 
@@ -17,4 +18,11 @@ import DrawerListItem from "./DrawerListItem.vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n({ useScope: "global" });
+
+const props = defineProps({
+  unread: {
+    type: Boolean,
+    required: true,
+  },
+});
 </script>

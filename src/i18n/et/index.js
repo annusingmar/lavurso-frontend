@@ -1,4 +1,5 @@
 export default {
+  sourceCode: "Lähtekood",
   succeeded: "õnnestus",
   failed: "ebaõnnestus",
   dataLoadingFail: "Andmete laadimine ebaõnnestus",
