@@ -47,6 +47,9 @@ export default {
   mustBeNDigitsLong: "Peab olema {0} numbrit pikk",
   search: "Otsing",
   action: "Tegevus",
+  saving: "Salvestamine",
+  savingSucceeded: "@:saving @:succeeded",
+  savingFailed: "@:saving @:failed",
   user: {
     role: "Roll",
     createUser: "Loo kasutaja",
@@ -129,6 +132,7 @@ export default {
     grades: "Hinded",
     subject: "Õppeaine",
     subjects: "Õppeained",
+    newSubject: "Uus õppeaine",
     noDescription: "Kirjeldus puudub",
     teacher: "Õpetaja",
     students: "Õpilased",

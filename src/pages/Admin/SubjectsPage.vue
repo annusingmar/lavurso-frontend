@@ -1,9 +1,9 @@
 <template>
   <q-page>
     <div class="row flex-center q-py-lg" style="min-height: inherit">
-      <div class="col-md-8 col-xs-10" style="min-width: 0px">
+      <div class="col-md-5 col-xs-10" style="min-width: 0px">
         <q-table
-          title="Subjects"
+          :title="t('learning.subjects')"
           :rows="subjects"
           :columns="columns"
           :loading="loading"
@@ -14,7 +14,7 @@
             <div class="row items-end">
               <q-btn
                 color="primary"
-                label="new subject"
+                :label="t('new')"
                 @click="newSubjectDialog"
               >
               </q-btn>
@@ -36,7 +36,7 @@
                     dense
                     autofocus
                     :rules="[
-                      (val) => (val && val.length > 0) || 'Must not be empty',
+                      (val) => (val && val.length > 0) || t('mandatoryField'),
                     ]"
                     @keyup.enter.stop
                   ></q-input>
@@ -54,14 +54,16 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const columns = [
   {
     name: "name",
     required: true,
-    label: "Name",
+    label: t("name"),
     align: "left",
     field: (row) => row.name,
     sortable: false,
@@ -84,9 +86,9 @@ const getSubjects = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -106,7 +108,7 @@ const saveName = async (id, val) => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Subject changed successfully",
+      message: t("savingSucceeded"),
       timeout: 3000,
     });
     getSubjects();
@@ -117,7 +119,7 @@ const saveName = async (id, val) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Subject change failed",
+      message: t("savingFailed"),
       timeout: 6000,
     });
   }
@@ -131,7 +133,7 @@ const newSubject = async (val) => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Subject created successfully",
+      message: t("savingSucceeded"),
       timeout: 3000,
     });
     getSubjects();
@@ -142,7 +144,7 @@ const newSubject = async (val) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Subject creation failed",
+      message: t("savingFailed"),
       timeout: 6000,
     });
   }
@@ -150,7 +152,7 @@ const newSubject = async (val) => {
 
 const newSubjectDialog = () => {
   $q.dialog({
-    title: "New Subject",
+    title: t("learning.newSubject"),
     prompt: {
       model: "",
       type: "text",

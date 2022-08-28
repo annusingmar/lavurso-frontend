@@ -47,6 +47,9 @@ export default {
   mustBeNDigitsLong: "Must be {0} digits long",
   search: "Search",
   action: "Action",
+  saving: "Saving",
+  savingSucceeded: "@:saving @:succeeded",
+  savingFailed: "@:saving @:failed",
   user: {
     role: "Roll",
     createUser: "Create User",
@@ -129,6 +132,7 @@ export default {
     grades: "Grades",
     subject: "Subject",
     subjects: "Subjects",
+    newSubject: "New Subject",
     noDescription: "No description",
     teacher: "Teacher",
     students: "Students",
