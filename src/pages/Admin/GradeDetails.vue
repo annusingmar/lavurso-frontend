@@ -4,40 +4,50 @@
       <div class="col-md-6 col-xs-10">
         <q-card>
           <q-card-section>
-            <div v-if="isCreate" class="text-h4">Create Grade</div>
-            <div v-else class="text-h4">Update Grade</div>
+            <div v-if="isCreate" class="text-h4">
+              {{ t("learning.grades.createGrade") }}
+            </div>
+            <div v-else class="text-h4">
+              {{ t("learning.grades.editGrade") }}
+            </div>
           </q-card-section>
           <q-card-section>
-            <q-form greedy @submit.prevent="submitGrade">
+            <q-form
+              greedy
+              class="q-col-gutter-sm"
+              @submit.prevent="submitGrade"
+            >
               <q-input
                 v-model.trim="identifier"
                 filled
-                label="Identifier"
+                :label="t('learning.grades.identifier')"
                 autocorrect="off"
                 autocapitalize="off"
                 autocomplete="off"
                 spellcheck="false"
                 :rules="[
-                  (val) => (val && val.length > 0) || 'Must not be empty',
-                  (val) => val.length < 4 || 'Must be less than 4 characters',
+                  (val) => (val && val.length > 0) || t('mandatoryField'),
+                  (val) => val.length < 4 || t('mustBeLessThanNCharsLong', [4]),
                 ]"
               ></q-input>
               <q-input
                 v-model.number="value"
                 filled
-                label="Value"
+                :label="t('learning.grades.value')"
                 autocorrect="off"
                 autocapitalize="off"
                 autocomplete="off"
                 spellcheck="false"
-                :rules="[(val) => (val && val > 0) || 'Must be greater than 0']"
+                :rules="[
+                  (val) => (val && val > 0) || t('mustBeGreaterThanN', [0]),
+                ]"
               ></q-input>
               <div class="row justify-end q-mt-sm">
                 <q-btn
                   :loading="submitLoading"
                   type="submit"
                   color="primary"
-                  :label="isCreate ? 'Create' : 'Update'"
+                  :label="t('save')"
                 ></q-btn>
               </div>
             </q-form>
@@ -53,18 +63,23 @@
 import { api } from "src/boot/axios";
 import { ref, computed, reactive, watch } from "vue";
 import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 const props = defineProps({
   id: {
     type: String,
     required: true,
   },
+  isCreate: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
-
-const isCreate = computed(() => props.id == 0);
 
 // existing grade
 const loading = ref(false);
@@ -82,9 +97,9 @@ const getGrade = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -98,7 +113,7 @@ const resetData = () => {
 
 watch(grade, resetData);
 
-if (!isCreate.value) {
+if (!props.isCreate) {
   getGrade();
 }
 
@@ -107,7 +122,7 @@ const submitLoading = ref(false);
 const submitGrade = async () => {
   submitLoading.value = true;
   try {
-    if (!isCreate.value) {
+    if (!props.isCreate) {
       await api.patch("/grades/" + props.id, {
         identifier: identifier.value,
         value: value.value,
@@ -121,11 +136,11 @@ const submitGrade = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: (isCreate.value ? "Creating" : "Updating") + " grade succeeded!",
+      message: t("savingSucceeded"),
       timeout: 3000,
     });
     submitLoading.value = false;
-    if (isCreate.value) {
+    if (props.isCreate) {
       router.replace("/admin/grades");
     } else {
       getGrade();
@@ -137,7 +152,7 @@ const submitGrade = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: (isCreate.value ? "Creating" : "Updating") + " grade failed!",
+      message: t("savingFailed"),
       timeout: 6000,
     });
     submitLoading.value = false;

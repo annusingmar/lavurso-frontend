@@ -3,7 +3,7 @@
     <q-card class="q-dialog-plugin">
       <q-card-section class="row items-center justify-between q-pb-sm">
         <div class="text-h6">
-          {{ t("learning.lessons") }}: {{ course }}. {{ t("learning.course") }}
+          {{ t("learning.lesson_s") }}: {{ course }}. {{ t("learning.course") }}
         </div>
         <q-btn icon="close" flat round dense @click="closeDialog"></q-btn>
       </q-card-section>

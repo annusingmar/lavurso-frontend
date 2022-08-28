@@ -4,8 +4,12 @@
       <div class="col-md-6 col-xs-10">
         <q-card>
           <q-card-section>
-            <div v-if="isCreate" class="text-h4">Create Class</div>
-            <div v-else class="text-h4">Update Class</div>
+            <div v-if="isCreate" class="text-h4">
+              {{ t("learning.classes.createClass") }}
+            </div>
+            <div v-else class="text-h4">
+              {{ t("learning.classes.editClass") }}
+            </div>
           </q-card-section>
           <q-card-section>
             <q-form greedy @submit.prevent="submitClass">
@@ -13,7 +17,7 @@
                 <q-input
                   v-model.trim="name"
                   filled
-                  label="Name"
+                  :label="t('name')"
                   autocorrect="off"
                   autocapitalize="off"
                   autocomplete="off"
@@ -22,12 +26,12 @@
                 <q-select
                   v-model="teacher"
                   filled
-                  label="Teacher"
+                  :label="t('learning.teacher')"
                   use-input
                   hide-selected
                   fill-input
                   input-debounce
-                  hint="Minimum 4 characters"
+                  :hint="t('minimumNCharacters', [4])"
                   :options="teachers"
                   option-label="name"
                   option-value="id"
@@ -39,7 +43,7 @@
                     type="submit"
                     color="primary"
                     :disable="buttonDisabled"
-                    :label="isCreate ? 'Create' : 'Update'"
+                    :label="t('save')"
                   ></q-btn>
                 </div>
               </div>
@@ -56,18 +60,24 @@
 import { ref, computed, reactive, watch } from "vue";
 import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 const props = defineProps({
   id: {
     type: String,
-    required: true,
+    required: false,
+    default: null,
+  },
+  isCreate: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
-
-const isCreate = computed(() => props.id == 0);
 
 // both
 
@@ -92,9 +102,9 @@ const getTeachers = async (search) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -125,9 +135,9 @@ const getClass = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -141,7 +151,7 @@ const resetData = () => {
 
 watch(classs, resetData);
 
-if (!isCreate.value) {
+if (!props.isCreate) {
   getClass();
 }
 
@@ -154,7 +164,7 @@ const submitClass = async () => {
     teacher_id: teacher.value.id,
   };
   try {
-    if (!isCreate.value) {
+    if (!props.isCreate) {
       await api.patch("/classes/" + props.id, data);
     } else {
       await api.post("/classes/", data);
@@ -162,11 +172,11 @@ const submitClass = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: (isCreate.value ? "Creating" : "Updating") + " class succeeded!",
+      message: t("savingSucceeded"),
       timeout: 3000,
     });
     submitLoading.value = false;
-    if (isCreate.value) {
+    if (props.isCreate) {
       router.replace("/admin/classes");
     } else {
       getClass();
@@ -178,7 +188,7 @@ const submitClass = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: (isCreate.value ? "Creating" : "Updating") + " class failed!",
+      message: t("savingFailed"),
       timeout: 6000,
     });
     submitLoading.value = false;

@@ -7,7 +7,7 @@
     to="/teacher/journals"
   ></DrawerListItem>
   <DrawerListItem
-    :title="role === 'admin' ? t('learning.classes') : t('learning.myClasses')"
+    :title="role === 'admin' ? t('learning.class_es') : t('learning.myClasses')"
     icon="class"
     to="/teacher/classes"
     :separator="role === 'admin' ? true : false"

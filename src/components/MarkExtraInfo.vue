@@ -242,8 +242,7 @@ const removeExcuse = async () => {
       type: "negative",
       position: "top",
       message: t("learning.removingExcuseFailed"),
-      timeout: 5000,
-      actions: [{ label: "Dismiss", color: "white" }],
+      timeout: 6000,
     });
   }
 };

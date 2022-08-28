@@ -4,11 +4,11 @@
       <q-card>
         <q-card-section>
           <div class="row justify-between items-center">
-            <div class="text-h4">Edit Group</div>
+            <div class="text-h4">{{ t("group.editGroup") }}</div>
             <q-btn
               :loading="deleteLoading"
               color="negative"
-              label="delete"
+              :label="t('delete')"
               @click="deleteGroupPrompt"
             ></q-btn>
           </div>
@@ -18,18 +18,18 @@
             ref="nameField"
             v-model.trim="inputGroupName"
             filled
-            label="Name"
+            :label="t('name')"
             autocorrect="off"
             autocapitalize="off"
             autocomplete="off"
             spellcheck="false"
-            :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
+            :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
           ></q-input>
           <div class="row justify-end">
             <q-btn
               :loading="updateLoading"
               color="primary"
-              label="update"
+              :label="t('save')"
               @click="updateGroup"
             ></q-btn>
           </div>
@@ -43,9 +43,11 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 const props = defineProps({
   group: {
@@ -77,7 +79,7 @@ const updateGroup = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Updating group succeeded!",
+      message: t("savingSucceeded"),
       timeout: 3000,
     });
     emit("refreshGroup");
@@ -88,7 +90,7 @@ const updateGroup = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Updating group failed",
+      message: t("savingFailed"),
       timeout: 6000,
     });
   } finally {
@@ -104,7 +106,7 @@ const deleteGroup = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Deleting group succeeded!",
+      message: t("group.deletingGroupSucceeded"),
       timeout: 3000,
     });
     router.replace("/admin/groups");
@@ -115,7 +117,7 @@ const deleteGroup = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Deleting group failed",
+      message: t("group.deletingGroupFailed"),
       timeout: 6000,
     });
     deleteLoading.value = false;
@@ -124,8 +126,8 @@ const deleteGroup = async () => {
 
 const deleteGroupPrompt = () => {
   $q.dialog({
-    title: "Confirm",
-    message: "Are you sure you want to delete this group?",
+    title: t("confirm"),
+    message: t("group.deletingGroupConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {

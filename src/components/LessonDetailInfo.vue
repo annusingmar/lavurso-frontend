@@ -6,7 +6,7 @@
         <q-btn
           v-if="!lesson.journal.archived"
           color="primary"
-          label="edit lesson"
+          :label="t('learning.lessons.editLesson')"
           @click="lessonEditDialog"
         ></q-btn>
       </div>
@@ -20,7 +20,9 @@
       >
         {{ lesson.description }}
       </div>
-      <div v-else class="text-subtitle1 text-italic">No description</div>
+      <div v-else class="text-subtitle1 text-italic">
+        {{ t("learning.noDescription") }}
+      </div>
     </q-card-section>
   </q-card>
 </template>
@@ -28,9 +30,11 @@
 <script setup>
 import { computed } from "vue";
 import { date, useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 import LessonDialog from "./LessonDialog.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   lesson: {
     type: Object,
@@ -40,8 +44,11 @@ const props = defineProps({
 const emit = defineEmits(["refreshLesson"]);
 
 const lessonDate = computed(() => {
-  const jsDate = new Date(props.lesson.date);
-  return date.formatDate(jsDate, "DD MMMM YYYY", $q.lang.date);
+  return date.formatDate(
+    new Date(props.lesson.date),
+    "DD MMMM YYYY",
+    $q.lang.date
+  );
 });
 
 const isDescriptionEmpty = computed(

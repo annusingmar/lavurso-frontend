@@ -3,7 +3,7 @@
     <div class="row flex-center q-py-lg" style="min-height: inherit">
       <div class="col-md-8 col-xs-10" style="min-width: 0px">
         <q-table
-          title="Groups"
+          :title="t('groups')"
           :rows="groups"
           :columns="columns"
           :loading="loading"
@@ -12,7 +12,7 @@
         >
           <template #top-right>
             <div class="row items-end">
-              <q-btn color="primary" label="new group" @click="newGroupDialog">
+              <q-btn color="primary" :label="t('new')" @click="newGroupDialog">
               </q-btn>
             </div>
           </template>
@@ -36,16 +36,18 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
 const $q = useQuasar();
 const router = useRouter();
+const { t } = useI18n({ useScope: "global" });
 
 const columns = [
   {
     name: "name",
     required: true,
-    label: "Name",
+    label: t("name"),
     align: "left",
     field: (row) => row.name,
     sortable: false,
@@ -53,12 +55,12 @@ const columns = [
   {
     name: "members",
     required: true,
-    label: "Members",
+    label: t("messages.noOfMembers"),
     align: "left",
-    field: (row) => row.member_count + " members",
+    field: (row) => row.member_count,
     sortable: true,
   },
-  { name: "actions", label: "Action" },
+  { name: "actions", label: t("action") },
 ];
 
 const loading = ref(true);
@@ -76,9 +78,9 @@ const getGroups = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -91,7 +93,7 @@ const newGroup = async (val) => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Group created successfully",
+      message: t("savingSucceeded"),
       timeout: 3000,
     });
     getGroups();
@@ -102,7 +104,7 @@ const newGroup = async (val) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Group creation failed",
+      message: t("savingFailed"),
       timeout: 6000,
     });
   }
@@ -110,7 +112,7 @@ const newGroup = async (val) => {
 
 const newGroupDialog = () => {
   $q.dialog({
-    title: "New group",
+    title: t("group.newGroup"),
     prompt: {
       model: "",
       type: "text",

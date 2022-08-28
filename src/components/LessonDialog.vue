@@ -2,15 +2,22 @@
   <q-dialog ref="dialogRef" @hide="onDialogHide">
     <q-card class="q-dialog-plugin">
       <q-card-section>
-        <div v-if="!isUpdateDialog" class="text-h5">Create Lesson</div>
-        <div v-else class="text-h5">Update Lesson</div>
+        <div v-if="!isUpdateDialog" class="text-h5">
+          {{ t("learning.lessons.createLesson") }}
+        </div>
+        <div v-else class="text-h5">{{ t("learning.lessons.editLesson") }}</div>
       </q-card-section>
       <q-card-section>
         <div class="q-gutter-y-md">
-          <q-input filled readonly :model-value="formattedDate" label="Date">
+          <q-input
+            filled
+            readonly
+            :model-value="formattedDate"
+            :label="t('date')"
+          >
             <template #append>
               <q-icon name="event" class="cursor-pointer">
-                <q-tooltip>Pick a date</q-tooltip>
+                <q-tooltip>{{ t("pickADate") }}</q-tooltip>
                 <q-popup-proxy ref="popupRef" cover>
                   <q-date
                     v-model="lesson.date"
@@ -28,14 +35,14 @@
             v-model="lesson.description"
             filled
             autogrow
-            label="Description (optional)"
+            :label="t('description') + ' (' + t('optional') + ')'"
           ></q-input>
         </div>
       </q-card-section>
       <q-card-actions align="right">
         <q-btn
           color="primary"
-          label="Save"
+          :label="t('save')"
           :loading="saveLoading"
           :disabled="saveButtonDisabled"
           @click="saveClicked"
@@ -49,9 +56,11 @@
 <script setup>
 import { useDialogPluginComponent, useQuasar, date } from "quasar";
 import { api } from "src/boot/axios";
+import { useI18n } from "vue-i18n";
 import { computed, ref, reactive } from "vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   course: {
@@ -96,7 +105,7 @@ const formattedDate = computed(() => {
       $q.lang.date
     );
   } else {
-    return "Pick a date by clicking to the right";
+    return t("pickADateRight");
   }
 });
 
@@ -125,7 +134,7 @@ const submitLesson = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Saving lesson succeeded",
+      message: t("learning.lessons.savingLessonSucceeded"),
       timeout: 3000,
     });
     saveLoading.value = false;
@@ -136,9 +145,8 @@ const submitLesson = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Saving lesson failed",
+      message: t("learning.lessons.savingLessonFailed"),
       timeout: 5000,
-      actions: [{ label: "Dismiss", color: "white" }],
     });
     saveLoading.value = false;
     throw new Error();

@@ -252,8 +252,7 @@ const submitMark = async () => {
       type: "negative",
       position: "top",
       message: t("learning.marks.savingMarkFailed"),
-      timeout: 5000,
-      actions: [{ label: "Dismiss", color: "white" }],
+      timeout: 6000,
     });
     saveLoading.value = false;
     throw new Error();

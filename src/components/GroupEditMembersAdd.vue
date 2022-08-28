@@ -1,11 +1,10 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h4">Add Members</div>
+      <div class="text-h4">{{ t("messages.addMembers") }}</div>
       <q-separator></q-separator>
       <div class="text-caption">
-        Selecting one or more roles/classes will add all users currently part of
-        the chosen roles/classes to the group.
+        {{ t("group.addMembersDescription") }}
       </div>
     </q-card-section>
     <q-card-section class="q-gutter-y-md">
@@ -16,7 +15,7 @@
         use-chips
         :options="roles"
         stack-label
-        label="Roles"
+        :label="t('role_s')"
       >
       </q-select>
       <q-select
@@ -27,11 +26,11 @@
         use-input
         input-debounce="200"
         stack-label
-        label="Users"
+        :label="t('users')"
         :options="availableUsers"
         option-label="name"
         option-value="id"
-        hint="Minimum 4 characters"
+        :hint="t('minimumNCharacters', [4])"
         @filter="usersFilter"
       >
         <template #option="scope">
@@ -57,7 +56,7 @@
         use-input
         input-debounce="200"
         stack-label
-        label="Classes"
+        :label="t('learning.class_es')"
         :options="filteredClasses"
         option-label="name"
         option-value="id"
@@ -65,7 +64,7 @@
       ></q-select>
       <q-btn
         color="primary"
-        label="add"
+        :label="t('add')"
         :disable="!atLeastOneChosen"
         :loading="addLoading"
         @click="addMembers"
@@ -96,19 +95,19 @@ const emit = defineEmits(["refreshGroup"]);
 
 const roles = [
   {
-    label: "Administrator",
+    label: t("roles.admin"),
     value: "admin",
   },
   {
-    label: "Teacher",
+    label: t("roles.teacher"),
     value: "teacher",
   },
   {
-    label: "Parent",
+    label: t("roles.parent"),
     value: "parent",
   },
   {
-    label: "Student",
+    label: t("roles.student"),
     value: "student",
   },
 ];
@@ -164,9 +163,9 @@ const getUsers = async (search) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -184,9 +183,9 @@ const getClasses = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -219,7 +218,7 @@ const addMembers = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Users successfully added",
+      message: t("messages.addingMembersSucceeded"),
       timeout: 3000,
     });
     chosenClasses.value = [];
@@ -233,7 +232,7 @@ const addMembers = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Adding users failed",
+      message: t("messages.addingMembersFailed"),
       timeout: 6000,
     });
   } finally {

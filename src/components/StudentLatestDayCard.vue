@@ -25,7 +25,7 @@
     >
       <q-card flat>
         <q-card-section class="q-py-none">
-          <div class="text-subtitle2">{{ t("learning.lessons") }}</div>
+          <div class="text-subtitle2">{{ t("learning.lesson_s") }}</div>
         </q-card-section>
         <q-card-section class="q-py-none">
           <q-list separator>

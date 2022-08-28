@@ -1,7 +1,7 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h4">Group Members</div>
+      <div class="text-h4">{{ t("group.groupMembers") }}</div>
     </q-card-section>
     <q-card-section>
       <q-table
@@ -9,7 +9,7 @@
         :rows="users"
         :columns="columns"
         :loading="loading"
-        :pagination="{ rowsPerPage: 5 }"
+        :pagination="{ rowsPerPage: 10 }"
         row-key="id"
         selection="multiple"
       >
@@ -17,10 +17,10 @@
       <div class="row justify-end q-mt-md">
         <q-btn
           color="negative"
-          label="remove selected"
+          :label="t('removeSelected')"
           :loading="removeLoading"
           :disable="selectedUsers.length === 0"
-          @click="removeUsersPrompt"
+          @click="removeUsers"
         ></q-btn>
       </div>
     </q-card-section>
@@ -55,7 +55,7 @@ const columns = [
   {
     name: "name",
     required: true,
-    label: "Name",
+    label: t("name"),
     align: "left",
     field: (row) => row.name,
     sortable: false,
@@ -63,7 +63,7 @@ const columns = [
   {
     name: "role",
     required: true,
-    label: "Role",
+    label: t("role"),
     align: "left",
     field: (row) => row.role,
     format: (val) => t(`roles.${val}`),
@@ -87,7 +87,7 @@ const removeUsers = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Users successfully removed",
+      message: t("messages.removingMembersSucceeded"),
       timeout: 3000,
     });
     selectedUsers.value = [];
@@ -99,22 +99,11 @@ const removeUsers = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Removing users failed",
+      message: t("messages.removingMembersFailed"),
       timeout: 6000,
     });
   } finally {
     removeLoading.value = false;
   }
-};
-
-const removeUsersPrompt = () => {
-  $q.dialog({
-    title: "Confirm",
-    message: "Are you sure you want to remove these users?",
-    cancel: true,
-    persistent: true,
-  }).onOk(() => {
-    removeUsers();
-  });
 };
 </script>

@@ -23,7 +23,9 @@
               :editable="!lesson.journal.archived"
               @refresh-above="getLessonData(true)"
             ></StudentsMarksList>
-            <div v-else-if="!loading">No students in journal.</div>
+            <div v-else-if="!loading">
+              {{ t("learning.noStudentsInJournal") }}
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -36,12 +38,12 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import LessonDetailInfo from "src/components/LessonDetailInfo.vue";
 import StudentsMarksList from "src/components/StudentsMarksList.vue";
-import { useRouter } from "vue-router";
 
 const $q = useQuasar();
-const router = useRouter();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: String,
@@ -72,9 +74,9 @@ const getLessonData = async (u) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

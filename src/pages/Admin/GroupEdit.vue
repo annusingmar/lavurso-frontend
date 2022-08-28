@@ -1,8 +1,8 @@
 <template>
   <q-page>
     <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
-      <q-tab name="general" label="General"></q-tab>
-      <q-tab name="members" label="Members"></q-tab>
+      <q-tab name="general" :label="t('general')"></q-tab>
+      <q-tab name="members" :label="t('messages.members')"></q-tab>
     </q-tabs>
 
     <q-separator />
@@ -34,10 +34,12 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
+import { useI18n } from "vue-i18n";
 import GroupEditInfo from "./GroupEditInfo.vue";
 import GroupEditMembers from "./GroupEditMembers.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: String,
@@ -64,9 +66,9 @@ const getGroup = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

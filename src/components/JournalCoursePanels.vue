@@ -1,7 +1,7 @@
 <template>
   <q-tabs v-model="tab" dense active-color="primary" indicator-color="primary">
-    <q-tab name="lessons" :label="t('learning.lessons')"></q-tab>
-    <q-tab name="grades" :label="t('learning.grades')"></q-tab>
+    <q-tab name="lessons" :label="t('learning.lesson_s')"></q-tab>
+    <q-tab name="grades" :label="t('learning.grade_s')"></q-tab>
   </q-tabs>
   <q-separator></q-separator>
   <q-tab-panels v-model="tab" animated keep-alive>

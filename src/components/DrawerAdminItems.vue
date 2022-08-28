@@ -10,12 +10,12 @@
     icon="groups"
   ></DrawerListItem>
   <DrawerListItem
-    :title="t('learning.classes')"
+    :title="t('learning.class_es')"
     to="/admin/classes"
     icon="class"
   ></DrawerListItem>
   <DrawerListItem
-    :title="t('learning.grades')"
+    :title="t('learning.grade_s')"
     to="/admin/grades"
     icon="tag"
   ></DrawerListItem>

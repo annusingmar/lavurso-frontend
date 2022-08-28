@@ -4,7 +4,7 @@
       <q-card>
         <q-card-section>
           <div class="row justify-between">
-            <div class="text-h6">{{ t("learning.grades") }}</div>
+            <div class="text-h6">{{ t("learning.grade_s") }}</div>
             <q-btn
               color="accent"
               :label="t('learning.marks.courseGrades')"

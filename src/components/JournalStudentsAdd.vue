@@ -31,7 +31,7 @@
         use-input
         input-debounce="200"
         stack-label
-        :label="t('learning.classes')"
+        :label="t('learning.class_es')"
         :options="filteredClasses"
         option-label="name"
         option-value="id"

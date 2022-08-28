@@ -53,6 +53,12 @@ const routes = [
         meta: { level: "admin" },
       },
       {
+        path: "admin/grades/new",
+        component: () => import("pages/Admin/GradeDetails.vue"),
+        props: { isCreate: true },
+        meta: { level: "admin" },
+      },
+      {
         path: "admin/grades/:id",
         component: () => import("pages/Admin/GradeDetails.vue"),
         props: true,
@@ -77,6 +83,12 @@ const routes = [
       {
         path: "admin/classes",
         component: () => import("pages/Admin/ClassesPage.vue"),
+        meta: { level: "admin" },
+      },
+      {
+        path: "admin/classes/new",
+        component: () => import("pages/Admin/ClassDetails.vue"),
+        props: { isCreate: true },
         meta: { level: "admin" },
       },
       {

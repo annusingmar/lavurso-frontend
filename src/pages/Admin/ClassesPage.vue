@@ -3,7 +3,7 @@
     <div class="row flex-center q-py-lg" style="min-height: inherit">
       <div class="col-md-6 col-xs-10" style="min-width: 0px">
         <q-table
-          title="Classes"
+          :title="t('learning.class_es')"
           :rows="classes"
           :columns="columns"
           :loading="loading"
@@ -12,7 +12,7 @@
         >
           <template #top-right>
             <div class="row items-end">
-              <q-btn color="primary" label="new class" to="/admin/classes/0">
+              <q-btn color="primary" :label="t('new')" to="/admin/classes/new">
               </q-btn>
             </div>
           </template>
@@ -36,15 +36,17 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 const columns = [
   {
     name: "name",
     required: true,
-    label: "Name",
+    label: t("name"),
     align: "left",
     field: (row) => row.name,
     sortable: false,
@@ -52,12 +54,12 @@ const columns = [
   {
     name: "teacher",
     required: true,
-    label: "Teacher",
+    label: t("learning.teacher"),
     align: "left",
     field: (row) => row.teacher.name,
     sortable: true,
   },
-  { name: "actions", label: "Action" },
+  { name: "actions", label: t("action") },
 ];
 const loading = ref(true);
 const classes = ref([]);
@@ -74,9 +76,9 @@ const getClasses = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

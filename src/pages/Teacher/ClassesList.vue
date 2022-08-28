@@ -4,7 +4,7 @@
       <div class="col-md-4 col-xs-10">
         <q-card>
           <q-card-section>
-            <div class="text-h4">{{ t("learning.classes") }}</div>
+            <div class="text-h4">{{ t("learning.class_es") }}</div>
           </q-card-section>
           <q-card-section>
             <q-list v-if="classes && classes.length > 0" separator>
