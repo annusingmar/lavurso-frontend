@@ -1,7 +1,7 @@
 <template>
   <DrawerListItem
     :title="
-      role === 'admin' ? t('learning.journals') : t('learning.myJournals')
+      role === 'admin' ? t('learning.journal_s') : t('learning.myJournals')
     "
     icon="library_books"
     to="/teacher/journals"

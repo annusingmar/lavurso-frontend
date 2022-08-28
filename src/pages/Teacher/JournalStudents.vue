@@ -27,11 +27,12 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
-
+import { useI18n } from "vue-i18n";
 import JournalStudentsList from "src/components/JournalStudentsList.vue";
 import JournalStudentsAdd from "src/components/JournalStudentsAdd.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: Number,
@@ -59,9 +60,9 @@ const getStudents = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

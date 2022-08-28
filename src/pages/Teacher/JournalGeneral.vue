@@ -8,26 +8,30 @@
         <q-card-section>
           <div class="row justify-between items-center">
             <div>
-              <div v-if="isCreate" class="text-h4">Create Journal</div>
-              <div v-else class="text-h4">Update Journal</div>
+              <div v-if="isCreate" class="text-h4">
+                {{ t("learning.journals.createJournal") }}
+              </div>
+              <div v-else class="text-h4">
+                {{ t("learning.journals.editJournal") }}
+              </div>
             </div>
             <q-btn
               v-if="!isCreate && !isArchived"
               color="warning"
-              label="archive"
+              :label="t('archive')"
               :loading="archiveLoading"
               @click="archiveJournalPrompt"
             ></q-btn>
             <div v-else-if="!isCreate && role === 'admin'" class="row">
               <q-btn
                 color="secondary"
-                label="unarchive"
+                :label="t('unarchive')"
                 :loading="unarchiveLoading"
                 @click="unarchiveJournal"
               ></q-btn>
               <q-btn
                 color="negative"
-                label="delete"
+                :label="t('delete')"
                 class="q-ml-sm"
                 :loading="deleteLoading"
                 @click="deleteJournalPrompt"
@@ -45,21 +49,21 @@
             <q-input
               v-model.trim="journal.content.name"
               filled
-              label="Name"
+              :label="t('name')"
               autocorrect="off"
               autocapitalize="off"
               autocomplete="off"
               spellcheck="false"
-              :rules="[(val) => (val && val.length > 0) || 'Must not be empty']"
+              :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
               :disable="isArchived"
             ></q-input>
             <q-select
               v-model="journal.content.subject"
               filled
-              label="Subject"
+              :label="t('learning.subject')"
               :options="subjects"
               :disable="!isCreate"
-              :rules="[(val) => val || 'Must be chosen']"
+              :rules="[(val) => val || t('mandatoryField')]"
               option-value="id"
               option-label="name"
             ></q-select>
@@ -67,16 +71,16 @@
               v-if="!isCreate && role === 'admin'"
               v-model="journal.content.teacher"
               filled
-              label="Teacher"
+              :label="t('learning.teacher')"
               use-input
               hide-selected
               fill-input
               input-debounce
-              hint="Minimum 4 characters"
+              :hint="t('minimumNCharacters', [4])"
               :options="teachers"
               option-label="name"
               option-value="id"
-              :rules="[(val) => val || 'Must be chosen']"
+              :rules="[(val) => val || t('mandatoryField')]"
               :disable="isArchived"
               @filter="teachersFilter"
             ></q-select>
@@ -85,7 +89,7 @@
                 :loading="submitLoading"
                 type="submit"
                 color="primary"
-                :label="isCreate ? 'Create' : 'Update'"
+                :label="t('save')"
               ></q-btn>
             </div>
           </q-form>
@@ -101,8 +105,10 @@ import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
 import { computed, reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 const props = defineProps({
   isCreate: {
@@ -135,9 +141,9 @@ const getSubjects = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -179,8 +185,7 @@ const submitJournal = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message:
-        (props.isCreate ? "Creating" : "Updating") + " journal succeeded!",
+      message: t("learning.journals.savingJournalSucceeded"),
       timeout: 3000,
     });
     submitLoading.value = false;
@@ -196,7 +201,7 @@ const submitJournal = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: (props.isCreate ? "Creating" : "Updating") + " journal failed!",
+      message: t("learning.journals.savingJournalFailed"),
       timeout: 6000,
     });
     submitLoading.value = false;
@@ -225,9 +230,9 @@ const getTeachers = async (search) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -251,7 +256,7 @@ const archiveJournal = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Archiving journal succeeded",
+      message: t("learning.journals.archivingJournalSucceeded"),
       timeout: 3000,
     });
     archiveLoading.value = false;
@@ -263,7 +268,7 @@ const archiveJournal = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Archiving journal failed",
+      message: t("learning.journals.archivingJournalFailed"),
       timeout: 6000,
     });
     archiveLoading.value = false;
@@ -272,9 +277,8 @@ const archiveJournal = async () => {
 
 const archiveJournalPrompt = () => {
   $q.dialog({
-    title: "Confirm",
-    message:
-      "Are you sure you want to archive this journal? This action can only be reversed by an administrator.",
+    title: t("confirm"),
+    message: t("learning.journals.archivingJournalConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {
@@ -290,7 +294,7 @@ const unarchiveJournal = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Unarchiving journal succeeded",
+      message: t("learning.journals.unarchivingJournalSucceeded"),
       timeout: 3000,
     });
     emit("refreshJournal");
@@ -301,7 +305,7 @@ const unarchiveJournal = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Unarchiving journal failed",
+      message: t("learning.journals.unarchivingJournalFailed"),
       timeout: 6000,
     });
   } finally {
@@ -317,7 +321,7 @@ const deleteJournal = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Deleting journal succeeded",
+      message: t("learning.journals.deletingJournalSucceeded"),
       timeout: 3000,
     });
     deleteLoading.value = false;
@@ -329,7 +333,7 @@ const deleteJournal = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Deleting journal failed",
+      message: t("learning.journals.deletingJournalFailed"),
       timeout: 6000,
     });
     deleteLoading.value = false;
@@ -338,9 +342,8 @@ const deleteJournal = async () => {
 
 const deleteJournalPrompt = () => {
   $q.dialog({
-    title: "Confirm",
-    message:
-      "Are you sure you want to delete this journal? This action will remove all lessons, assignments and marks associated with this journal, and CANNOT be undone.",
+    title: t("confirm"),
+    message: t("learning.journals.deletingJournalConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {

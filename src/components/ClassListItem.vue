@@ -18,7 +18,7 @@
         </q-item-section>
       </q-item>
     </q-list>
-    <div v-else-if="!loading">No students in class.</div>
+    <div v-else-if="!loading">{{ t("learning.noStudentsInClass") }}</div>
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-expansion-item>
 </template>
@@ -27,8 +27,10 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   classs: {
@@ -58,9 +60,9 @@ const getStudents = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading data failed",
-      timeout: 5000,
-      actions: [{ label: "Dismiss", color: "white" }],
+      message: t("dataLoadingFail"),
+      timeout: 0,
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

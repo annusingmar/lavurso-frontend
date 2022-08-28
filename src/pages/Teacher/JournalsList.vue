@@ -6,7 +6,7 @@
           <q-card-section>
             <div class="row justify-between">
               <div v-if="!archived" class="text-h4 q-mr-sm">
-                {{ t("learning.journals") }}
+                {{ t("learning.journal_s") }}
               </div>
               <div v-else class="text-h4 q-mr-sm">
                 {{ t("learning.archivedJournals") }}

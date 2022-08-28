@@ -50,8 +50,8 @@ const props = defineProps({
 
 const topText = computed(() =>
   props.name
-    ? `${t("learning.journals")} - ` + props.name
-    : t("learning.journals")
+    ? `${t("learning.journal_s")} - ` + props.name
+    : t("learning.journal_s")
 );
 
 const loading = ref(true);

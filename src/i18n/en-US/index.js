@@ -4,6 +4,7 @@ export default {
   dataLoadingFail: "Loading of data failed",
   dismiss: "Dismiss",
   new: "New",
+  add: "Add",
   minimumNCharacters: "Minimum {0} characters",
   nSelected: "{0} selected",
   users: "Users",
@@ -35,6 +36,10 @@ export default {
   tomorrow: "tomorrow",
   pickADate: "Pick a date",
   pickADateRight: "Pick a date by clicking to the right",
+  archive: "Arhiveeri",
+  unarchive: "Unarchive",
+  name: "Name",
+  info: "Info",
   sidebar: {
     logOut: "Log out",
     darkMode: "Dark Mode",
@@ -56,13 +61,14 @@ export default {
     assignment_s: "Assignments",
     latest: "Latest",
     journal: "Journal",
-    journals: "Journals",
+    journal_s: "Journals",
     activeJournals: "Active Journals",
     archivedJournals: "Archived Journals",
     myJournals: "My Journals",
     noJournalsFound: "No journals found",
     class: "Class",
     classes: "Classes",
+    noClassesFound: "No classes found",
     myClasses: "My Classes",
     course: "course",
     courses: "Courses",
@@ -81,6 +87,7 @@ export default {
     teacher: "Teacher",
     students: "Students",
     noStudentsInJournal: "No students in journal",
+    noStudentsInClass: "No students in class",
     comment: "Comment",
     excuse: "Excuse",
     excuser: "By",
@@ -105,6 +112,8 @@ export default {
         "Here you can add grades to students for the current course",
       subjectGrade: "Subject Grade",
       subjectGrades: "Subject Grades",
+      subjectGradesAddDescription:
+        "Here you can add grades for this journal's subject",
       notDone: "Not Done",
       noticeGood: "Notice (Good)",
       noticeNeutral: "Notice (Neutral)",
@@ -140,6 +149,41 @@ export default {
       deletingAssignmentFailed:
         "@:learning.assignments.deletingAssignment @:failed",
       deletingAssignmentConfirm: "@:areYouSure delete this assignment?",
+    },
+    journals: {
+      removeStudentFromJournal: "Remove student from journal",
+      addStudents: "Add students",
+      addStudentsDescription:
+        "Selecting one or more classes will add all students currently apart of the classes to the journal.",
+      removingStudent: "Removing student",
+      removingStudentSucceeded:
+        "@:learning.journals.removingStudent @:succeeded",
+      removingStudentFailed: "@:learning.journals.removingStudent @:failed",
+      addingStudents: "Adding students",
+      addingStudentsSucceeded: "@:learning.journals.addingStudents @:succeeded",
+      addingStudentsFailed: "@:learning.journals.addingStudents @:failed",
+      createJournal: "Create Journal",
+      editJournal: "Edit Journal",
+      savingJournal: "Saving journal",
+      savingJournalSucceeded: "@:learning.journals.savingJournal @:succeeded",
+      savingJournalFailed: "@:learning.journals.savingJournal @:failed",
+      archivingJournal: "Archiving journal",
+      archivingJournalSucceeded:
+        "@:learning.journals.archivingJournal @:succeeded",
+      archivingJournalFailed: "@:learning.journals.archivingJournal @:failed",
+      archivingJournalConfirm:
+        "@:areYouSure archive this journal? This action can only be reversed by an administrator.",
+      unarchivingJournal: "Unarchiving journal",
+      unarchivingJournalSucceeded:
+        "@:learning.journals.unarchivingJournal @:succeeded",
+      unarchivingJournalFailed:
+        "@:learning.journals.unarchivingJournal @:failed",
+      deletingJournal: "Deleting journal",
+      deletingJournalSucceeded:
+        "@:learning.journals.deletingJournal @:succeeded",
+      deletingJournalFailed: "@:learning.journals.deletingJournal @:failed",
+      deletingJournalConfirm:
+        "@:areYouSure delete this journal? This action will remove all lessons, assignments and marks associated with this journal, and CANNOT be undone.",
     },
   },
   roles: {

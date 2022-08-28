@@ -4,15 +4,15 @@
       <q-card>
         <q-card-section>
           <div class="row justify-between">
-            <div class="text-h6">Grades</div>
+            <div class="text-h6">{{ t("learning.grades") }}</div>
             <q-btn
               color="accent"
-              label="course grades"
+              :label="t('learning.marks.courseGrades')"
               @click="showCourseGradesDialog"
             ></q-btn>
           </div>
           <div class="text-caption">
-            Here you can add grades to students for this journal's subject
+            {{ t("learning.marks.subjectGradesAddDescription") }}
             (<span class="text-weight-bold">{{
               journal.content.subject.name
             }}</span
@@ -28,7 +28,9 @@
             :editable="!journal.content.archived"
             @refresh-above="getJournalStudents"
           ></StudentsMarksList>
-          <div v-else-if="!loading">No students in journal.</div>
+          <div v-else-if="!loading">
+            {{ t("learning.noStudentsInJournal") }}
+          </div>
         </q-card-section>
         <q-inner-loading :showing="loading"></q-inner-loading>
       </q-card>
@@ -40,10 +42,12 @@
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 import StudentsMarksList from "src/components/StudentsMarksList.vue";
 import JournalGradesDialog from "src/components/JournalGradesDialog.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   journal: {
     type: Object,
@@ -73,9 +77,9 @@ const getJournalStudents = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

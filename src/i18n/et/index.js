@@ -4,6 +4,7 @@ export default {
   dataLoadingFail: "Andmete laadimine ebaõnnestus",
   dismiss: "Sulge",
   new: "Uus",
+  add: "Lisa",
   minimumNCharacters: "Vähemalt {0} tähemärki",
   nSelected: "{0} valitud",
   users: "Kasutajad",
@@ -35,6 +36,10 @@ export default {
   tomorrow: "homme",
   pickADate: "Vali kuupäev",
   pickADateRight: "Vali kuupäev paremale klõpsates",
+  archive: "Arhiveeri",
+  unarchive: "Tühista arhiveerimine",
+  name: "Nimi",
+  info: "Info",
   sidebar: {
     logOut: "Logi välja",
     darkMode: "Tume režiim",
@@ -56,13 +61,14 @@ export default {
     assignment_s: "Ülesanded",
     latest: "Hiljutine",
     journal: "Päevik",
-    journals: "Päevikud",
+    journal_s: "Päevikud",
     activeJournals: "Aktiivsed päevikud",
     archivedJournals: "Arhiveeritud päevikud",
     myJournals: "Minu päevikud",
     noJournalsFound: "Päevikuid ei leitud",
     class: "Klass",
     classes: "Klassid",
+    noClassesFound: "Klasse ei leitud",
     myClasses: "Minu klassid",
     course: "kursus",
     courses: "Kursused",
@@ -81,6 +87,7 @@ export default {
     teacher: "Õpetaja",
     students: "Õpilased",
     noStudentsInJournal: "Päevikus pole õpilasi",
+    noStudentsInClass: "Klassis pole õpilasi",
     comment: "Kommentaar",
     excuse: "Põhjendus",
     excuser: "Põhjendaja",
@@ -105,6 +112,8 @@ export default {
         "Siin saad lisada hindeid praegusele kursusele",
       subjectGrade: "Ainehinne",
       subjectGrades: "Ainehinded",
+      subjectGradesAddDescription:
+        "Siin saad lisada hindeid selle päeviku ainele",
       notDone: "Tegemata",
       noticeGood: "Kiitus",
       noticeNeutral: "Teade",
@@ -140,6 +149,41 @@ export default {
       deletingAssignmentFailed:
         "@:learning.assignments.deletingAssignment @:failed",
       deletingAssignmentConfirm: "@:areYouSure selle ülesande kustutada?",
+    },
+    journals: {
+      removeStudentFromJournal: "Eemalda õpilane päevikust",
+      addStudents: "Lisa õpilasi",
+      addStudentsDescription:
+        "Ühe või mitme klassi valimine lisab kõik klassi kuuluvad õpilased päevikusse.",
+      removingStudent: "Õpilase eemaldamine",
+      removingStudentSucceeded:
+        "@:learning.journals.removingStudent @:succeeded",
+      removingStudentFailed: "@:learning.journals.removingStudent @:failed",
+      addingStudents: "Õpilaste lisamine",
+      addingStudentsSucceeded: "@:learning.journals.addingStudents @:succeeded",
+      addingStudentsFailed: "@:learning.journals.addingStudents @:failed",
+      createJournal: "Loo päevik",
+      editJournal: "Muuda päevikut",
+      savingJournal: "Päeviku salvestamine",
+      savingJournalSucceeded: "@:learning.journals.savingJournal @:succeeded",
+      savingJournalFailed: "@:learning.journals.savingJournal @:failed",
+      archivingJournal: "Päeviku arhiveerimine",
+      archivingJournalSucceeded:
+        "@:learning.journals.archivingJournal @:succeeded",
+      archivingJournalFailed: "@:learning.journals.archivingJournal @:failed",
+      archivingJournalConfirm:
+        "@:areYouSure selle päeviku arhiveerida? Seda tegevust saab tagasi võtta ainult administraator.",
+      unarchivingJournal: "Päeviku arhiveerimise tühistamine",
+      unarchivingJournalSucceeded:
+        "@:learning.journals.unarchivingJournal @:succeeded",
+      unarchivingJournalFailed:
+        "@:learning.journals.unarchivingJournal @:failed",
+      deletingJournal: "Päeviku kustutamine",
+      deletingJournalSucceeded:
+        "@:learning.journals.deletingJournal @:succeeded",
+      deletingJournalFailed: "@:learning.journals.deletingJournal @:failed",
+      deletingJournalConfirm:
+        "@:areYouSure selle päeviku kustutada? See tegevus eemaldab kõik päevikuga seotud ülesanded, tunnid ja märked ning EI OLE tagasivõetav.",
     },
   },
   roles: {

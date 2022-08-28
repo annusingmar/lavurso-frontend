@@ -194,7 +194,9 @@ const markDisplayType = computed(() => {
   }
 });
 
-const canExcuse = computed(() => role === "teacher" || role === "parent");
+const canExcuse = computed(
+  () => role === "teacher" || role === "parent" || role === "admin"
+);
 
 const excuseAbsence = async (excuse) => {
   try {

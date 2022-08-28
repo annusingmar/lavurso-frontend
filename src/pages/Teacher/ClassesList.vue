@@ -4,7 +4,7 @@
       <div class="col-md-4 col-xs-10">
         <q-card>
           <q-card-section>
-            <div class="text-h4">Classes</div>
+            <div class="text-h4">{{ t("learning.classes") }}</div>
           </q-card-section>
           <q-card-section>
             <q-list v-if="classes && classes.length > 0" separator>
@@ -14,7 +14,7 @@
                 :classs="c"
               ></ClassListItem>
             </q-list>
-            <div v-else-if="!loading">No classes found.</div>
+            <div v-else-if="!loading">{{ t("learning.noClassesFound") }}</div>
           </q-card-section>
           <q-inner-loading :showing="loading"></q-inner-loading>
         </q-card>
@@ -28,9 +28,11 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import ClassListItem from "../../components/ClassListItem.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const { id, role } = useUserStore();
 
 const loading = ref(true);
@@ -50,9 +52,9 @@ const getClasses = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

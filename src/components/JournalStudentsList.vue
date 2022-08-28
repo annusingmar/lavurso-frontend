@@ -1,7 +1,7 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h4">Students</div>
+      <div class="text-h4">{{ t("learning.students") }}</div>
     </q-card-section>
     <q-card-section>
       <q-list v-if="students.length > 0" bordered separator>
@@ -14,12 +14,14 @@
               icon="highlight_off"
               @click="removeStudent(student.id)"
             >
-              <q-tooltip>Remove student from journal</q-tooltip>
+              <q-tooltip>{{
+                t("learning.journals.removeStudentFromJournal")
+              }}</q-tooltip>
             </q-btn>
           </q-item-section>
         </q-item>
       </q-list>
-      <div v-else>No students in journal</div>
+      <div v-else>{{ t("learning.noStudentsInJournal") }}</div>
     </q-card-section>
   </q-card>
 </template>
@@ -28,8 +30,10 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   students: {
     type: Array,
@@ -58,7 +62,7 @@ const removeStudent = async (id) => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Student removed successfully",
+      message: t("learning.journals.removingStudentSucceeded"),
       timeout: 3000,
     });
     emit("refreshStudents");
@@ -69,9 +73,8 @@ const removeStudent = async (id) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Removing student failed",
-      timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      message: t("learning.journals.removingStudentFailed"),
+      timeout: 6000,
     });
   }
 };

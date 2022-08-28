@@ -1,8 +1,8 @@
 <template>
   <q-page>
     <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
-      <q-tab name="journals" label="Journals"></q-tab>
-      <q-tab name="info" label="Info"></q-tab>
+      <q-tab name="journals" :label="t('learning.journal_s')"></q-tab>
+      <q-tab name="info" :label="t('info')"></q-tab>
     </q-tabs>
     <q-separator />
     <q-tab-panels
@@ -31,10 +31,12 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import StudentJournals from "src/components/StudentJournals.vue";
 import StudentInfo from "src/components/StudentInfo.vue";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: String,
@@ -60,9 +62,9 @@ const getStudent = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };

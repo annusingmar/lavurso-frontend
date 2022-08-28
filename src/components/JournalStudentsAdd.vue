@@ -1,11 +1,10 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h4">Add Students</div>
+      <div class="text-h4">{{ t("learning.journals.addStudents") }}</div>
       <q-separator></q-separator>
       <div class="text-caption">
-        Selecting one or more classes will add all users currently part of the
-        chosen class to the journal.
+        {{ t("learning.journals.addStudentsDescription") }}
       </div>
     </q-card-section>
     <q-card-section class="q-gutter-y-md">
@@ -17,11 +16,11 @@
         use-input
         input-debounce="200"
         stack-label
-        label="Students"
+        :label="t('learning.students')"
         :options="availableStudents"
         option-label="name"
         option-value="id"
-        hint="Minimum 4 characters"
+        :hint="t('minimumNCharacters', [4])"
         @filter="studentsFilter"
       ></q-select>
       <q-select
@@ -32,7 +31,7 @@
         use-input
         input-debounce="200"
         stack-label
-        label="Classes"
+        :label="t('learning.classes')"
         :options="filteredClasses"
         option-label="name"
         option-value="id"
@@ -41,7 +40,7 @@
       <div class="row justify-end">
         <q-btn
           color="primary"
-          label="add"
+          :label="t('add')"
           :disable="!atLeastOneChosen"
           :loading="addLoading"
           @click="addMembers"
@@ -55,8 +54,10 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: Number,
@@ -121,9 +122,9 @@ const getStudents = async (search) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -141,9 +142,9 @@ const getClasses = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Loading of data failed",
+      message: t("dataLoadingFail"),
       timeout: 0,
-      actions: [{ label: "Dismiss", color: "white" }],
+      actions: [{ label: t("dismiss"), color: "white" }],
     });
   }
 };
@@ -170,7 +171,7 @@ const addMembers = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: "Students successfully added",
+      message: t("learning.journals.addingStudentsSucceeded"),
       timeout: 3000,
     });
     chosenClasses.value = [];
@@ -183,7 +184,7 @@ const addMembers = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: "Adding students failed",
+      message: t("learning.journals.addingStudentsFailed"),
       timeout: 6000,
     });
   } finally {
