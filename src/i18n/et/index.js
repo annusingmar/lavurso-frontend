@@ -24,6 +24,7 @@ export default {
   password: "Parool",
   added: "Lisatud",
   edited: "Muudetud",
+  edit: "Muuda",
   date: "Kuupäev",
   description: "Kirjeldus",
   optional: "valikuline",
@@ -66,6 +67,7 @@ export default {
     savingUserSucceeded: "@:user.savingUser @:succeeded",
     savingUserFailed: "@:user.savingUser @:failed",
     emailAlreadyInUse: "E-posti address on juba kasutuses",
+    idCodeAlreadyInUse: "Isikukood on juba kasutuses",
     student: {
       addParent: "Lisa lapsevanem",
       removeParentFromStudent: "Eemalda lapsevanem õpilaselt",
@@ -285,7 +287,6 @@ export default {
     noOfMembers: "Liikmete arv",
     lock: "Lukusta",
     unlock: "Ava",
-    edit: "Muuda",
     reply: "Vasta",
     send: "Saada",
     title: "Pealkiri",

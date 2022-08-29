@@ -119,7 +119,7 @@
                 ></q-select>
               </div>
             </div>
-            <div class="row justify-end q-mt-sm q-gutter-sm">
+            <q-card-actions align="right">
               <q-btn
                 :loading="saveLoading"
                 type="submit"
@@ -127,7 +127,7 @@
                 :label="t('save')"
               ></q-btn>
               <q-btn type="reset" :label="t('reset')"></q-btn>
-            </div>
+            </q-card-actions>
           </q-form>
         </q-card-section>
       </q-card>
