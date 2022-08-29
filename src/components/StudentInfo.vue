@@ -9,7 +9,7 @@
     <div class="col-sm-4 col-xs-10">
       <q-card>
         <q-card-section class="q-pb-none">
-          <div class="text-h6">Parents</div>
+          <div class="text-h6">{{ t("roles.parents") }}</div>
         </q-card-section>
         <q-card-section
           v-if="parents && parents.length > 0"
@@ -22,7 +22,9 @@
           ></UserInfoCard>
         </q-card-section>
         <q-card-section v-else>
-          <div class="text-italic">No parents for student</div>
+          <div class="text-italic">
+            {{ t("user.student.noParentsForStudent") }}
+          </div>
         </q-card-section>
       </q-card>
     </div>
@@ -31,8 +33,11 @@
 
 <script setup>
 import UserInfoCard from "./UserInfoCard.vue";
+import { useI18n } from "vue-i18n";
 
-defineProps({
+const { t } = useI18n({ useScope: "global" });
+
+const props = defineProps({
   student: {
     type: Object,
     required: true,
