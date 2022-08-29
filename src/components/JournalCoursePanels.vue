@@ -9,7 +9,7 @@
       <JournalLessonList
         :journal="journal"
         :course="course"
-        @refresh-journal="$emit('refreshJournal')"
+        @refresh-journal="emit('refreshJournal')"
       ></JournalLessonList>
     </q-tab-panel>
     <q-tab-panel name="grades">

@@ -24,7 +24,7 @@
             <div class="col-sm-6 col-xs-12 q-mt-sm">
               <q-btn
                 color="secondary"
-                :label="t('messages.edit')"
+                :label="t('edit')"
                 size="sm"
                 @click="toggleMessageEditor"
               ></q-btn>

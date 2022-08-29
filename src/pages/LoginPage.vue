@@ -3,7 +3,7 @@
     <div class="col-sm-4 col-xs-10">
       <q-card>
         <q-card-section class="q-pb-none">
-          <div class="text-h4 row justify-between">
+          <div class="text-h4 row justify-around">
             <span>L</span>
             <span>A</span>
             <span>V</span>

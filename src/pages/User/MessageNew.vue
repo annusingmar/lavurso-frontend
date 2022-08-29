@@ -242,7 +242,6 @@ const sendMessage = async () => {
       message: t("messages.sendingMessageFailed"),
       timeout: 6000,
     });
-  } finally {
     sendLoading.value = false;
   }
 };

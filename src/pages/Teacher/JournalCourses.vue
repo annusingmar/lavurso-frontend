@@ -13,7 +13,7 @@
           <JournalCoursePanels
             :journal="journal"
             :course="course"
-            @refresh-journal="$emit('refreshJournal')"
+            @refresh-journal="emit('refreshJournal')"
           ></JournalCoursePanels>
         </q-card-section>
       </q-card>

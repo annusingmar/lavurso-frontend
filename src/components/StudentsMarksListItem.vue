@@ -11,7 +11,7 @@
           :mark="mark"
           :editable="editable"
           :extra-info="extraInfo"
-          @refresh-above="$emit('refreshAbove')"
+          @refresh-above="emit('refreshAbove')"
         ></MarkIcon>
       </div>
     </q-item-section>

@@ -5,14 +5,14 @@
       color="primary"
       icon="arrow_back"
       :disabled="course < 2"
-      @click="$emit('changeCourse', 'down')"
+      @click="emit('changeCourse', 'down')"
     ></q-btn>
     <div class="text-h4">{{ course }}. {{ t("learning.course") }}</div>
     <q-btn
       square
       color="primary"
       icon="arrow_forward"
-      @click="$emit('changeCourse', 'up')"
+      @click="emit('changeCourse', 'up')"
     ></q-btn>
   </div>
   <div class="row flex-center">
