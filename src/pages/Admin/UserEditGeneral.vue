@@ -249,13 +249,23 @@ const saveUser = async () => {
     }
   } catch (error) {
     if (error.response && error.response.status == 409) {
-      user.value.email = "";
-      $q.notify({
-        type: "negative",
-        position: "top",
-        message: t("user.emailAlreadyInUse"),
-        timeout: 6000,
-      });
+      if (error.response.data.error.includes("email")) {
+        user.value.email = "";
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: t("user.emailAlreadyInUse"),
+          timeout: 6000,
+        });
+      } else if (error.response.data.error.includes("ID code")) {
+        user.value.id_code = "";
+        $q.notify({
+          type: "negative",
+          position: "top",
+          message: t("user.idCodeAlreadyInUse"),
+          timeout: 6000,
+        });
+      }
     } else if (
       error.response &&
       [401, 403, 404].indexOf(error.response.status) > -1
