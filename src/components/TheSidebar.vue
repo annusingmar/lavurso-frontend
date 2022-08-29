@@ -71,7 +71,7 @@ import { useQuasar } from "quasar";
 import { useUserStore } from "../stores/user.js";
 import { ref } from "vue";
 import { api } from "src/boot/axios.js";
-import { onBeforeRouteUpdate, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import DrawerUserItems from "./DrawerUserItems.vue";
 import DrawerStudentItems from "./DrawerStudentItems.vue";
@@ -105,6 +105,7 @@ const logOut = async () => {
   try {
     await api.delete("/sessions/" + session_id);
     clearInterval(unreadInterval);
+    changeDarkMode(false);
     clearUser();
     router.replace("/login");
   } catch (error) {

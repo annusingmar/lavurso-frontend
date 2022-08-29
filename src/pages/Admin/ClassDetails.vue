@@ -12,16 +12,19 @@
             </div>
           </q-card-section>
           <q-card-section>
-            <q-form greedy @submit.prevent="submitClass">
+            <q-form
+              greedy
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="off"
+              spellcheck="false"
+              @submit.prevent="submitClass"
+            >
               <div class="q-gutter-y-md">
                 <q-input
                   v-model.trim="name"
                   filled
                   :label="t('name')"
-                  autocorrect="off"
-                  autocapitalize="off"
-                  autocomplete="off"
-                  spellcheck="false"
                 ></q-input>
                 <q-select
                   v-model="teacher"

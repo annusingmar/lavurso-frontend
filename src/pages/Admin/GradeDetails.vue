@@ -15,16 +15,16 @@
             <q-form
               greedy
               class="q-col-gutter-sm"
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="off"
+              spellcheck="false"
               @submit.prevent="submitGrade"
             >
               <q-input
                 v-model.trim="identifier"
                 filled
                 :label="t('learning.grades.identifier')"
-                autocorrect="off"
-                autocapitalize="off"
-                autocomplete="off"
-                spellcheck="false"
                 :rules="[
                   (val) => (val && val.length > 0) || t('mandatoryField'),
                   (val) => val.length < 4 || t('mustBeLessThanNCharsLong', [4]),
@@ -34,10 +34,6 @@
                 v-model.number="value"
                 filled
                 :label="t('learning.grades.value')"
-                autocorrect="off"
-                autocapitalize="off"
-                autocomplete="off"
-                spellcheck="false"
                 :rules="[
                   (val) => (val && val > 0) || t('mustBeGreaterThanN', [0]),
                 ]"

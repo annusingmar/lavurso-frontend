@@ -10,7 +10,15 @@
           <div v-else class="text-h4">{{ t("user.editUser") }}</div>
         </q-card-section>
         <q-card-section>
-          <q-form greedy @submit.prevent="saveUser" @reset="resetData">
+          <q-form
+            greedy
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="off"
+            spellcheck="false"
+            @submit.prevent="saveUser"
+            @reset="resetData"
+          >
             <div class="row justify-between q-col-gutter-md">
               <div class="col-sm-6 col-xs-12 q-gutter-y-sm">
                 <q-input

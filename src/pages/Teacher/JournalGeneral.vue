@@ -44,16 +44,16 @@
             ref="form"
             greedy
             class="q-col-gutter-y-sm"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="off"
+            spellcheck="false"
             @submit.prevent="submitJournal"
           >
             <q-input
               v-model.trim="journal.content.name"
               filled
               :label="t('name')"
-              autocorrect="off"
-              autocapitalize="off"
-              autocomplete="off"
-              spellcheck="false"
               :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
               :disable="isArchived"
             ></q-input>
