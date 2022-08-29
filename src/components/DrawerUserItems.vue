@@ -1,8 +1,8 @@
 <template>
   <DrawerListItem
-    :title="t('sidebar.user.account')"
-    icon="settings"
-    to="/account"
+    :title="t('sidebar.user.profile')"
+    icon="account_circle"
+    to="/profile"
   ></DrawerListItem>
   <DrawerListItem
     :title="t('sidebar.user.messages')"

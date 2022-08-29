@@ -1,7 +1,13 @@
 <template>
   <q-card>
-    <q-card-section class="q-pb-none">
+    <q-card-section class="q-pb-none row justify-between">
       <div class="text-h6">{{ user.name }}</div>
+      <q-btn
+        v-if="editButton"
+        color="primary"
+        :label="t('edit')"
+        @click="emit('setEdit', true)"
+      ></q-btn>
     </q-card-section>
     <q-card-section>
       <div v-if="user.email" class="row justify-between q-mt-sm">
@@ -46,7 +52,14 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  editButton: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
+
+const emit = defineEmits(["setEdit"]);
 
 const role = computed(() => {
   if (props.user.role) {

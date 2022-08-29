@@ -29,6 +29,10 @@ const routes = [
         component: () => import("pages/User/MessageMembers.vue"),
         props: true,
       },
+      {
+        path: "profile",
+        component: () => import("pages/User/ProfilePage.vue"),
+      },
       // admin routes
       {
         path: "admin/users",

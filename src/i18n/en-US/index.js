@@ -112,7 +112,7 @@ export default {
     darkMode: "Dark Mode",
     language: "Language",
     user: {
-      account: "Account",
+      profile: "Profile",
       messages: "Messages",
     },
     student: {

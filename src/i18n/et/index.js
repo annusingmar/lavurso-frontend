@@ -112,7 +112,7 @@ export default {
     darkMode: "Tume režiim",
     language: "Keel",
     user: {
-      account: "Konto",
+      profile: "Profiil",
       messages: "Postkast",
     },
     student: {
