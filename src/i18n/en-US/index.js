@@ -68,6 +68,16 @@ export default {
     savingUserFailed: "@:user.savingUser @:failed",
     emailAlreadyInUse: "Email already in use",
     idCodeAlreadyInUse: "ID code already in use",
+    password: {
+      changePassword: "Change Password",
+      currentPassword: "Current Password",
+      newPassword: "New Password",
+      confirmNewPassword: "Confirm New Password",
+      passwordsDontMatch: "Passwords don't match",
+      incorrectPassword: "Incorrect Password",
+      passwordChangeDescription:
+        "Changing your password will log you out of all devices except this one.",
+    },
     student: {
       addParent: "Add Parent",
       removeParentFromStudent: "Remove parent from Student",

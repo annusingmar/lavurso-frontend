@@ -68,6 +68,16 @@ export default {
     savingUserFailed: "@:user.savingUser @:failed",
     emailAlreadyInUse: "E-posti address on juba kasutuses",
     idCodeAlreadyInUse: "Isikukood on juba kasutuses",
+    password: {
+      changePassword: "Vaheta parooli",
+      currentPassword: "Praegune parool",
+      newPassword: "Uus parool",
+      confirmNewPassword: "Kinnita uus parool",
+      passwordsDontMatch: "Paroolid ei ühti",
+      incorrectPassword: "Vale parool",
+      passwordChangeDescription:
+        "Parooli muutmine logib sind välja kõigis seadmetes peale selle.",
+    },
     student: {
       addParent: "Lisa lapsevanem",
       removeParentFromStudent: "Eemalda lapsevanem õpilaselt",

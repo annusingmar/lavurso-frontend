@@ -18,6 +18,9 @@
           @refresh-user="getUserInfo"
         ></UserInfoEditCard>
       </div>
+      <div class="col-md-5 col-xs-10">
+        <UserPasswordChange :id="user.id"></UserPasswordChange>
+      </div>
     </div>
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-page>
@@ -29,6 +32,7 @@ import { useUserStore } from "src/stores/user";
 import { ref } from "vue";
 import UserInfoCard from "src/components/UserInfoCard.vue";
 import UserInfoEditCard from "src/components/UserInfoEditCard.vue";
+import UserPasswordChange from "src/components/UserPasswordChange.vue";
 
 const { id } = useUserStore();
 
