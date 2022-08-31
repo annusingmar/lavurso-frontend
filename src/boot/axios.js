@@ -39,7 +39,9 @@ api.interceptors.response.use(
           });
           break;
         case 403:
-          router.replace("/access-denied");
+          if (router.currentRoute.value.path !== "/login") {
+            router.replace("/access-denied");
+          }
           break;
         case 404:
           router.replace("/not-found");

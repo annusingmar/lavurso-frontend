@@ -11,7 +11,12 @@
           row-key="id"
         >
           <template #top-right>
-            <div class="row items-end">
+            <div class="row items-center q-gutter-md">
+              <q-btn
+                color="accent"
+                :label="archivedButtonText"
+                @click="archived = !archived"
+              ></q-btn>
               <q-btn color="primary" :label="t('new')" to="/admin/classes/new">
               </q-btn>
             </div>
@@ -35,7 +40,7 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
@@ -62,11 +67,16 @@ const columns = [
   { name: "actions", label: t("action") },
 ];
 const loading = ref(true);
+const archived = ref(false);
 const classes = ref([]);
 const getClasses = async () => {
   loading.value = true;
   try {
-    const response = await api.get("/classes");
+    const response = await api.get("/classes", {
+      params: {
+        archived: archived.value,
+      },
+    });
     classes.value = response.data.classes !== null ? response.data.classes : [];
     loading.value = false;
   } catch (error) {
@@ -83,5 +93,12 @@ const getClasses = async () => {
   }
 };
 const editClass = (id) => router.push("/admin/classes/" + id);
+
+watch(archived, getClasses);
+
+const archivedButtonText = computed(() =>
+  archived.value ? t("active") : t("archived")
+);
+
 getClasses();
 </script>

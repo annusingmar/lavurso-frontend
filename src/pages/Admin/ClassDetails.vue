@@ -40,6 +40,11 @@
                   option-value="id"
                   @filter="teachersFilter"
                 ></q-select>
+                <q-checkbox
+                  v-if="!isCreate"
+                  v-model="archived"
+                  :label="t('archived')"
+                ></q-checkbox>
                 <div class="row justify-end q-mt-sm">
                   <q-btn
                     :loading="submitLoading"
@@ -147,9 +152,11 @@ const getClass = async () => {
 
 const name = ref("");
 const teacher = ref(null);
+const archived = ref(null);
 const resetData = () => {
   name.value = classs.content.name;
   teacher.value = classs.content.teacher;
+  archived.value = classs.content.archived;
 };
 
 watch(classs, resetData);
@@ -168,6 +175,7 @@ const submitClass = async () => {
   };
   try {
     if (!props.isCreate) {
+      data.archived = archived.value;
       await api.patch("/classes/" + props.id, data);
     } else {
       await api.post("/classes/", data);

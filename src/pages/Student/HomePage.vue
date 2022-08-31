@@ -2,7 +2,7 @@
   <q-page>
     <div
       class="row flex-center q-py-lg q-col-gutter-md"
-      style="min-height: inherit"
+      style="min-height: inherit; align-content: center"
     >
       <div class="col-md-5 col-xs-10">
         <StudentLatest :id="Number(id)" :key="$route.fullPath"></StudentLatest>

@@ -11,10 +11,10 @@
         :loading="loading"
         :pagination="{ rowsPerPage: 10 }"
         row-key="id"
-        selection="multiple"
+        :selection="group.content.archived ? 'none' : 'multiple'"
       >
       </q-table>
-      <div class="row justify-end q-mt-md">
+      <div class="row justify-end q-mt-md" v-if="!group.content.archived">
         <q-btn
           color="negative"
           :label="t('removeSelected')"

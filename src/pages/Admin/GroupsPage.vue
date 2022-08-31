@@ -11,7 +11,12 @@
           row-key="id"
         >
           <template #top-right>
-            <div class="row items-end">
+            <div class="row items-center q-gutter-md">
+              <q-btn
+                color="accent"
+                :label="archivedButtonText"
+                @click="archived = !archived"
+              ></q-btn>
               <q-btn color="primary" :label="t('new')" @click="newGroupDialog">
               </q-btn>
             </div>
@@ -35,7 +40,7 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
@@ -64,11 +69,16 @@ const columns = [
 ];
 
 const loading = ref(true);
+const archived = ref(false);
 const groups = ref([]);
 const getGroups = async () => {
   loading.value = true;
   try {
-    const response = await api.get("/groups");
+    const response = await api.get("/groups", {
+      params: {
+        archived: archived.value,
+      },
+    });
     groups.value = response.data.groups !== null ? response.data.groups : [];
     loading.value = false;
   } catch (error) {
@@ -125,6 +135,12 @@ const newGroupDialog = () => {
 };
 
 const editGroup = (id) => router.push("/admin/groups/" + id);
+
+watch(archived, getGroups);
+
+const archivedButtonText = computed(() =>
+  archived.value ? t("active") : t("archived")
+);
 
 getGroups();
 </script>

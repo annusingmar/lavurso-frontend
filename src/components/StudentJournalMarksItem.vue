@@ -20,8 +20,8 @@
 </template>
 
 <script setup>
-import StudentCourseItem from "./StudentCourseItem.vue";
 import { useI18n } from "vue-i18n";
+import StudentCourseItem from "./StudentCourseItem.vue";
 
 const { t } = useI18n({ useScope: "global" });
 const props = defineProps({

@@ -11,7 +11,7 @@
         @refresh-group="$emit('refreshGroup')"
       ></GroupEditMembersList>
     </div>
-    <div class="col-md-3 col-xs-10">
+    <div v-if="!group.content.archived" class="col-md-3 col-xs-10">
       <GroupEditMembersAdd
         :users="users"
         :group="group"

@@ -12,22 +12,23 @@
           :pagination="{ rowsPerPage: 10 }"
         >
           <template #top-right>
-            <div class="row items-end justify-between">
-              <div class="col">
-                <q-input v-model="filter" :placeholder="t('search')">
-                  <template #append>
-                    <q-icon name="search"></q-icon>
-                  </template>
-                </q-input>
-              </div>
-              <div class="col-auto q-ml-lg">
-                <q-btn
-                  color="primary"
-                  :label="t('user.createUser')"
-                  to="/admin/users/new"
-                >
-                </q-btn>
-              </div>
+            <div class="row items-center q-gutter-md">
+              <q-input v-model="filter" dense :placeholder="t('search')">
+                <template #append>
+                  <q-icon name="search"></q-icon>
+                </template>
+              </q-input>
+              <q-btn
+                color="accent"
+                :label="archivedButtonText"
+                @click="archived = !archived"
+              ></q-btn>
+              <q-btn
+                color="primary"
+                :label="t('user.createUser')"
+                to="/admin/users/new"
+              >
+              </q-btn>
             </div>
           </template>
 
@@ -47,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { api } from "boot/axios";
 import { useQuasar } from "quasar";
 import { useRouter } from "vue-router";
@@ -96,13 +97,18 @@ const columns = [
 
 const users = ref([]);
 
+const archived = ref(false);
+
 const loading = ref(true);
 
 const getUsers = async () => {
   loading.value = true;
+  users.value = [];
   try {
-    const response = await api.get("/users");
-    users.value = response.data.users;
+    const response = await api.get("/users", {
+      params: { archived: archived.value },
+    });
+    users.value = response.data.users !== null ? response.data.users : [];
     loading.value = false;
   } catch (error) {
     $q.notify({
@@ -118,6 +124,12 @@ const getUsers = async () => {
 const filter = ref("");
 
 const editUser = (id) => router.push("/admin/users/" + id);
+
+watch(archived, getUsers);
+
+const archivedButtonText = computed(() =>
+  archived.value ? t("active") : t("archived")
+);
 
 getUsers();
 </script>

@@ -20,6 +20,8 @@ export default {
   pageNotFound: "Lehte ei leitud",
   goBack: "Mine tagasi",
   email: "E-post",
+  archived: "Arhiveeritud",
+  active: "Aktiivsed",
   invalidEmail: "Vigane e-posti address",
   password: "Parool",
   added: "Lisatud",

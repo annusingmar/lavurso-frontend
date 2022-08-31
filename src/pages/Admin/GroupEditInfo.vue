@@ -25,6 +25,7 @@
             spellcheck="false"
             :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
           ></q-input>
+          <q-checkbox v-model="archived" :label="t('archived')"></q-checkbox>
           <div class="row justify-end">
             <q-btn
               :loading="updateLoading"
@@ -58,8 +59,10 @@ const props = defineProps({
 const emit = defineEmits(["refreshGroup"]);
 
 const inputGroupName = ref("");
+const archived = ref(null);
 const resetData = () => {
   inputGroupName.value = props.group.content.name;
+  archived.value = props.group.content.archived;
 };
 
 watch(props.group, resetData);
@@ -75,6 +78,7 @@ const updateGroup = async () => {
   try {
     await api.patch("/groups/" + props.group.content.id, {
       name: inputGroupName.value,
+      archived: archived.value,
     });
     $q.notify({
       type: "positive",

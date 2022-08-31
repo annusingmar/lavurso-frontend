@@ -20,6 +20,8 @@ export default {
   pageNotFound: "Page not found",
   goBack: "Go back",
   email: "Email",
+  archived: "Archived",
+  active: "Active",
   invalidEmail: "Invalid email",
   password: "Password",
   added: "Added",

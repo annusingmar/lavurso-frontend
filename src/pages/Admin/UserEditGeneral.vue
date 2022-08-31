@@ -64,9 +64,13 @@
                   v-model="user.phone_number"
                   filled
                   :label="t('user.phoneNumber')"
-                  :rules="[(val) => true]"
                 >
                 </q-input>
+                <q-checkbox
+                  v-if="!isCreate"
+                  v-model="user.archived"
+                  :label="t('archived')"
+                ></q-checkbox>
               </div>
               <div class="col-sm-6 col-xs-12 q-gutter-y-sm">
                 <q-select
@@ -234,6 +238,10 @@ const saveUser = async () => {
 
   if (user.value.password) {
     data.password = user.value.password;
+  }
+
+  if (user.value.archived !== null && user.value.archived !== undefined) {
+    data.archived = user.value.archived;
   }
 
   saveLoading.value = true;
