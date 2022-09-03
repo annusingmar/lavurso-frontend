@@ -12,11 +12,16 @@
       ></q-btn>
     </q-card-section>
     <q-card-section class="q-py-xs q-gutter-y-sm">
-      <StudentLatestDayCard
-        v-for="d in latest"
-        :key="d.date"
-        :day="d"
-      ></StudentLatestDayCard>
+      <template v-if="latest.length > 0">
+        <StudentLatestDayCard
+          v-for="d in latest"
+          :key="d.date"
+          :day="d"
+        ></StudentLatestDayCard>
+      </template>
+      <div v-else class="row justify-center text-h5">
+        {{ t("nothingToShow") }}
+      </div>
       <div class="row justify-end items-center q-gutter-sm">
         <div>{{ t("showingFrom") }} {{ showingFrom }}</div>
         <q-btn

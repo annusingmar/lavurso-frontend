@@ -16,7 +16,6 @@
         <q-card-section
           v-if="errorText"
           class="q-mt-sm q-py-none bg-red flex-center row"
-          style="height: 5vh"
         >
           <div class="text-white text-weight-bold">
             {{ errorText }}
