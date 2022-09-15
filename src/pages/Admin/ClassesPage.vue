@@ -11,8 +11,15 @@
           row-key="id"
         >
           <template #top-right>
-            <q-btn color="primary" :label="t('new')" to="/admin/classes/new">
-            </q-btn>
+            <div class="justify-between q-gutter-sm">
+              <q-checkbox
+                v-model="onlyCurrent"
+                left-label
+                :label="t('onlyCurrentYear')"
+              ></q-checkbox>
+              <q-btn color="primary" :label="t('new')" to="/admin/classes/new">
+              </q-btn>
+            </div>
           </template>
 
           <template #body-cell-actions="props">
@@ -33,7 +40,7 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
@@ -68,11 +75,14 @@ const columns = [
   { name: "actions", label: t("action") },
 ];
 const loading = ref(true);
+const onlyCurrent = ref(true);
 const classes = ref([]);
 const getClasses = async () => {
   loading.value = true;
   try {
-    const response = await api.get("/classes?current=false", {});
+    const response = await api.get("/classes", {
+      params: { current: onlyCurrent.value },
+    });
     classes.value = response.data.classes !== null ? response.data.classes : [];
     loading.value = false;
   } catch (error) {
@@ -90,5 +100,5 @@ const getClasses = async () => {
 };
 const editClass = (id) => router.push("/admin/classes/" + id);
 
-getClasses();
+watch(onlyCurrent, getClasses, { immediate: true });
 </script>

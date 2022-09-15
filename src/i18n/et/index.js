@@ -59,6 +59,7 @@ export default {
   saving: "Salvestamine",
   savingSucceeded: "@:saving @:succeeded",
   savingFailed: "@:saving @:failed",
+  onlyCurrentYear: "Ainult praegune aasta",
   user: {
     role: "Roll",
     createUser: "Loo kasutaja",

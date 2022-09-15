@@ -59,6 +59,7 @@ export default {
   saving: "Saving",
   savingSucceeded: "@:saving @:succeeded",
   savingFailed: "@:saving @:failed",
+  onlyCurrentYear: "Only current year",
   user: {
     role: "Role",
     createUser: "Create User",
