@@ -5,20 +5,21 @@
         <q-card>
           <q-card-section>
             <div class="row justify-between">
-              <div v-if="!archived" class="text-h4 q-mr-sm">
+              <div class="text-h4 q-mr-sm">
                 {{ t("learning.journal_s") }}
               </div>
-              <div v-else class="text-h4 q-mr-sm">
-                {{ t("learning.archivedJournals") }}
-              </div>
-              <div class="q-gutter-x-md">
+              <div class="row q-gutter-x-md">
+                <q-select
+                  v-model="year"
+                  borderless
+                  :options="years"
+                  dense
+                  dense-options
+                  option-value="id"
+                  option-label="display_name"
+                  @filter="yearsFilter"
+                ></q-select>
                 <q-btn
-                  :label="archivedButtonLabel"
-                  color="secondary"
-                  @click="toggleArchived"
-                ></q-btn>
-                <q-btn
-                  v-if="!archived"
                   :label="t('new')"
                   to="/teacher/journals/new"
                   color="primary"
@@ -47,27 +48,28 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { computed, ref } from "vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import JournalListItem from "src/components/JournalListItem.vue";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
-const { id, role } = useUserStore();
+const { id, role, current_year } = useUserStore();
 
-const archived = ref(false);
+const year = ref(current_year);
+const years = ref(null);
 
 const loading = ref(true);
 const journals = ref([]);
 const getJournals = async () => {
   journals.value = [];
   const endpoint =
-    role === "admin"
-      ? "/journals?archived=" + archived.value
-      : "/teachers/" + id + "/journals?archived=" + archived.value;
+    role === "admin" ? "/journals" : "/teachers/" + id + "/journals";
   loading.value = true;
   try {
-    const response = await api.get(endpoint);
+    const response = await api.get(endpoint, {
+      params: { year: year.value.id },
+    });
     journals.value =
       response.data.journals !== null ? response.data.journals : [];
     loading.value = false;
@@ -85,14 +87,33 @@ const getJournals = async () => {
   }
 };
 
-const toggleArchived = () => {
-  archived.value = !archived.value;
-  getJournals();
+const getYears = async () => {
+  try {
+    const response = await api.get("/years");
+    years.value = response.data.years;
+  } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: t("dataLoadingFail"),
+      timeout: 0,
+      actions: [{ label: t("dismiss"), color: "white" }],
+    });
+  }
 };
 
-const archivedButtonLabel = computed(() =>
-  archived.value ? t("learning.activeJournals") : t("learning.archivedJournals")
-);
+const yearsFilter = async (val, update, abort) => {
+  if (years.value !== null) {
+    update();
+    return;
+  }
 
-getJournals();
+  await getYears();
+  update();
+};
+
+watch(year, getJournals, { immediate: true });
 </script>

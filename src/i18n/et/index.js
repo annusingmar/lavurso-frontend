@@ -45,6 +45,7 @@ export default {
   archive: "Arhiveeri",
   unarchive: "Tühista arhiveerimine",
   name: "Nimi",
+  displayName: "Nähtav nimi",
   reset: "Lähtesta",
   info: "Info",
   format: "Vorming",
@@ -254,17 +255,6 @@ export default {
       savingJournal: "Päeviku salvestamine",
       savingJournalSucceeded: "@:learning.journals.savingJournal @:succeeded",
       savingJournalFailed: "@:learning.journals.savingJournal @:failed",
-      archivingJournal: "Päeviku arhiveerimine",
-      archivingJournalSucceeded:
-        "@:learning.journals.archivingJournal @:succeeded",
-      archivingJournalFailed: "@:learning.journals.archivingJournal @:failed",
-      archivingJournalConfirm:
-        "@:areYouSure selle päeviku arhiveerida? Seda tegevust saab tagasi võtta ainult administraator.",
-      unarchivingJournal: "Päeviku arhiveerimise tühistamine",
-      unarchivingJournalSucceeded:
-        "@:learning.journals.unarchivingJournal @:succeeded",
-      unarchivingJournalFailed:
-        "@:learning.journals.unarchivingJournal @:failed",
       deletingJournal: "Päeviku kustutamine",
       deletingJournalSucceeded:
         "@:learning.journals.deletingJournal @:succeeded",

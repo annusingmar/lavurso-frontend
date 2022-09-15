@@ -12,12 +12,13 @@
       square
       color="primary"
       icon="arrow_forward"
+      :disabled="course > journal.content.year.courses - 1"
       @click="emit('changeCourse', 'up')"
     ></q-btn>
   </div>
   <div class="row flex-center">
     <div class="text-subtitle2">
-      {{ journal.content.name }}
+      {{ journal.content.name }} ({{ journal.content.year.display_name }})
     </div>
   </div>
 </template>

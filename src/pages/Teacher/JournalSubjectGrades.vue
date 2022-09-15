@@ -25,7 +25,6 @@
             :id="journal.content.id"
             :students="students"
             type="subject"
-            :editable="!journal.content.archived"
             @refresh-above="getJournalStudents"
           ></StudentsMarksList>
           <div v-else-if="!loading">

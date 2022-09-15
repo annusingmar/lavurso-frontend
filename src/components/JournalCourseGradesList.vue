@@ -20,7 +20,6 @@
         :students="students"
         type="course"
         :course="course"
-        :editable="!journal.content.archived"
         @refresh-above="getCourseStudents"
       ></StudentsMarksList>
       <div v-else-if="!loading">{{ t("learning.noStudentsInJournal") }}</div>

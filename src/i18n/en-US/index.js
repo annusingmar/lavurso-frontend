@@ -45,6 +45,7 @@ export default {
   archive: "Arhiveeri",
   unarchive: "Unarchive",
   name: "Name",
+  displayName: "Display name",
   reset: "Reset",
   info: "Info",
   format: "Format",
@@ -254,17 +255,6 @@ export default {
       savingJournal: "Saving journal",
       savingJournalSucceeded: "@:learning.journals.savingJournal @:succeeded",
       savingJournalFailed: "@:learning.journals.savingJournal @:failed",
-      archivingJournal: "Archiving journal",
-      archivingJournalSucceeded:
-        "@:learning.journals.archivingJournal @:succeeded",
-      archivingJournalFailed: "@:learning.journals.archivingJournal @:failed",
-      archivingJournalConfirm:
-        "@:areYouSure archive this journal? This action can only be reversed by an administrator.",
-      unarchivingJournal: "Unarchiving journal",
-      unarchivingJournalSucceeded:
-        "@:learning.journals.unarchivingJournal @:succeeded",
-      unarchivingJournalFailed:
-        "@:learning.journals.unarchivingJournal @:failed",
       deletingJournal: "Deleting journal",
       deletingJournalSucceeded:
         "@:learning.journals.deletingJournal @:succeeded",

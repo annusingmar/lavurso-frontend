@@ -7,11 +7,10 @@
       <JournalStudentsList
         :id="id"
         :students="students"
-        :archived="archived"
         @refresh-students="getStudents"
       ></JournalStudentsList>
     </div>
-    <div v-if="!archived" class="col-md-5 col-xs-10">
+    <div class="col-md-5 col-xs-10">
       <JournalStudentsAdd
         :id="id"
         :students="students"
@@ -36,10 +35,6 @@ const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: Number,
-    required: true,
-  },
-  archived: {
-    type: Boolean,
     required: true,
   },
 });

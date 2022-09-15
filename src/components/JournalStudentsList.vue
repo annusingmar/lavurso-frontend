@@ -7,7 +7,7 @@
       <q-list v-if="students.length > 0" bordered separator>
         <q-item v-for="student in students" :key="student.id">
           <q-item-section>{{ student.name }}</q-item-section>
-          <q-item-section v-if="!archived && role === 'admin'" side>
+          <q-item-section v-if="role === 'admin'" side>
             <q-btn
               flat
               round
@@ -41,10 +41,6 @@ const props = defineProps({
   },
   id: {
     type: Number,
-    required: true,
-  },
-  archived: {
-    type: Boolean,
     required: true,
   },
 });

@@ -4,7 +4,6 @@
       <div class="row justify-between">
         <div class="text-h6 q-mr-sm">{{ t("learning.lesson_s") }}</div>
         <q-btn
-          v-if="!journal.content.archived"
           color="primary"
           :label="t('learning.createLesson')"
           @click="lessonCreateDialog"

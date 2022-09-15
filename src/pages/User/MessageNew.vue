@@ -60,8 +60,12 @@
                           >{{ t(`roles.${scope.opt.role}`) }}</q-item-label
                         >
                         <q-item-label v-else caption
-                          >{{ t(`roles.${scope.opt.role}`) }} -
-                          {{ scope.opt.class.name }}</q-item-label
+                          >{{ t(`roles.${scope.opt.role}`)
+                          }}{{
+                            scope.opt.class.display_name
+                              ? ` - ${scope.opt.class.display_name}`
+                              : ""
+                          }}</q-item-label
                         >
                       </q-item-section>
                     </q-item>

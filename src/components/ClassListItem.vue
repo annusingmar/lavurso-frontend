@@ -1,6 +1,6 @@
 <template>
   <q-expansion-item
-    :label="classs.name"
+    :label="classs.display_name"
     :caption="classs.teacher.name"
     group="students"
     @show="onShow"

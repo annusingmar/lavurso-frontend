@@ -15,20 +15,7 @@
                 {{ t("learning.journals.editJournal") }}
               </div>
             </div>
-            <q-btn
-              v-if="!isCreate && !isArchived"
-              color="warning"
-              :label="t('archive')"
-              :loading="archiveLoading"
-              @click="archiveJournalPrompt"
-            ></q-btn>
-            <div v-else-if="!isCreate && role === 'admin'" class="row">
-              <q-btn
-                color="secondary"
-                :label="t('unarchive')"
-                :loading="unarchiveLoading"
-                @click="unarchiveJournal"
-              ></q-btn>
+            <div v-if="!isCreate && role === 'admin'" class="row">
               <q-btn
                 color="negative"
                 :label="t('delete')"
@@ -55,7 +42,6 @@
               filled
               :label="t('name')"
               :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
-              :disable="isArchived"
             ></q-input>
             <q-select
               v-model="journal.content.subject"
@@ -81,10 +67,9 @@
               option-label="name"
               option-value="id"
               :rules="[(val) => val || t('mandatoryField')]"
-              :disable="isArchived"
               @filter="teachersFilter"
             ></q-select>
-            <div v-if="!isArchived" class="row justify-end q-mt-sm">
+            <div class="row justify-end q-mt-sm">
               <q-btn
                 :loading="submitLoading"
                 type="submit"
@@ -147,10 +132,6 @@ const getSubjects = async () => {
     });
   }
 };
-
-const isArchived = computed(
-  () => props.serverJournal && props.serverJournal.content.archived
-);
 
 const journal = reactive({ content: {} });
 
@@ -244,73 +225,6 @@ const teachersFilter = async (val, update, abort) => {
   }
   await getTeachers(val);
   update();
-};
-
-// archive journal
-
-const archiveLoading = ref(false);
-const archiveJournal = async () => {
-  archiveLoading.value = true;
-  try {
-    await api.put("/journals/" + props.serverJournal.content.id + "/archive");
-    $q.notify({
-      type: "positive",
-      position: "top",
-      message: t("learning.journals.archivingJournalSucceeded"),
-      timeout: 3000,
-    });
-    archiveLoading.value = false;
-    router.replace("/teacher/journals");
-  } catch (error) {
-    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
-      return;
-    }
-    $q.notify({
-      type: "negative",
-      position: "top",
-      message: t("learning.journals.archivingJournalFailed"),
-      timeout: 6000,
-    });
-    archiveLoading.value = false;
-  }
-};
-
-const archiveJournalPrompt = () => {
-  $q.dialog({
-    title: t("confirm"),
-    message: t("learning.journals.archivingJournalConfirm"),
-    cancel: true,
-    persistent: true,
-  }).onOk(() => {
-    archiveJournal();
-  });
-};
-
-const unarchiveLoading = ref(false);
-const unarchiveJournal = async () => {
-  unarchiveLoading.value = true;
-  try {
-    await api.put("/journals/" + props.serverJournal.content.id + "/unarchive");
-    $q.notify({
-      type: "positive",
-      position: "top",
-      message: t("learning.journals.unarchivingJournalSucceeded"),
-      timeout: 3000,
-    });
-    emit("refreshJournal");
-  } catch (error) {
-    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
-      return;
-    }
-    $q.notify({
-      type: "negative",
-      position: "top",
-      message: t("learning.journals.unarchivingJournalFailed"),
-      timeout: 6000,
-    });
-  } finally {
-    unarchiveLoading.value = false;
-  }
 };
 
 const deleteLoading = ref(false);

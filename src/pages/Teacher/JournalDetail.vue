@@ -28,16 +28,10 @@
         ></JournalCourses>
       </q-tab-panel>
       <q-tab-panel name="assignments">
-        <JournalAssignments
-          :id="journal.content.id"
-          :archived="journal.content.archived"
-        ></JournalAssignments>
+        <JournalAssignments :id="journal.content.id"></JournalAssignments>
       </q-tab-panel>
       <q-tab-panel name="students">
-        <JournalStudents
-          :id="journal.content.id"
-          :archived="journal.content.archived"
-        ></JournalStudents>
+        <JournalStudents :id="journal.content.id"></JournalStudents>
       </q-tab-panel>
       <q-tab-panel name="subject_grades">
         <JournalSubjectGrades :journal="journal"></JournalSubjectGrades>

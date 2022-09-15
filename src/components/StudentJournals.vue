@@ -4,6 +4,15 @@
       <q-card>
         <q-card-section class="row justify-between">
           <div class="text-h5">{{ topText }}</div>
+          <q-select
+            v-model="year"
+            borderless
+            :options="years"
+            dense
+            dense-options
+            option-value="id"
+            option-label="display_name"
+          ></q-select>
         </q-card-section>
         <q-card-section>
           <div v-if="journals && journals.length > 0" class="q-gutter-y-md">
@@ -30,7 +39,7 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import StudentJournalMarksItem from "src/components/StudentJournalMarksItem.vue";
 
@@ -54,15 +63,19 @@ const topText = computed(() =>
     : t("learning.journal_s")
 );
 
+const year = ref(null);
+const years = ref(null);
+
 const loading = ref(true);
 const journals = ref([]);
 const getJournals = async () => {
   loading.value = true;
   try {
-    const response = await api.get("/students/" + props.id + "/marks");
+    const response = await api.get("/students/" + props.id + "/marks", {
+      params: { year: year.value.id },
+    });
     journals.value =
       response.data.journals !== null ? response.data.journals : [];
-    journals.value.sort((j) => (j.archived ? 1 : 0));
     loading.value = false;
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
@@ -77,5 +90,26 @@ const getJournals = async () => {
     });
   }
 };
-getJournals();
+
+const getYears = async () => {
+  try {
+    const response = await api.get("/students/" + props.id + "/years");
+    years.value = response.data.years;
+    year.value = years.value[years.value.length - 1];
+  } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: t("dataLoadingFail"),
+      timeout: 0,
+      actions: [{ label: t("dismiss"), color: "white" }],
+    });
+  }
+};
+
+watch(year, getJournals);
+getYears();
 </script>

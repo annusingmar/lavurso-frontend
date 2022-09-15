@@ -39,7 +39,7 @@ const loading = ref(true);
 const classes = ref([]);
 const getClasses = async () => {
   const endpoint =
-    role === "admin" ? "/classes" : "/teachers/" + id + "/classes";
+    role === "admin" ? "/classes?current=true" : "/teachers/" + id + "/classes";
   loading.value = true;
   try {
     const response = await api.get(endpoint);

@@ -4,7 +4,6 @@
       <div class="row justify-between q-gutter-sm">
         <div class="text-h5 text-weight-medium">{{ lessonDate }}</div>
         <q-btn
-          v-if="!lesson.journal.archived"
           color="primary"
           :label="t('learning.lessons.editLesson')"
           @click="lessonEditDialog"

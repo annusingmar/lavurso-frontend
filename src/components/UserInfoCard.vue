@@ -31,7 +31,10 @@
         class="row justify-between q-mt-sm"
       >
         <span class="q-mr-sm">{{ t("learning.class") }}</span>
-        <span>{{ user.class.name }}</span>
+        <span v-if="user.class.display_name">{{
+          user.class.display_name
+        }}</span>
+        <span v-else>{{ user.class.name }}</span>
       </div>
       <div v-if="role" class="row justify-between q-mt-sm">
         <span class="q-mr-sm">{{ t("user.role") }}</span>

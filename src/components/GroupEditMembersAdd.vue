@@ -41,8 +41,12 @@
                 t(`roles.${scope.opt.role}`)
               }}</q-item-label>
               <q-item-label v-else caption
-                >{{ t(`roles.${scope.opt.role}`) }} -
-                {{ scope.opt.class.name }}</q-item-label
+                >{{ t(`roles.${scope.opt.role}`)
+                }}{{
+                  scope.opt.class.display_name
+                    ? ` - ${scope.opt.class.display_name}`
+                    : ""
+                }}</q-item-label
               >
             </q-item-section>
           </q-item>
@@ -58,7 +62,7 @@
         stack-label
         :label="t('learning.class_es')"
         :options="filteredClasses"
-        option-label="name"
+        option-label="display_name"
         option-value="id"
         @filter="classesFilter"
       ></q-select>
@@ -173,7 +177,7 @@ const getUsers = async (search) => {
 const availableClasses = ref(null);
 const getClasses = async () => {
   try {
-    const response = await api.get("/classes");
+    const response = await api.get("/classes?current=true");
     availableClasses.value =
       response.data.classes !== null ? response.data.classes : [];
   } catch (error) {

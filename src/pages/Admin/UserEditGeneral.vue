@@ -302,7 +302,7 @@ const saveUser = async () => {
 const allClasses = ref(null);
 const getAllClasses = async () => {
   try {
-    const response = await api.get("/classes");
+    const response = await api.get("/classes?current=true");
     allClasses.value =
       response.data.classes !== null ? response.data.classes : [];
   } catch (error) {

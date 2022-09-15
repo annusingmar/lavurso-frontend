@@ -6,7 +6,6 @@
           <div class="row justify-between">
             <div class="text-h6">{{ t("learning.assignment_s") }}</div>
             <q-btn
-              v-if="!archived"
               :label="t('new')"
               color="primary"
               @click="newAssignmentDialog"
@@ -19,7 +18,6 @@
               v-for="a in assignments"
               :key="a.id"
               :assignment="a"
-              :archived="archived"
               @refresh-assignments="getAssignments"
             ></JournalAssignmentListItem>
           </q-list>
@@ -46,10 +44,6 @@ const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {
     type: Number,
-    required: true,
-  },
-  archived: {
-    type: Boolean,
     required: true,
   },
 });

@@ -20,7 +20,6 @@
               :id="lesson.id"
               :students="students"
               type="lesson"
-              :editable="!lesson.journal.archived"
               @refresh-above="getLessonData(true)"
             ></StudentsMarksList>
             <div v-else-if="!loading">

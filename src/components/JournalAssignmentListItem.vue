@@ -1,10 +1,5 @@
 <template>
-  <q-item
-    v-ripple
-    :clickable="!props.archived"
-    :disable="oldAssignment"
-    @click="editAssignmentDialog"
-  >
+  <q-item v-ripple :disable="oldAssignment" @click="editAssignmentDialog">
     <q-item-section>
       <div class="row q-gutter-x-sm">
         <q-badge
@@ -42,10 +37,6 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  archived: {
-    type: Boolean,
-    required: true,
-  },
 });
 
 const emit = defineEmits(["refreshAssignments"]);
@@ -66,7 +57,7 @@ const deadline = computed(() => {
 const oldAssignment = computed(
   () =>
     date.getDateDiff(new Date(props.assignment.deadline), new Date(), "days") <
-      1 && !props.archived
+    1
 );
 
 const editAssignmentDialog = () => {

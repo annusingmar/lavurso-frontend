@@ -99,7 +99,7 @@ const submitLogin = async () => {
       email: email.value,
       password: password.value,
     });
-    userStore.setUser(response.data.session);
+    userStore.setSession(response.data.session);
     router.replace(props.redirect);
   } catch (error) {
     formRef.value.resetValidation();
