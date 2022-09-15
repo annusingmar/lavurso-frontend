@@ -14,7 +14,7 @@
         :selection="group.content.archived ? 'none' : 'multiple'"
       >
       </q-table>
-      <div class="row justify-end q-mt-md" v-if="!group.content.archived">
+      <div v-if="!group.content.archived" class="row justify-end q-mt-md">
         <q-btn
           color="negative"
           :label="t('removeSelected')"

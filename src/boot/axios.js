@@ -33,18 +33,19 @@ api.interceptors.response.use(
       switch (err.response.status) {
         case 401:
           store.clearUser();
-          router.replace({
+          router.push({
             path: "/login",
             query: { redirect: router.currentRoute.value.path },
+            replace: true,
           });
           break;
         case 403:
           if (router.currentRoute.value.path !== "/login") {
-            router.replace("/access-denied");
+            router.push({ path: "/access-denied", replace: true });
           }
           break;
         case 404:
-          router.replace("/not-found");
+          router.push({ path: "/not-found", replace: true });
           break;
       }
     }
