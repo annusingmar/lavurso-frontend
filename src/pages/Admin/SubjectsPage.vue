@@ -1,17 +1,11 @@
 <template>
   <q-page>
     <div class="row flex-center q-py-lg" style="min-height: inherit">
-      <div class="col-md-5 col-xs-10" style="min-width: 0px">
-        <q-table
-          :title="t('learning.subjects')"
-          :rows="subjects"
-          :columns="columns"
-          :loading="loading"
-          :pagination="{ rowsPerPage: 10 }"
-          row-key="id"
-        >
-          <template #top-right>
-            <div class="row items-end">
+      <div class="col-md-5 col-xs-10">
+        <q-card>
+          <q-card-section class="q-pb-none">
+            <div class="row justify-between">
+              <div class="text-h4">{{ t("learning.subjects") }}</div>
               <q-btn
                 color="primary"
                 :label="t('new')"
@@ -19,32 +13,46 @@
               >
               </q-btn>
             </div>
-          </template>
-          <template #body="props">
-            <q-tr :props="props">
-              <q-td key="name" :props="props">
-                {{ props.row.name }}
-                <q-popup-edit
-                  v-slot="scope"
-                  :model-value="props.row.name"
-                  buttons
-                  :validate="validateName"
-                  @save="saveName(props.row.id, $event)"
-                >
-                  <q-input
-                    v-model="scope.value"
-                    dense
-                    autofocus
-                    :rules="[
-                      (val) => (val && val.length > 0) || t('mandatoryField'),
-                    ]"
-                    @keyup.enter.stop
-                  ></q-input>
-                </q-popup-edit>
-              </q-td>
-            </q-tr>
-          </template>
-        </q-table>
+          </q-card-section>
+          <q-card-section class="q-pt-sm">
+            <q-table
+              :rows="subjects"
+              :columns="columns"
+              :loading="loading"
+              :pagination="{ rowsPerPage: 0 }"
+              hide-header
+              hide-bottom
+              flat
+              row-key="id"
+            >
+              <template #body="props">
+                <q-tr :props="props">
+                  <q-td key="name" :props="props">
+                    {{ props.row.name }}
+                    <q-popup-edit
+                      v-slot="scope"
+                      :model-value="props.row.name"
+                      buttons
+                      :validate="validateName"
+                      @save="saveName(props.row.id, $event)"
+                    >
+                      <q-input
+                        v-model="scope.value"
+                        dense
+                        autofocus
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) || t('mandatoryField'),
+                        ]"
+                        @keyup.enter.stop
+                      ></q-input>
+                    </q-popup-edit>
+                  </q-td>
+                </q-tr>
+              </template>
+            </q-table>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>

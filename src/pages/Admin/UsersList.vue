@@ -2,46 +2,52 @@
   <q-page>
     <div class="row flex-center q-py-lg" style="min-height: inherit">
       <div class="col-md-8 col-xs-10" style="min-width: 0px">
-        <q-table
-          :title="t('users')"
-          :rows="users"
-          :columns="columns"
-          row-key="id"
-          :filter="filter"
-          :loading="loading"
-          :pagination="{ rowsPerPage: 10 }"
-        >
-          <template #top-right>
-            <div class="row items-center q-gutter-md">
-              <q-input v-model="filter" dense :placeholder="t('search')">
-                <template #append>
-                  <q-icon name="search"></q-icon>
-                </template>
-              </q-input>
-              <q-btn
-                color="accent"
-                :label="archivedButtonText"
-                @click="archived = !archived"
-              ></q-btn>
-              <q-btn
-                color="primary"
-                :label="t('user.createUser')"
-                to="/admin/users/new"
-              >
-              </q-btn>
+        <q-card>
+          <q-card-section class="q-pb-none">
+            <div class="row justify-between items-center">
+              <div class="text-h4">{{ t("users") }}</div>
+              <div class="row items-center q-gutter-md">
+                <q-input v-model="filter" dense :placeholder="t('search')">
+                  <template #append>
+                    <q-icon name="search"></q-icon>
+                  </template>
+                </q-input>
+                <q-btn
+                  color="accent"
+                  :label="archivedButtonText"
+                  @click="archived = !archived"
+                ></q-btn>
+                <q-btn
+                  color="primary"
+                  :label="t('user.createUser')"
+                  to="/admin/users/new"
+                >
+                </q-btn>
+              </div>
             </div>
-          </template>
-
-          <template #body-cell-actions="props">
-            <q-td :props="props">
-              <q-btn
-                flat
-                icon="mode_edit"
-                @click="editUser(props.row.id)"
-              ></q-btn>
-            </q-td>
-          </template>
-        </q-table>
+          </q-card-section>
+          <q-card-section class="q-pt-sm q-pb-none">
+            <q-table
+              :rows="users"
+              :columns="columns"
+              row-key="id"
+              :filter="filter"
+              :loading="loading"
+              flat
+              :pagination="{ rowsPerPage: 10 }"
+            >
+              <template #body-cell-actions="props">
+                <q-td :props="props">
+                  <q-btn
+                    flat
+                    icon="mode_edit"
+                    @click="editUser(props.row.id)"
+                  ></q-btn>
+                </q-td>
+              </template>
+            </q-table>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>

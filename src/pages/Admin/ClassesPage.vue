@@ -1,37 +1,52 @@
 <template>
   <q-page>
     <div class="row flex-center q-py-lg" style="min-height: inherit">
-      <div class="col-md-6 col-xs-10" style="min-width: 0px">
-        <q-table
-          :title="t('learning.class_es')"
-          :rows="classes"
-          :columns="columns"
-          :loading="loading"
-          :pagination="{ rowsPerPage: 10 }"
-          row-key="id"
-        >
-          <template #top-right>
-            <div class="justify-between q-gutter-sm">
-              <q-checkbox
-                v-model="onlyCurrent"
-                left-label
-                :label="t('onlyCurrentYear')"
-              ></q-checkbox>
-              <q-btn color="primary" :label="t('new')" to="/admin/classes/new">
-              </q-btn>
+      <div class="col-md-6 col-xs-10">
+        <q-card>
+          <q-card-section class="q-pb-none">
+            <div class="row justify-between items-center">
+              <div class="text-h4">{{ t("learning.class_es") }}</div>
+              <div class="q-gutter-sm">
+                <q-checkbox
+                  :model-value="onlyCurrent"
+                  left-label
+                  :label="t('onlyCurrentYear')"
+                  @update:model-value="updateCurrent"
+                ></q-checkbox>
+                <q-btn
+                  color="primary"
+                  :label="t('new')"
+                  to="/admin/classes/new"
+                >
+                </q-btn>
+              </div>
             </div>
-          </template>
-
-          <template #body-cell-actions="props">
-            <q-td :props="props">
-              <q-btn
-                flat
-                icon="mode_edit"
-                @click="editClass(props.row.id)"
-              ></q-btn>
-            </q-td>
-          </template>
-        </q-table>
+          </q-card-section>
+          <q-card-section
+            :class="['q-pt-sm', onlyCurrent ? 'q-pb-sm' : 'q-pb-none']"
+          >
+            <q-table
+              ref="tableRef"
+              :rows="classes"
+              :columns="columns"
+              :loading="loading"
+              :pagination="{ rowsPerPage: 0 }"
+              flat
+              :hide-bottom="onlyCurrent"
+              row-key="id"
+            >
+              <template #body-cell-actions="props">
+                <q-td :props="props">
+                  <q-btn
+                    flat
+                    icon="mode_edit"
+                    @click="editClass(props.row.id)"
+                  ></q-btn>
+                </q-td>
+              </template>
+            </q-table>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>
@@ -74,11 +89,15 @@ const columns = [
   },
   { name: "actions", label: t("action") },
 ];
+
+const tableRef = ref(null);
+
 const loading = ref(true);
 const onlyCurrent = ref(true);
 const classes = ref([]);
 const getClasses = async () => {
   loading.value = true;
+  classes.value = [];
   try {
     const response = await api.get("/classes", {
       params: { current: onlyCurrent.value },
@@ -100,5 +119,11 @@ const getClasses = async () => {
 };
 const editClass = (id) => router.push("/admin/classes/" + id);
 
-watch(onlyCurrent, getClasses, { immediate: true });
+const updateCurrent = (val) => {
+  onlyCurrent.value = val;
+  tableRef.value.setPagination({ rowsPerPage: onlyCurrent.value ? 0 : 15 });
+  getClasses();
+};
+
+getClasses();
 </script>

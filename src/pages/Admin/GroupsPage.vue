@@ -1,37 +1,51 @@
 <template>
   <q-page>
     <div class="row flex-center q-py-lg" style="min-height: inherit">
-      <div class="col-md-8 col-xs-10" style="min-width: 0px">
-        <q-table
-          :title="t('groups')"
-          :rows="groups"
-          :columns="columns"
-          :loading="loading"
-          :pagination="{ rowsPerPage: 10 }"
-          row-key="id"
-        >
-          <template #top-right>
-            <div class="row items-center q-gutter-md">
-              <q-btn
-                color="accent"
-                :label="archivedButtonText"
-                @click="archived = !archived"
-              ></q-btn>
-              <q-btn color="primary" :label="t('new')" @click="newGroupDialog">
-              </q-btn>
+      <div class="col-md-8 col-xs-10">
+        <q-card>
+          <q-card-section class="q-pb-none">
+            <div class="row justify-between items-center">
+              <div class="text-h4">{{ t("groups") }}</div>
+              <div class="q-gutter-md">
+                <q-btn
+                  color="accent"
+                  :label="archivedButtonText"
+                  @click="toggleArchived"
+                ></q-btn>
+                <q-btn
+                  color="primary"
+                  :label="t('new')"
+                  @click="newGroupDialog"
+                >
+                </q-btn>
+              </div>
             </div>
-          </template>
-
-          <template #body-cell-actions="props">
-            <q-td :props="props">
-              <q-btn
-                flat
-                icon="mode_edit"
-                @click="editGroup(props.row.id)"
-              ></q-btn>
-            </q-td>
-          </template>
-        </q-table>
+          </q-card-section>
+          <q-card-section
+            :class="['q-pt-sm', !archived ? 'q-pb-sm' : 'q-pb-none']"
+          >
+            <q-table
+              ref="tableRef"
+              :rows="groups"
+              :columns="columns"
+              :loading="loading"
+              :pagination="{ rowsPerPage: 0 }"
+              flat
+              :hide-bottom="!archived"
+              row-key="id"
+            >
+              <template #body-cell-actions="props">
+                <q-td :props="props">
+                  <q-btn
+                    flat
+                    icon="mode_edit"
+                    @click="editGroup(props.row.id)"
+                  ></q-btn>
+                </q-td>
+              </template>
+            </q-table>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>
@@ -68,11 +82,14 @@ const columns = [
   { name: "actions", label: t("action") },
 ];
 
+const tableRef = ref(null);
+
 const loading = ref(true);
 const archived = ref(false);
 const groups = ref([]);
 const getGroups = async () => {
   loading.value = true;
+  groups.value = [];
   try {
     const response = await api.get("/groups", {
       params: {
@@ -136,11 +153,15 @@ const newGroupDialog = () => {
 
 const editGroup = (id) => router.push("/admin/groups/" + id);
 
-watch(archived, getGroups);
-
 const archivedButtonText = computed(() =>
   archived.value ? t("active") : t("archived")
 );
+
+const toggleArchived = () => {
+  archived.value = !archived.value;
+  tableRef.value.setPagination({ rowsPerPage: archived.value ? 15 : 0 });
+  getGroups();
+};
 
 getGroups();
 </script>

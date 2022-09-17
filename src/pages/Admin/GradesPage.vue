@@ -1,31 +1,37 @@
 <template>
   <q-page>
     <div class="row flex-center q-py-lg" style="min-height: inherit">
-      <div class="col-md-8 col-xs-10" style="min-width: 0px">
-        <q-table
-          :title="t('learning.grade_s')"
-          :rows="grades"
-          :columns="columns"
-          :loading="loading"
-          :pagination="{ rowsPerPage: 10 }"
-          row-key="id"
-        >
-          <template #top-right>
-            <div class="row items-end">
+      <div class="col-md-8 col-xs-10">
+        <q-card>
+          <q-card-section class="q-pb-none">
+            <div class="row justify-between">
+              <div class="text-h4">{{ t("learning.grade_s") }}</div>
               <q-btn color="primary" :label="t('new')" to="/admin/grades/new">
               </q-btn>
             </div>
-          </template>
-          <template #body-cell-actions="props">
-            <q-td :props="props">
-              <q-btn
-                flat
-                icon="mode_edit"
-                @click="editGrade(props.row.id)"
-              ></q-btn>
-            </q-td>
-          </template>
-        </q-table>
+          </q-card-section>
+          <q-card-section class="q-pt-sm">
+            <q-table
+              :rows="grades"
+              :columns="columns"
+              :loading="loading"
+              :pagination="{ rowsPerPage: 0 }"
+              hide-bottom
+              flat
+              row-key="id"
+            >
+              <template #body-cell-actions="props">
+                <q-td :props="props">
+                  <q-btn
+                    flat
+                    icon="mode_edit"
+                    @click="editGrade(props.row.id)"
+                  ></q-btn>
+                </q-td>
+              </template>
+            </q-table>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>
