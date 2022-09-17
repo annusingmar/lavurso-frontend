@@ -21,6 +21,7 @@
                 ></q-select>
                 <q-btn
                   :label="t('new')"
+                  :disable="newButtonDisabled"
                   to="/teacher/journals/new"
                   color="primary"
                 ></q-btn>
@@ -48,7 +49,7 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import JournalListItem from "src/components/JournalListItem.vue";
 
@@ -104,6 +105,8 @@ const getYears = async () => {
     });
   }
 };
+
+const newButtonDisabled = computed(() => year.value.id != current_year.id);
 
 const yearsFilter = async (val, update, abort) => {
   if (years.value !== null) {
