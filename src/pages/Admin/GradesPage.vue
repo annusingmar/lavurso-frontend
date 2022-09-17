@@ -5,8 +5,8 @@
         <q-card>
           <q-card-section class="q-pb-none">
             <div class="row justify-between">
-              <div class="text-h4">{{ t("learning.grade_s") }}</div>
-              <q-btn color="primary" :label="t('new')" to="/admin/grades/new">
+              <div class="text-h5">{{ t("learning.grade_s") }}</div>
+              <q-btn color="primary" :label="t('new')" @click="newGrade">
               </q-btn>
             </div>
           </q-card-section>
@@ -25,7 +25,7 @@
                   <q-btn
                     flat
                     icon="mode_edit"
-                    @click="editGrade(props.row.id)"
+                    @click="editGrade(props.row)"
                   ></q-btn>
                 </q-td>
               </template>
@@ -42,11 +42,10 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
+import AdminGradeEditDialog from "src/components/AdminGradeEditDialog.vue";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
-const router = useRouter();
 
 const columns = [
   {
@@ -89,7 +88,20 @@ const getGrades = async () => {
   }
 };
 
-const editGrade = (id) => router.push("/admin/grades/" + id);
+const editGrade = (grade) => {
+  $q.dialog({
+    component: AdminGradeEditDialog,
+    componentProps: {
+      existingGrade: grade,
+    },
+  }).onOk(getGrades);
+};
+
+const newGrade = () => {
+  $q.dialog({
+    component: AdminGradeEditDialog,
+  }).onOk(getGrades);
+};
 
 getGrades();
 </script>

@@ -57,18 +57,6 @@ const routes = [
         meta: { level: "admin" },
       },
       {
-        path: "admin/grades/new",
-        component: () => import("pages/Admin/GradeDetails.vue"),
-        props: { isCreate: true },
-        meta: { level: "admin" },
-      },
-      {
-        path: "admin/grades/:id",
-        component: () => import("pages/Admin/GradeDetails.vue"),
-        props: true,
-        meta: { level: "admin" },
-      },
-      {
         path: "admin/subjects",
         component: () => import("pages/Admin/SubjectsPage.vue"),
         meta: { level: "admin" },
