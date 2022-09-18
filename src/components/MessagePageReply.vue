@@ -6,25 +6,22 @@
       @click="toggleReplyBox"
     ></q-btn>
   </div>
-  <div v-else>
-    <q-editor
-      ref="editorRef"
+  <div v-else class="q-gutter-y-sm">
+    <q-input
       v-model="userReply"
-      :toolbar="[
-        ['bold', 'italic', 'strike', 'underline'],
-        ['undo', 'redo'],
-      ]"
-      min-height="5rem"
-      @paste="onPaste"
-    ></q-editor>
-    <div class="row justify-end">
+      square
+      outlined
+      autogrow
+      :input-style="[{ 'min-height': '5rem' }, { overflow: 'hidden' }]"
+    ></q-input>
+    <div class="row justify-end q-gutter-sm">
+      <q-btn :label="t('cancel')" @click="showReplyBox = false"></q-btn>
       <q-btn
         color="primary"
         :label="t('messages.send')"
         icon-right="send"
         :loading="sendLoading"
         :disabled="replyButtonDisable"
-        class="q-mt-md"
         @click="sendMessage"
       ></q-btn>
     </div>
@@ -36,7 +33,6 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { onEditorPaste } from "src/composables/editor";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
@@ -49,15 +45,10 @@ const props = defineProps({
 const emit = defineEmits(["refreshThread"]);
 
 const showReplyBox = ref(false);
-const editorRef = ref(null);
 const userReply = ref("");
 
 const toggleReplyBox = () => {
   showReplyBox.value = !showReplyBox.value;
-};
-
-const onPaste = (event) => {
-  onEditorPaste(event, editorRef);
 };
 
 const replyButtonDisable = computed(() =>

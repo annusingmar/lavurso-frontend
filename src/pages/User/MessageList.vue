@@ -27,7 +27,9 @@
                 :msg="msg"
               ></MessageListItem>
             </q-list>
-            <div v-else-if="!loading">{{ t("messages.noMessagesFound") }}</div>
+            <div v-else-if="!loading" class="row justify-center">
+              {{ t("messages.noMessagesFound") }}
+            </div>
           </q-card-section>
           <q-inner-loading :showing="loading"></q-inner-loading>
         </q-card>

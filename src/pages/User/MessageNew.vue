@@ -3,36 +3,23 @@
     <div class="row flex-center q-py-lg" style="min-height: inherit">
       <div class="col-10">
         <q-card>
-          <q-card-section>
+          <q-card-section class="q-pb-none">
             <div class="text-h4">{{ t("messages.newMessage") }}</div>
           </q-card-section>
-          <q-card-section>
+          <q-card-section class="q-pt-md q-pb-none q-gutter-y-md">
             <q-input
-              ref="titleRef"
               v-model="title"
               square
               outlined
               :label="t('messages.title')"
-              :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
-              lazy-rules="ondemand"
             ></q-input>
-            <q-editor
-              ref="editorRef"
+            <q-input
               v-model="message"
-              :class="{ editorError }"
-              class="q-mt-sm"
-              :toolbar="[
-                ['bold', 'italic', 'strike', 'underline'],
-                ['undo', 'redo'],
-              ]"
-              min-height="10rem"
-              @paste="onPaste"
-            ></q-editor>
-            <div v-if="editorError" class="text-subtitle2 q-mt-sm">
-              {{ t("messages.messageContentEmpty") }}
-            </div>
-          </q-card-section>
-          <q-card-section>
+              square
+              outlined
+              autogrow
+              :input-style="[{ 'min-height': '10rem' }, { overflow: 'hidden' }]"
+            ></q-input>
             <div class="row q-col-gutter-x-md q-col-gutter-y-sm">
               <div class="col-sm col-xs-12">
                 <q-select
@@ -90,12 +77,13 @@
               </div>
             </div>
           </q-card-section>
-          <q-card-section>
+          <q-card-section class="q-pt-sm">
             <div class="row justify-end">
               <q-btn
                 color="primary"
                 :label="t('messages.send')"
                 icon-right="send"
+                :disable="sendButtonDisabled"
                 :loading="sendLoading"
                 class="q-mt-md"
                 @click="sendMessage"
@@ -111,11 +99,10 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user";
 import { useI18n } from "vue-i18n";
-import { onEditorPaste } from "src/composables/editor";
 
 const $q = useQuasar();
 const router = useRouter();
@@ -194,14 +181,11 @@ const getGroups = async () => {
   }
 };
 
-const onPaste = (event) => {
-  onEditorPaste(event, editorRef);
-};
-
-const editorRef = ref(null);
-const titleRef = ref(null);
 const sendLoading = ref(false);
-const editorError = ref(false);
+
+const sendButtonDisabled = computed(
+  () => !(title.value.trim() !== "" && message.value.trim() !== "")
+);
 
 const title = ref("");
 const message = ref("");
@@ -209,14 +193,6 @@ const chosenUsers = ref([]);
 const chosenGroups = ref([]);
 
 const sendMessage = async () => {
-  editorError.value = false;
-  if (!titleRef.value.validate()) {
-    return;
-  } else if (message.value.trim() === "" || message.value.trim() === "<br>") {
-    editorError.value = true;
-    return;
-  }
-
   const userIDs = [];
   const groupIDs = [];
   chosenUsers.value.forEach((u) => userIDs.push(u.id));
@@ -250,11 +226,3 @@ const sendMessage = async () => {
   }
 };
 </script>
-
-<style scoped>
-.editorError {
-  border: 2px solid;
-  border-color: red;
-  border-radius: 5px;
-}
-</style>

@@ -34,19 +34,16 @@
       </div>
       <div class="col-grow">
         <q-card-section v-if="!messageEditorVisible">
-          <div v-html="msg.body"></div>
+          <div style="white-space: pre">{{ msg.body }}</div>
         </q-card-section>
         <q-card-section v-else>
-          <q-editor
-            ref="editorRef"
+          <q-input
             v-model="editorMessage"
-            :toolbar="[
-              ['bold', 'italic', 'strike', 'underline'],
-              ['undo', 'redo'],
-            ]"
-            min-height="5rem"
-            @paste="onPaste"
-          ></q-editor>
+            square
+            outlined
+            autogrow
+            :input-style="[{ 'min-height': '5rem' }, { overflow: 'hidden' }]"
+          ></q-input>
           <div class="row justify-end q-mt-sm">
             <q-btn
               color="primary"
@@ -69,7 +66,6 @@ import { useQuasar, date } from "quasar";
 import { computed, ref } from "vue";
 import { useUserStore } from "src/stores/user";
 import { api } from "src/boot/axios";
-import { onEditorPaste } from "src/composables/editor";
 import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
@@ -143,13 +139,8 @@ const deleteMessagePrompt = (id) => {
 
 // editing message
 
-const onPaste = (event) => {
-  onEditorPaste(event, editorRef);
-};
-
 const messageEditorVisible = ref(false);
 const editorMessage = ref("");
-const editorRef = ref(null);
 const saveLoading = ref(false);
 
 const toggleMessageEditor = () => {
