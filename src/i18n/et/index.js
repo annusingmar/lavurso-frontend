@@ -22,6 +22,7 @@ export default {
   email: "E-post",
   archived: "Arhiveeritud",
   active: "Aktiivsed",
+  oneActive: "Aktiivne",
   invalidEmail: "Vigane e-posti address",
   password: "Parool",
   added: "Lisatud",
@@ -60,6 +61,7 @@ export default {
   savingSucceeded: "@:saving @:succeeded",
   savingFailed: "@:saving @:failed",
   onlyCurrentYear: "Ainult praegune aasta",
+  status: "Staatus",
   user: {
     role: "Roll",
     createUser: "Loo kasutaja",
@@ -83,6 +85,7 @@ export default {
         "Parooli muutmine logib sind välja kõigis seadmetes peale selle.",
     },
     student: {
+      studentCount: "Õpilaste arv",
       addParent: "Lisa lapsevanem",
       removeParentFromStudent: "Eemalda lapsevanem õpilaselt",
       noParentsForStudent: "Õpilasel puuduvad lapsevanemad",
@@ -180,6 +183,8 @@ export default {
     excusingAbsenceFailed: "@:learning.excusingAbsence @:failed",
     removingExcuseFailed: "@:learning.removingExcuse @:failed",
     removingExcuseConfirm: "@:areYouSure selle põhjenduse eemaldada?",
+    schoolYear: "Õppeaasta",
+    schoolYears: "Õppeaastad",
     lessons: {
       createLesson: "Loo tund",
       editLesson: "Muuda tundi",
@@ -240,6 +245,7 @@ export default {
       deletingAssignmentConfirm: "@:areYouSure selle ülesande kustutada?",
     },
     journals: {
+      journalCount: "Päevikute arv",
       removeStudentFromJournal: "Eemalda õpilane päevikust",
       addStudents: "Lisa õpilasi",
       addStudentsDescription:
@@ -272,6 +278,9 @@ export default {
     classes: {
       createClass: "Loo klass",
       editClass: "Muuda klassi",
+    },
+    years: {
+      startNewYear: "Alusta uut kooliaastat",
     },
   },
   roles: {

@@ -24,6 +24,11 @@
     to="/admin/subjects"
     icon="format_list_numbered"
   ></DrawerListItem>
+  <DrawerListItem
+    :title="t('learning.schoolYears')"
+    to="/admin/years"
+    icon="edit_calendar"
+  ></DrawerListItem>
 </template>
 
 <script setup>

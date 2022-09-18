@@ -22,6 +22,7 @@ export default {
   email: "Email",
   archived: "Archived",
   active: "Active",
+  oneActive: "Active",
   invalidEmail: "Invalid email",
   password: "Password",
   added: "Added",
@@ -60,6 +61,7 @@ export default {
   savingSucceeded: "@:saving @:succeeded",
   savingFailed: "@:saving @:failed",
   onlyCurrentYear: "Only current year",
+  status: "Status",
   user: {
     role: "Role",
     createUser: "Create User",
@@ -83,6 +85,7 @@ export default {
         "Changing your password will log you out of all devices except this one.",
     },
     student: {
+      studentCount: "Student count",
       addParent: "Add Parent",
       removeParentFromStudent: "Remove parent from Student",
       noParentsForStudent: "No parents for Student",
@@ -180,6 +183,8 @@ export default {
     excusingAbsenceFailed: "@:learning.excusingAbsence @:failed",
     removingExcuseFailed: "@:learning.removingExcuse @:failed",
     removingExcuseConfirm: "@:areYouSure remove this excuse?",
+    schoolYear: "Year",
+    schoolYears: "Years",
     lessons: {
       createLesson: "Create Lesson",
       editLesson: "Edit Lesson",
@@ -240,6 +245,7 @@ export default {
       deletingAssignmentConfirm: "@:areYouSure delete this assignment?",
     },
     journals: {
+      journalCount: "Journal count",
       removeStudentFromJournal: "Remove student from journal",
       addStudents: "Add students",
       addStudentsDescription:
@@ -272,6 +278,9 @@ export default {
     classes: {
       createClass: "Create Class",
       editClass: "Edit Class",
+    },
+    years: {
+      startNewYear: "Start new year",
     },
   },
   roles: {
