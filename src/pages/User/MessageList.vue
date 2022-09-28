@@ -7,6 +7,16 @@
             <div class="row justify-between">
               <div class="text-h4 q-mr-sm">{{ t("messages.mailbox") }}</div>
               <div class="row q-gutter-x-sm">
+                <q-input
+                  v-model="search"
+                  dense
+                  :placeholder="t('search')"
+                  :debounce="300"
+                >
+                  <template #append>
+                    <q-icon name="search"></q-icon>
+                  </template>
+                </q-input>
                 <q-btn
                   :label="t('messages.refresh')"
                   @click="getMessages"
@@ -41,7 +51,7 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useUserStore } from "src/stores/user";
 import { useI18n } from "vue-i18n";
 import MessageListItem from "src/components/MessageListItem.vue";
@@ -52,10 +62,18 @@ const messages = ref([]);
 const { t } = useI18n({ useScope: "global" });
 const { id } = useUserStore();
 
+const search = ref("");
+
 const getMessages = async () => {
   loading.value = true;
   try {
-    const response = await api.get("/users/" + id + "/threads");
+    let opts = {};
+
+    if (search.value.trim() !== "") {
+      opts = { params: { search: search.value } };
+    }
+
+    const response = await api.get("/users/" + id + "/threads", opts);
     messages.value =
       response.data.threads !== null ? response.data.threads : [];
     loading.value = false;
@@ -72,7 +90,16 @@ const getMessages = async () => {
     });
   }
 };
-getMessages();
+
+watch(
+  search,
+  () => {
+    if (search.value.trim().length > 3 || search.value === "") {
+      getMessages();
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
