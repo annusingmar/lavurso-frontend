@@ -126,7 +126,7 @@ const deleteMessage = async () => {
   }
 };
 
-const deleteMessagePrompt = (id) => {
+const deleteMessagePrompt = () => {
   $q.dialog({
     title: "Confirm",
     message: t("messages.deleteMessageConfirm"),

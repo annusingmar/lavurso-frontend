@@ -85,7 +85,7 @@ const router = useRouter();
 
 const { id, name, role, session_id, children, clearUser } = useUserStore();
 
-const props = defineProps({
+defineProps({
   open: {
     type: Boolean,
     required: true,

@@ -33,13 +33,11 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
 import { computed, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import MessageMembersAdd from "../../components/MessageMembersAdd.vue";
 import MessageMembersList from "src/components/MessageMembersList.vue";
 
 const $q = useQuasar();
-const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
 const userStore = useUserStore();
 const userID = userStore.id;

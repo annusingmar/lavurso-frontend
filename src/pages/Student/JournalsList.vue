@@ -12,7 +12,7 @@
 <script setup>
 import StudentJournals from "src/components/StudentJournals.vue";
 
-const props = defineProps({
+defineProps({
   id: {
     type: String,
     required: true,

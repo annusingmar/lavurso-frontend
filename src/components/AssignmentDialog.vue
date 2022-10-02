@@ -100,13 +100,17 @@ const saveClicked = async () => {
   try {
     await submitAssignment();
     onDialogOK();
-  } catch {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 const deleteClicked = async () => {
   try {
     await deleteAssignment();
     onDialogOK();
-  } catch {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const popupRef = ref(null);
@@ -163,7 +167,7 @@ const submitAssignment = async () => {
       actions: [{ label: t("dismiss"), color: "white" }],
     });
     saveLoading.value = false;
-    throw new Error();
+    throw new Error(error);
   }
 };
 
@@ -191,7 +195,7 @@ const deleteAssignment = async () => {
       actions: [{ label: t("dismiss"), color: "white" }],
     });
     deleteLoading.value = false;
-    throw new Error();
+    throw new Error(error);
   }
 };
 

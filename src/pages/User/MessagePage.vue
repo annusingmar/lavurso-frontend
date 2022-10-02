@@ -39,7 +39,6 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, reactive } from "vue";
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 import MessageContentItem from "src/components/MessageContentItem.vue";
@@ -47,7 +46,6 @@ import MessagePageThread from "src/components/MessagePageThread.vue";
 import MessagePageReply from "src/components/MessagePageReply.vue";
 
 const $q = useQuasar();
-const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
   id: {

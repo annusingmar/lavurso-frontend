@@ -34,7 +34,7 @@ import StudentAssignmentList from "src/components/StudentAssignmentList.vue";
 const tab = ref("latest");
 const { t } = useI18n({ useScope: "global" });
 
-const props = defineProps({
+defineProps({
   id: {
     type: String,
     required: true,

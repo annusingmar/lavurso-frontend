@@ -27,7 +27,7 @@
 
 <script setup>
 import MarkIcon from "./MarkIcon.vue";
-const props = defineProps({
+defineProps({
   mark: {
     type: Object,
     required: true,

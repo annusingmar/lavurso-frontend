@@ -89,8 +89,7 @@ const resetData = () => (user.value = { ...props.serverUser });
 const user = ref({});
 
 const validateEmail = (email) => {
-  const re =
-    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   return re.test(email) || t("invalidEmail");
 };

@@ -110,14 +110,18 @@ const saveClicked = async () => {
   try {
     await submitMark();
     onDialogOK();
-  } catch {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const deleteClicked = async () => {
   try {
     await deleteMark();
     onDialogOK();
-  } catch {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const typeRef = ref(null);
@@ -255,7 +259,7 @@ const submitMark = async () => {
       timeout: 6000,
     });
     saveLoading.value = false;
-    throw new Error();
+    throw new Error(error);
   }
 };
 
@@ -287,7 +291,7 @@ const deleteMark = async () => {
       actions: [{ label: t("dismiss"), color: "white" }],
     });
     deleteLoading.value = false;
-    throw new Error();
+    throw new Error(error);
   }
 };
 

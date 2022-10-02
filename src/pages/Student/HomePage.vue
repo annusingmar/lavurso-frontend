@@ -21,7 +21,7 @@
 import StudentAssignmentList from "src/components/StudentAssignmentList.vue";
 import StudentLatest from "../../components/StudentLatest.vue";
 
-const props = defineProps({
+defineProps({
   id: {
     type: String,
     required: true,

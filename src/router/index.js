@@ -33,7 +33,7 @@ const Router = createRouter({
   history: createHistory(process.env.VUE_ROUTER_BASE),
 });
 
-Router.beforeEach((to, from) => {
+Router.beforeEach((to) => {
   const store = useUserStore();
   if (to.path !== "/login" && !store.isAuthenticated) {
     return { path: "/login", query: { redirect: to.path } };
@@ -57,6 +57,7 @@ Router.beforeEach((to, from) => {
       if (!store.role === "admin") {
         return { path: "/access-denied" };
       }
+      break;
     case "teacher":
       if (!store.role === "teacher" && !store.role === "admin") {
         return { path: "/access-denied" };

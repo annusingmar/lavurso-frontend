@@ -19,7 +19,7 @@
                 </q-input>
                 <q-btn
                   :label="t('messages.refresh')"
-                  @click="getMessages"
+                  @click="refreshMessages"
                 ></q-btn>
                 <q-btn
                   :label="t('new')"
@@ -88,6 +88,14 @@ const getMessages = async () => {
       timeout: 0,
       actions: [{ label: t("dismiss"), color: "white" }],
     });
+  }
+};
+
+const refreshMessages = () => {
+  if (search.value === "") {
+    getMessages();
+  } else {
+    search.value = "";
   }
 };
 

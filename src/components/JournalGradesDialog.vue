@@ -54,8 +54,7 @@ const props = defineProps({
   },
 });
 
-const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
-  useDialogPluginComponent();
+const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
 
 const cancelClicked = onDialogCancel;
 

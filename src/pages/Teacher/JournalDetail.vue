@@ -52,7 +52,6 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { reactive, ref } from "vue";
-import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import JournalGeneral from "./JournalGeneral.vue";
 import JournalStudents from "./JournalStudents.vue";
@@ -68,7 +67,6 @@ const props = defineProps({
     required: true,
   },
 });
-const router = useRouter();
 
 const tab = ref("courses");
 const journal = reactive({ content: {} });

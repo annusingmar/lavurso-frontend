@@ -36,7 +36,6 @@ export default {
   showOlder: "Show older",
   showFuture: "Show future",
   showingFrom: "Showing from",
-  savingFailed: "Saving @:failed",
   general: "General",
   delete: "Delete",
   today: "today",

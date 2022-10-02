@@ -108,7 +108,7 @@ const getYears = async () => {
 
 const newButtonDisabled = computed(() => year.value.id != current_year.id);
 
-const yearsFilter = async (val, update, abort) => {
+const yearsFilter = async (_, update) => {
   if (years.value !== null) {
     update();
     return;

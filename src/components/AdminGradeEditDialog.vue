@@ -63,7 +63,9 @@ const saveClicked = async () => {
   try {
     await saveGrade();
     onDialogOK();
-  } catch {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const saveGrade = async () => {

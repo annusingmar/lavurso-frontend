@@ -91,7 +91,9 @@ const saveClicked = async () => {
   try {
     await submitLesson();
     onDialogOK();
-  } catch {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 const lesson = reactive({});
@@ -113,10 +115,6 @@ const saveButtonDisabled = computed(() => !lesson.date);
 
 const saveLoading = ref(false);
 const submitLesson = async () => {
-  if (!lesson.date) {
-    dateError.value = true;
-    throw new Error();
-  }
   let data = {};
   if (!isUpdateDialog.value) {
     data.journal_id = props.journal.id;
@@ -149,7 +147,7 @@ const submitLesson = async () => {
       timeout: 5000,
     });
     saveLoading.value = false;
-    throw new Error();
+    throw new Error(error);
   }
 };
 

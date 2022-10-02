@@ -36,7 +36,6 @@ export default {
   showOlder: "Näita vanemaid",
   showFuture: "Näita tulevikku",
   showingFrom: "Näitan alates",
-  savingFailed: "Salvestamine @:failed",
   general: "Üldine",
   delete: "Kustuta",
   today: "täna",
@@ -280,7 +279,7 @@ export default {
       editClass: "Muuda klassi",
     },
     years: {
-      startNewYear: "Alusta uut kooliaastat",
+      startNewYear: "Alusta uut õppeaastat",
     },
   },
   roles: {

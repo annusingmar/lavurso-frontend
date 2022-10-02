@@ -42,10 +42,8 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter } from "vue-router";
 
 const $q = useQuasar();
-const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
 
 const columns = [

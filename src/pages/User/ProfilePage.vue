@@ -30,11 +30,15 @@
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
 import { ref } from "vue";
+import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 import UserInfoCard from "src/components/UserInfoCard.vue";
 import UserInfoEditCard from "src/components/UserInfoEditCard.vue";
 import UserPasswordChange from "src/components/UserPasswordChange.vue";
 
 const { id } = useUserStore();
+const { t } = useI18n({ useScope: "global" });
+const $q = useQuasar();
 
 const edit = ref(false);
 const setEdit = (val) => (edit.value = val);

@@ -28,7 +28,7 @@ import JournalLessonList from "./JournalLessonList.vue";
 import JournalCourseGradesList from "./JournalCourseGradesList.vue";
 
 const { t } = useI18n({ useScope: "global" });
-const props = defineProps({
+defineProps({
   journal: {
     type: Object,
     required: true,
