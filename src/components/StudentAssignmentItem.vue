@@ -58,6 +58,7 @@ const props = defineProps({
 const done = ref(props.assignment.done);
 const setDone = async (val) => {
   try {
+    done.value = val;
     if (done.value) {
       await api.put(
         "/students/" +
@@ -75,7 +76,6 @@ const setDone = async (val) => {
           "/done"
       );
     }
-    done.value = val;
   } catch (error) {
     $q.notify({
       type: "negative",
