@@ -81,7 +81,7 @@ export default {
       passwordsDontMatch: "Paroolid ei ühti",
       incorrectPassword: "Vale parool",
       passwordChangeDescription:
-        "Parooli muutmine logib sind välja kõigis seadmetes peale selle.",
+        "Parooli muutmine logib sind välja kõigis seadmetes peale praeguse.",
     },
     student: {
       studentCount: "Õpilaste arv",

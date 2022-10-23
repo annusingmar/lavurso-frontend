@@ -81,7 +81,7 @@ export default {
       passwordsDontMatch: "Passwords don't match",
       incorrectPassword: "Incorrect Password",
       passwordChangeDescription:
-        "Changing your password will log you out of all devices except this one.",
+        "Changing your password will log you out of all devices except the current one.",
     },
     student: {
       studentCount: "Student count",
