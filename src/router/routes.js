@@ -94,6 +94,11 @@ const routes = [
         component: () => import("pages/Admin/YearsPage.vue"),
         meta: { level: "admin" },
       },
+      {
+        path: "admin/years/new",
+        component: () => import("pages/Admin/NewYearPage.vue"),
+        meta: { level: "admin" },
+      },
       // teacher routes
       {
         path: "teacher/journals",

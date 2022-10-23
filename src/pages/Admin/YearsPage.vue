@@ -6,7 +6,11 @@
           <q-card-section class="q-pb-none">
             <div class="row justify-between">
               <div class="text-h4">{{ t("learning.schoolYears") }}</div>
-              <q-btn color="primary" :label="t('learning.years.startNewYear')">
+              <q-btn
+                color="primary"
+                :label="t('learning.years.startNewYear')"
+                to="/admin/years/new"
+              >
               </q-btn>
             </div>
           </q-card-section>
