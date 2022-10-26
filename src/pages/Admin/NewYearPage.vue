@@ -10,8 +10,8 @@
             <q-stepper v-model="step" color="primary" flat vertical animated>
               <q-step :name="1" title="Details" icon="info" :done="step > 1">
                 <NewYearDetails
-                  v-model="details"
-                  @next="step += 1"
+                  :prop-details="details"
+                  @next="setNewYearDetails"
                 ></NewYearDetails>
               </q-step>
               <q-step
@@ -21,11 +21,8 @@
                 :done="step > 2"
               >
                 <NewClassDetails
-                  v-model="newClasses"
-                  @back="step -= 1"
-                  @next="step += 1"
-                  @add-new="addNew"
-                  @remove="remove"
+                  :prop-new-classes="newClasses"
+                  @go-to="setNewClasses"
                 ></NewClassDetails>
               </q-step>
               <q-step :name="3" title="Transfer Classes" icon="group">
@@ -52,15 +49,31 @@ const details = ref({
   courses: 1,
 });
 
+const newClasses = ref([]);
+
 watch(details, () => {
   if (details.value.courses < 1) {
     details.value.courses = 1;
   }
 });
 
-const newClasses = ref([{}]);
+// we aren't supposed to mutate props from child components,
+// even though it is possible create a shallow copy of, in this case, the provided object or array of objects
+// and via that change the parent component's state - that actually seems to work fine
+// it's even shown in an official example: https://vuejs.org/examples/#tree
+// but I chose to go the 'correct' route and not do that, instead I create a deep copy of
+// the object or array of objects, modify that in component state and emit it to parent on 'step' change
+// more discussion: https://forum.vuejs.org/t/is-mutating-object-props-bad-practice/17448
 
-const addNew = () => newClasses.value.push({});
+const setNewYearDetails = (yearDetails) => {
+  details.value = yearDetails;
+  step.value += 1;
+};
 
-const remove = (i) => newClasses.value.splice(i, 1);
+const setNewClasses = (classes, whereTo) => {
+  newClasses.value = classes;
+  step.value += whereTo;
+  console.log(newClasses.value);
+  console.log(details.value);
+};
 </script>

@@ -19,6 +19,7 @@
               v-if="students && students.length > 0"
               :id="lesson.id"
               :students="students"
+              :editable="true"
               type="lesson"
               @refresh-above="getLessonData(true)"
             ></StudentsMarksList>

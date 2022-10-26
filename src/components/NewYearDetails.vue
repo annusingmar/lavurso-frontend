@@ -1,17 +1,15 @@
 <template>
   <div class="row justify-start q-gutter-md">
     <q-input
-      :model-value="modelValue.displayName"
+      v-model="details.displayName"
       label="Display name"
       filled
-      @update:model-value="(val) => updateValue('displayName', val)"
     ></q-input>
     <q-input
-      :model-value="modelValue.courses"
+      v-model="details.courses"
       label="Courses"
       type="number"
       filled
-      @update:model-value="(val) => updateValue('courses', val)"
     ></q-input>
   </div>
   <q-btn
@@ -19,26 +17,32 @@
     color="primary"
     label="Next"
     :disable="nextDisabled"
-    @click="emit('next')"
+    @click="next"
   ></q-btn>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 const props = defineProps({
-  modelValue: {
+  propDetails: {
     type: Object,
     required: true,
   },
 });
 
-const emit = defineEmits(["update:modelValue", "next"]);
+const emit = defineEmits(["next"]);
 
-const updateValue = (key, val) =>
-  emit("update:modelValue", { ...props.modelValue, [key]: val });
+// create copy of object
+// so we don't mutate props
+// check `NewYearPage.vue` for comment
+const details = ref({ ...props.propDetails });
 
 const nextDisabled = computed(
-  () => !(props.modelValue.displayName !== "" && props.modelValue.courses > 0)
+  () => !(details.value.displayName !== "" && details.value.courses > 0)
 );
+
+const next = () => {
+  emit("next", details.value);
+};
 </script>
