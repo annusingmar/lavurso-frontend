@@ -2,7 +2,7 @@
   <div v-if="newClasses.length > 0">
     <q-form
       ref="form"
-      class="q-col-gutter-y-xs"
+      class="q-col-gutter-y-sm"
       greedy
       autocorrect="off"
       autocapitalize="off"
@@ -19,12 +19,12 @@
     </q-form>
   </div>
   <div v-else class="row justify-center">Click 'Add' to add a new class</div>
-  <div class="row justify-between q-mt-xs">
+  <div class="row justify-between q-mt-md">
     <div class="q-gutter-sm">
-      <q-btn color="primary" label="Next" @click="go(1)"></q-btn>
+      <q-btn color="primary" label="Next" @click="go('next')"></q-btn>
       <q-btn color="green" label="add" @click="newClasses.push({})"></q-btn>
     </div>
-    <q-btn label="back" @click="go(-1)"></q-btn>
+    <q-btn label="back" @click="go('back')"></q-btn>
   </div>
 </template>
 
@@ -52,7 +52,7 @@ props.propNewClasses.forEach((val) => {
 });
 
 const go = async (whereTo) => {
-  if (form.value && !(await form.value.validate())) {
+  if (whereTo === "next" && form.value && !(await form.value.validate())) {
     return;
   }
   emit("goTo", newClasses.value, whereTo);

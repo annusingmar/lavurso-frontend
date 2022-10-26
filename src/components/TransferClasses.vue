@@ -29,8 +29,8 @@
     </q-markup-table>
   </q-form>
   <div class="row justify-between q-mt-sm">
-    <q-btn color="primary" label="Next" @click="go(1)"></q-btn>
-    <q-btn label="back" @click="go(-1)"></q-btn>
+    <q-btn color="primary" label="Next" @click="go('next')"></q-btn>
+    <q-btn label="back" @click="go('back')"></q-btn>
   </div>
 </template>
 
@@ -62,7 +62,7 @@ props.propClasses.forEach((val) => {
 });
 
 const go = async (whereTo) => {
-  if (form.value && !(await form.value.validate())) {
+  if (whereTo === "next" && form.value && !(await form.value.validate())) {
     return;
   }
   emit("goTo", transferClasses.value, whereTo);

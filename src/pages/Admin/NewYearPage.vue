@@ -121,11 +121,11 @@ const setNewYearDetails = (yearDetails) => {
 
 const setNewClasses = (classes, whereTo) => {
   newClasses.value = classes;
-  step.value += whereTo;
+  step.value += whereTo === "next" ? 1 : -1;
 };
 
 const setTransferClasses = (classes, whereTo) => {
   transferClasses.value = classes;
-  step.value += whereTo;
+  step.value += whereTo === "next" ? 1 : -1;
 };
 </script>

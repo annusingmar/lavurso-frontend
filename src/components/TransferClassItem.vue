@@ -3,9 +3,7 @@
     <td>
       <q-checkbox
         :model-value="modelValue.selected"
-        @update:model-value="
-          (val) => emit('update:modelValue', 'selected', val)
-        "
+        @update:model-value="(val) => updateSelected(val)"
       ></q-checkbox>
     </td>
     <td>{{ modelValue.name }}</td>
@@ -37,6 +35,14 @@ defineProps({
 });
 
 const emit = defineEmits(["update:modelValue"]);
+
+const updateSelected = (val) => {
+  if (!val) {
+    emit("update:modelValue", "newDisplayName", "");
+    emit("update:modelValue", "selected", val);
+  }
+  emit("update:modelValue", "selected", val);
+};
 </script>
 
 <style scoped>

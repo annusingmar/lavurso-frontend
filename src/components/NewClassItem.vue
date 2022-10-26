@@ -4,6 +4,7 @@
       class="col-5"
       :model-value="modelValue.name"
       label="Name"
+      hide-bottom-space
       :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
       filled
       @update:model-value="(val) => emit('update:modelValue', 'name', val)"
@@ -12,6 +13,7 @@
       class="col-5"
       :model-value="modelValue.displayName"
       label="New year display name"
+      hide-bottom-space
       :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
       filled
       @update:model-value="
@@ -20,9 +22,9 @@
     ></q-input>
     <q-btn
       round
-      class="q-mb-md"
       color="red"
-      label="-"
+      label="X"
+      class="self-start"
       size="sm"
       @click="emit('remove')"
     ></q-btn>
