@@ -1,5 +1,5 @@
 <template>
-  <div class="row items-center q-gutter-md">
+  <div class="row items-center q-gutter-x-md">
     <q-input
       class="col-5"
       :model-value="modelValue.name"
@@ -20,7 +20,7 @@
     ></q-input>
     <q-btn
       round
-      class="q-my-none"
+      class="q-mb-md"
       color="red"
       label="-"
       size="sm"

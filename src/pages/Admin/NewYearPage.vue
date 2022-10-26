@@ -32,8 +32,8 @@
                 :done="step > 3"
               >
                 <TransferClasses
-                  :classes="classes"
-                  :prop-transfer-classes="transferClasses"
+                  :new-year-name="details.displayName"
+                  :prop-classes="transferClasses"
                   @go-to="setTransferClasses"
                 ></TransferClasses>
               </q-step>
@@ -65,9 +65,7 @@ const details = ref({
   displayName: "",
   courses: 1,
 });
-
 const newClasses = ref([]);
-
 const transferClasses = ref([]);
 
 watch(details, () => {
@@ -78,15 +76,20 @@ watch(details, () => {
 
 const loading = ref(true);
 
-const classes = ref([]);
 const getClasses = async () => {
   loading.value = true;
-  classes.value = [];
   try {
     const response = await api.get("/classes", {
       params: { current: true },
     });
-    classes.value = response.data.classes !== null ? response.data.classes : [];
+    let classes = response.data.classes !== null ? response.data.classes : [];
+    transferClasses.value = classes.map((val) => ({
+      id: val.id,
+      name: val.name,
+      display_name: val.display_name,
+      selected: true,
+      newDisplayName: "",
+    }));
     loading.value = false;
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
@@ -121,7 +124,8 @@ const setNewClasses = (classes, whereTo) => {
   step.value += whereTo;
 };
 
-const setTransferClasses = (whereTo) => {
+const setTransferClasses = (classes, whereTo) => {
+  transferClasses.value = classes;
   step.value += whereTo;
 };
 </script>
