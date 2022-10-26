@@ -2,7 +2,7 @@
   <div v-if="newClasses.length > 0">
     <q-form
       ref="form"
-      class="col-12 q-col-gutter-y-xs"
+      class="q-col-gutter-y-xs"
       greedy
       autocorrect="off"
       autocapitalize="off"
@@ -18,7 +18,7 @@
       ></NewClassItem>
     </q-form>
   </div>
-  <div v-else class="text-center">Click 'Add' to add a new class</div>
+  <div v-else class="row justify-center">Click 'Add' to add a new class</div>
   <div class="row justify-between q-mt-xs">
     <div class="q-gutter-sm">
       <q-btn color="primary" label="Next" @click="go(1)"></q-btn>

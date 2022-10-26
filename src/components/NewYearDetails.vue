@@ -1,12 +1,14 @@
 <template>
-  <div class="row justify-start q-gutter-md">
+  <div class="row q-gutter-md">
     <q-input
       v-model="details.displayName"
+      class="col-5"
       label="Display name"
       filled
     ></q-input>
     <q-input
       v-model="details.courses"
+      class="col-5"
       label="Courses"
       type="number"
       filled
