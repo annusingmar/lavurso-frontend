@@ -25,12 +25,22 @@
                   @go-to="setNewClasses"
                 ></NewClassDetails>
               </q-step>
-              <q-step :name="3" title="Transfer Classes" icon="group">
-                xxxxx
+              <q-step
+                :name="3"
+                title="Transfer Classes"
+                icon="group"
+                :done="step > 3"
+              >
+                <TransferClasses
+                  :classes="classes"
+                  :prop-transfer-classes="transferClasses"
+                  @go-to="setTransferClasses"
+                ></TransferClasses>
               </q-step>
               <q-step :name="4" title="Confirm" icon="check"></q-step>
             </q-stepper>
           </q-card-section>
+          <q-inner-loading :showing="loading"></q-inner-loading>
         </q-card>
       </div>
     </div>
@@ -39,8 +49,15 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import NewYearDetails from "src/components/NewYearDetails.vue";
+import { api } from "src/boot/axios";
+import { useQuasar } from "quasar";
+import { useI18n } from "vue-i18n";
 import NewClassDetails from "src/components/NewClassDetails.vue";
+import NewYearDetails from "src/components/NewYearDetails.vue";
+import TransferClasses from "../../components/TransferClasses.vue";
+
+const $q = useQuasar();
+const { t } = useI18n({ useScope: "global" });
 
 const step = ref(1);
 
@@ -51,11 +68,40 @@ const details = ref({
 
 const newClasses = ref([]);
 
+const transferClasses = ref([]);
+
 watch(details, () => {
   if (details.value.courses < 1) {
     details.value.courses = 1;
   }
 });
+
+const loading = ref(true);
+
+const classes = ref([]);
+const getClasses = async () => {
+  loading.value = true;
+  classes.value = [];
+  try {
+    const response = await api.get("/classes", {
+      params: { current: true },
+    });
+    classes.value = response.data.classes !== null ? response.data.classes : [];
+    loading.value = false;
+  } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: t("dataLoadingFail"),
+      timeout: 0,
+      actions: [{ label: t("dismiss"), color: "white" }],
+    });
+  }
+};
+getClasses();
 
 // we aren't supposed to mutate props from child components,
 // even though it is possible create a shallow copy of, in this case, the provided object or array of objects
@@ -73,7 +119,9 @@ const setNewYearDetails = (yearDetails) => {
 const setNewClasses = (classes, whereTo) => {
   newClasses.value = classes;
   step.value += whereTo;
-  console.log(newClasses.value);
-  console.log(details.value);
+};
+
+const setTransferClasses = (whereTo) => {
+  step.value += whereTo;
 };
 </script>
