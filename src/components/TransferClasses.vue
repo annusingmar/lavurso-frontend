@@ -53,7 +53,15 @@ const props = defineProps({
 
 const form = ref(null);
 
+// interface transferClass {
+//   id: Number;
+//   name: String;
+//   display_name: String; // previous year display name
+//   selected: Boolean;
+//   newDisplayName: String; // new year display name
+// }
 const transferClasses = ref([]);
+
 // create deep copy of array and its objects
 // so we don't mutate props
 // check `NewYearPage.vue` for comment

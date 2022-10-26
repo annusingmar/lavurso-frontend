@@ -37,7 +37,14 @@
                   @go-to="setTransferClasses"
                 ></TransferClasses>
               </q-step>
-              <q-step :name="4" title="Confirm" icon="check"></q-step>
+              <q-step :name="4" title="Confirm" icon="check">
+                <ConfirmNewYear
+                  :details="details"
+                  :new-classes="newClasses"
+                  :transfer-classes="transferClasses"
+                  @back="step -= 1"
+                ></ConfirmNewYear>
+              </q-step>
             </q-stepper>
           </q-card-section>
           <q-inner-loading :showing="loading"></q-inner-loading>
@@ -55,6 +62,7 @@ import { useI18n } from "vue-i18n";
 import NewClassDetails from "src/components/NewClassDetails.vue";
 import NewYearDetails from "src/components/NewYearDetails.vue";
 import TransferClasses from "../../components/TransferClasses.vue";
+import ConfirmNewYear from "../../components/ConfirmNewYear.vue";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });

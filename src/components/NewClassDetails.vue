@@ -43,7 +43,12 @@ const props = defineProps({
 
 const form = ref(null);
 
+// interface newClass {
+//   name: String;
+//   newDisplayName: String;
+// }
 const newClasses = ref([]);
+
 // create deep copy of array and its objects
 // so we don't mutate props
 // check `NewYearPage.vue` for comment

@@ -50,6 +50,6 @@ td {
   text-align: center;
 }
 .unselected {
-  background-color: rgba(255, 0, 0, 0.137);
+  background: rgba(255, 0, 0, 0.137);
 }
 </style>

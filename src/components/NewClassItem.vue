@@ -11,13 +11,13 @@
     ></q-input>
     <q-input
       class="col-5"
-      :model-value="modelValue.displayName"
+      :model-value="modelValue.newDisplayName"
       label="New year display name"
       hide-bottom-space
       :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
       filled
       @update:model-value="
-        (val) => emit('update:modelValue', 'displayName', val)
+        (val) => emit('update:modelValue', 'newDisplayName', val)
       "
     ></q-input>
     <q-btn
