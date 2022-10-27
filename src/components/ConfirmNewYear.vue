@@ -9,9 +9,12 @@
         {{ c.name }} ({{ c.newDisplayName }})
       </div>
     </div>
-    <div v-if="oldClasses.length > 0" class="transferred q-py-sm q-px-sm">
+    <div
+      v-if="transferredClasses.length > 0"
+      class="transferred q-py-sm q-px-sm"
+    >
       <div>{{ t("learning.years.transferredClassesMessage") }}</div>
-      <div v-for="c in oldClasses" :key="c.id">
+      <div v-for="c in transferredClasses" :key="c.id">
         {{ c.name }} ({{ c.display_name }}) -> {{ c.newDisplayName }}
       </div>
     </div>
@@ -25,17 +28,31 @@
       </div>
     </div>
     <div class="row justify-between">
-      <q-btn color="primary" :label="t('confirm')"></q-btn>
-      <q-btn :label="t('back')" @click="emit('back')"></q-btn>
+      <q-btn
+        color="primary"
+        :label="t('confirm')"
+        :loading="loading"
+        @click="submitYear"
+      ></q-btn>
+      <q-btn
+        :label="t('back')"
+        :disable="loading"
+        @click="emit('back')"
+      ></q-btn>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { useQuasar } from "quasar";
+import { api } from "src/boot/axios";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
+const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
+const router = useRouter();
 
 const props = defineProps({
   details: {
@@ -57,9 +74,48 @@ const emit = defineEmits(["back"]);
 const notTransferredClasses = computed(() =>
   props.transferClasses.filter((val) => !val.selected)
 );
-const oldClasses = computed(() =>
+const transferredClasses = computed(() =>
   props.transferClasses.filter((val) => val.selected)
 );
+
+const loading = ref(false);
+const submitYear = async () => {
+  loading.value = true;
+  const data = {
+    display_name: props.details.displayName,
+    courses: Number(props.details.courses),
+    new_classes: props.newClasses.map((val) => ({
+      name: val.name,
+      display_name: val.newDisplayName,
+    })),
+    transferred_classes: transferredClasses.value.map((val) => ({
+      class_id: val.id,
+      display_name: val.newDisplayName,
+    })),
+  };
+
+  try {
+    await api.post("/years/new", data);
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: t("learning.years.creatingYearSucceeded"),
+      timeout: 10000,
+    });
+    router.replace("/admin/years");
+  } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: t("learning.years.creatingYearFailed"),
+      timeout: 6000,
+    });
+    loading.value = false;
+  }
+};
 </script>
 
 <style scoped>

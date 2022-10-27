@@ -292,6 +292,8 @@ export default {
       newClassesMessage: "Luuakse uued klassid:",
       transferredClassesMessage: "Viiakse üle klassid:",
       notTransferredClassesMessage: "EI viida üle klasse:",
+      creatingYearSucceeded: "Õppeaasta loomine @:succeeded",
+      creatingYearFailed: "Õppeaasta loomine @:failed",
     },
   },
   roles: {

@@ -292,6 +292,8 @@ export default {
       newClassesMessage: "New classes will be created:",
       transferredClassesMessage: "Classes will be transferred:",
       notTransferredClassesMessage: "Classes will NOT be transferred:",
+      creatingYearSucceeded: "Creating year @:succeeded",
+      creatingYearFailed: "Creating year @:failed",
     },
   },
   roles: {
