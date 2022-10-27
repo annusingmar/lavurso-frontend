@@ -3,7 +3,7 @@
     <q-input
       class="col-5"
       :model-value="modelValue.name"
-      label="Name"
+      :label="t('name')"
       hide-bottom-space
       :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
       filled
@@ -12,7 +12,7 @@
     <q-input
       class="col-5"
       :model-value="modelValue.newDisplayName"
-      label="New year display name"
+      :label="t('learning.years.newYearDisplayName')"
       hide-bottom-space
       :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
       filled

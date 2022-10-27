@@ -4,11 +4,16 @@
       <div class="col-md-8 col-xs-10">
         <q-card>
           <q-card-section class="q-pb-none">
-            <div class="text-h5">Start New Year</div>
+            <div class="text-h5">{{ t("learning.years.startNewYear") }}</div>
           </q-card-section>
           <q-card-section class="q-pt-none">
             <q-stepper v-model="step" color="primary" flat vertical animated>
-              <q-step :name="1" title="Details" icon="info" :done="step > 1">
+              <q-step
+                :name="1"
+                :title="t('learning.years.yearDetails')"
+                icon="info"
+                :done="step > 1"
+              >
                 <NewYearDetails
                   :prop-details="details"
                   @next="setNewYearDetails"
@@ -16,7 +21,7 @@
               </q-step>
               <q-step
                 :name="2"
-                title="New Classes"
+                :title="t('learning.years.newClasses')"
                 icon="group_add"
                 :done="step > 2"
               >
@@ -27,7 +32,7 @@
               </q-step>
               <q-step
                 :name="3"
-                title="Transfer Classes"
+                :title="t('learning.years.transferClasses')"
                 icon="group"
                 :done="step > 3"
               >
@@ -37,7 +42,7 @@
                   @go-to="setTransferClasses"
                 ></TransferClasses>
               </q-step>
-              <q-step :name="4" title="Confirm" icon="check">
+              <q-step :name="4" :title="t('confirm')" icon="check">
                 <ConfirmNewYear
                   :details="details"
                   :new-classes="newClasses"

@@ -18,19 +18,28 @@
       ></NewClassItem>
     </q-form>
   </div>
-  <div v-else class="row justify-center">Click 'Add' to add a new class</div>
+  <div v-else class="row justify-center">
+    {{ t("learning.years.addClassMessage") }}
+  </div>
   <div class="row justify-between q-mt-md">
     <div class="q-gutter-sm">
-      <q-btn color="primary" label="Next" @click="go('next')"></q-btn>
-      <q-btn color="green" label="add" @click="newClasses.push({})"></q-btn>
+      <q-btn color="primary" :label="t('next')" @click="go('next')"></q-btn>
+      <q-btn
+        color="green"
+        :label="t('add')"
+        @click="newClasses.push({})"
+      ></q-btn>
     </div>
-    <q-btn label="back" @click="go('back')"></q-btn>
+    <q-btn :label="t('back')" @click="go('back')"></q-btn>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import NewClassItem from "./NewClassItem.vue";
+
+const { t } = useI18n({ useScope: "global" });
 
 const emit = defineEmits(["goTo"]);
 

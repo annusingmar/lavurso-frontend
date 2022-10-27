@@ -3,13 +3,13 @@
     <q-input
       v-model="details.displayName"
       class="col-5"
-      label="Display name"
+      :label="t('name')"
       filled
     ></q-input>
     <q-input
       v-model="details.courses"
       class="col-5"
-      label="Courses"
+      :label="t('learning.courses')"
       type="number"
       filled
     ></q-input>
@@ -17,7 +17,7 @@
   <q-btn
     class="q-mt-md"
     color="primary"
-    label="Next"
+    :label="t('next')"
     :disable="nextDisabled"
     @click="next"
   ></q-btn>
@@ -25,6 +25,8 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n({ useScope: "global" });
 
 const props = defineProps({
   propDetails: {

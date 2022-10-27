@@ -61,6 +61,9 @@ export default {
   savingFailed: "@:saving @:failed",
   onlyCurrentYear: "Ainult praegune aasta",
   status: "Staatus",
+  next: "Edasi",
+  back: "Tagasi",
+  selected: "Valitud",
   user: {
     role: "Roll",
     createUser: "Loo kasutaja",
@@ -280,6 +283,15 @@ export default {
     },
     years: {
       startNewYear: "Alusta uut õppeaastat",
+      yearDetails: "Õppeaasta andmed",
+      newClasses: "Uued klassid",
+      transferClasses: "Klasside üleviimine",
+      addClassMessage: "Uue klassi lisamiseks vajuta @:add",
+      newYearDisplayName: "Uuel õppeaastal nähtav nimi",
+      previousYearDisplayName: "Eelmisel õppeaastal nähtav nimi",
+      newClassesMessage: "Luuakse uued klassid:",
+      transferredClassesMessage: "Viiakse üle klassid:",
+      notTransferredClassesMessage: "EI viida üle klasse:",
     },
   },
   roles: {

@@ -61,6 +61,9 @@ export default {
   savingFailed: "@:saving @:failed",
   onlyCurrentYear: "Only current year",
   status: "Status",
+  next: "Next",
+  back: "Back",
+  selected: "Selected",
   user: {
     role: "Role",
     createUser: "Create User",
@@ -279,7 +282,16 @@ export default {
       editClass: "Edit Class",
     },
     years: {
-      startNewYear: "Start new year",
+      startNewYear: "Start New Year",
+      yearDetails: "Year Details",
+      newClasses: "New Classes",
+      transferClasses: "Transfer Classes",
+      addClassMessage: "Click @:add to add a new class",
+      newYearDisplayName: "New Year Display Name",
+      previousYearDisplayName: "Previous Year Display Name",
+      newClassesMessage: "New classes will be created:",
+      transferredClassesMessage: "Classes will be transferred:",
+      notTransferredClassesMessage: "Classes will NOT be transferred:",
     },
   },
   roles: {

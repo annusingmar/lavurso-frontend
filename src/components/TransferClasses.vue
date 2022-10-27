@@ -10,10 +10,12 @@
     <q-markup-table dense flat>
       <thead>
         <tr>
-          <th>Selected</th>
-          <th>Name</th>
-          <th>Old display name</th>
-          <th>Display name for {{ newYearName }}</th>
+          <th>{{ t("selected") }}</th>
+          <th>{{ t("name") }}</th>
+          <th>{{ t("learning.years.previousYearDisplayName") }}</th>
+          <th>
+            {{ t("learning.years.newYearDisplayName") }} ({{ newYearName }})
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -36,7 +38,10 @@
 
 <script setup>
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import TransferClassItem from "./TransferClassItem.vue";
+
+const { t } = useI18n({ useScope: "global" });
 
 const emit = defineEmits(["goTo"]);
 
