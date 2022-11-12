@@ -18,8 +18,8 @@
         :assignments="a.assignments"
       />
     </q-card-section>
-    <q-card-section v-else>
-      <div>{{ t("nothingToShow") }}</div>
+    <q-card-section v-else class="row justify-center text-h5">
+      {{ t("nothingToShow") }}
     </q-card-section>
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-card>

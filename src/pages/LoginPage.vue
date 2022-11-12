@@ -2,17 +2,6 @@
   <div class="row main flex-center">
     <div class="col-sm-4 col-xs-10">
       <q-card>
-        <q-card-section class="q-pb-none">
-          <div class="text-h4 row justify-around">
-            <span>L</span>
-            <span>A</span>
-            <span>V</span>
-            <span>U</span>
-            <span>R</span>
-            <span>S</span>
-            <span>O</span>
-          </div>
-        </q-card-section>
         <q-card-section
           v-if="errorText"
           class="q-mt-sm q-py-none bg-red flex-center row"

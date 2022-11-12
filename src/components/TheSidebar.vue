@@ -6,7 +6,7 @@
     elevated
     @update:model-value="drawerStateChange"
   >
-    <q-img src="~assets/beach.jpg" style="height: 200px">
+    <q-img src="~assets/winter.jpg" style="height: 200px">
       <div class="absolute-bottom row items-end">
         <div class="col">
           <div class="text-weight-bold">{{ name }}</div>
@@ -99,22 +99,6 @@ const drawerStateChange = (val) => {
   emit("setLeftDrawer", val);
 };
 
-const logoutLoading = ref(false);
-const logOut = async () => {
-  logoutLoading.value = true;
-  try {
-    await api.delete("/sessions/" + session_id);
-    clearInterval(unreadInterval);
-    changeDarkMode(false);
-    clearUser();
-    router.replace("/login");
-  } catch (error) {
-    console.log("fail");
-  } finally {
-    logoutLoading.value = false;
-  }
-};
-
 const checkUnread = () =>
   api
     .get("/users/" + id + "/unread")
@@ -124,4 +108,20 @@ const checkUnread = () =>
 const unread = ref(false);
 checkUnread();
 const unreadInterval = setInterval(checkUnread, 120000);
+
+const logoutLoading = ref(false);
+const logOut = async () => {
+  logoutLoading.value = true;
+  try {
+    clearInterval(unreadInterval);
+    await api.delete("/sessions/" + session_id);
+    changeDarkMode(false);
+    clearUser();
+    router.replace("/login");
+  } catch (error) {
+    console.log("fail");
+  } finally {
+    logoutLoading.value = false;
+  }
+};
 </script>
