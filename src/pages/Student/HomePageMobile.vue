@@ -3,8 +3,8 @@
     v-model="tab"
     animated
     keep-alive
-    class="row"
-    style="min-height: 89vh; align-items: center"
+    class="row flex-center"
+    style="min-height: 89vh"
   >
     <q-tab-panel name="latest">
       <StudentLatest :id="Number(id)" :key="$route.fullPath"></StudentLatest>
@@ -21,7 +21,7 @@
 
   <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
     <q-tab name="latest" :label="t('learning.latest')"></q-tab>
-    <q-tab name="assignments" :label="t('learning.assignments')"></q-tab>
+    <q-tab name="assignments" :label="t('learning.assignment_s')"></q-tab>
   </q-tabs>
 </template>
 

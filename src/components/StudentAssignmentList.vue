@@ -1,7 +1,7 @@
 <template>
   <q-card>
     <q-card-section
-      class="q-pb-none q-pt-xs row justify-end items-center q-gutter-sm"
+      class="q-pb-none q-pt-xs row justify-end items-center q-gutter-x-sm"
     >
       <div v-if="showingFrom">{{ t("showingFrom") }} {{ showingFrom }}</div>
       <q-btn dense size="sm" :label="t('showOlder')" @click="showOlder"></q-btn>

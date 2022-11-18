@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div
-      class="row flex-center q-py-lg q-col-gutter-md"
+      class="row justify-center items-start q-py-lg q-col-gutter-md"
       style="min-height: inherit; align-content: center"
     >
       <div class="col-md-5 col-xs-10">

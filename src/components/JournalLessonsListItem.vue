@@ -28,7 +28,7 @@ const props = defineProps({
 
 const lessonDate = computed(() => {
   const jsDate = new Date(props.lesson.date);
-  return date.formatDate(jsDate, "DD MMMM YYYY", $q.lang.date);
+  return date.formatDate(jsDate, "DD. MMMM YYYY", $q.lang.date);
 });
 
 const isDescriptionEmpty = computed(

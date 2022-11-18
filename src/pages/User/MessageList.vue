@@ -1,12 +1,12 @@
 <template>
   <q-page>
     <div class="row flex-center q-py-lg" style="min-height: inherit">
-      <div class="col-md-6 col-xs-10">
+      <div class="col-md-8 col-xs-10">
         <q-card>
           <q-card-section>
             <div class="row justify-between">
               <div class="text-h4 q-mr-sm">{{ t("messages.mailbox") }}</div>
-              <div class="row q-gutter-x-sm">
+              <div class="row q-gutter-x-md">
                 <q-input
                   v-model="search"
                   dense
