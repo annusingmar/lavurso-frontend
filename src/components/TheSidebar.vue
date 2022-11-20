@@ -112,15 +112,15 @@ const unreadInterval = setInterval(checkUnread, 120000);
 const logoutLoading = ref(false);
 const logOut = async () => {
   logoutLoading.value = true;
+  clearInterval(unreadInterval);
   try {
-    clearInterval(unreadInterval);
     await api.delete("/sessions/" + session_id);
-    changeDarkMode(false);
-    clearUser();
-    router.replace("/login");
   } catch (error) {
     console.log("fail");
   } finally {
+    changeDarkMode(false);
+    clearUser();
+    router.replace("/login");
     logoutLoading.value = false;
   }
 };

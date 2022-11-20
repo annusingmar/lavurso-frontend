@@ -119,8 +119,8 @@ export default {
     newGroup: "Uus grupp",
     editGroup: "Muuda gruppi",
     deletingGroup: "Grupi kustutamine",
-    deltingGroupSucceeded: "@:group.deletingGroup @:succeeded",
-    deltingGroupFailed: "@:group.deletingGroup @:failed",
+    deletingGroupSucceeded: "@:group.deletingGroup @:succeeded",
+    deletingGroupFailed: "@:group.deletingGroup @:failed",
     deletingGroupConfirm: "@:areYouSure selle grupi kustutada?",
     addMembersDescription:
       "Ühe või mitme rolli/klassi valimine lisab kõik selle rolli/klassi kasutajad gruppi.",
