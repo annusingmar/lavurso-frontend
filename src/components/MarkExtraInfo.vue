@@ -7,7 +7,7 @@
 
       <div class="row justify-between q-mt-sm">
         <span class="q-mr-sm">{{ t("learning.teacher") }}</span>
-        <span>{{ mark.by.name }}</span>
+        <span>{{ mark.teacher.name }}</span>
       </div>
 
       <div class="row justify-between">

@@ -12,11 +12,11 @@
           <div class="text-h6">{{ t("roles.parents") }}</div>
         </q-card-section>
         <q-card-section
-          v-if="parents && parents.length > 0"
+          v-if="student.student.parents && student.student.parents.length > 0"
           class="q-gutter-md"
         >
           <UserInfoCard
-            v-for="parent in parents"
+            v-for="parent in student.student.parents"
             :key="parent.id"
             :user="parent"
           ></UserInfoCard>

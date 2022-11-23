@@ -1,5 +1,10 @@
 <template>
-  <q-item v-ripple :disable="oldAssignment" @click="editAssignmentDialog">
+  <q-item
+    v-ripple
+    clickable
+    :disable="oldAssignment"
+    @click="editAssignmentDialog"
+  >
     <q-item-section>
       <div class="row q-gutter-x-sm">
         <q-badge
@@ -60,7 +65,8 @@ const oldAssignment = computed(
     1
 );
 
-const editAssignmentDialog = () => {
+const editAssignmentDialog = (evt, go) => {
+  console.log(evt, go);
   $q.dialog({
     component: AssignmentDialog,
     componentProps: {

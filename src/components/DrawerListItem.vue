@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable ripple tag="a" :to="to">
+  <q-item v-ripple clickable tag="a" :to="to">
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon">
         <q-badge
