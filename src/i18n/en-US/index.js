@@ -172,6 +172,7 @@ export default {
     newSubject: "New Subject",
     noDescription: "No description",
     teacher: "Teacher",
+    teachers: "Teachers",
     students: "Students",
     noStudentsInJournal: "No students in journal",
     noStudentsInClass: "No students in class",
@@ -280,6 +281,7 @@ export default {
     classes: {
       createClass: "Create Class",
       editClass: "Edit Class",
+      classYears: "Class Years",
     },
     years: {
       startNewYear: "Start New Year",

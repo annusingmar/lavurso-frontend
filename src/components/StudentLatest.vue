@@ -62,6 +62,8 @@ const showFuture = () => {
   showFutureButton.value = false;
 };
 
+// todo: refresh marks
+
 const showingFrom = computed(() =>
   date.formatDate(from.value, "DD. MMM YYYY", $q.lang.date)
 );

@@ -13,6 +13,7 @@
                   :label="t('onlyCurrentYear')"
                   @update:model-value="updateCurrent"
                 ></q-checkbox>
+                <!-- todo -->
                 <q-btn
                   color="primary"
                   :label="t('new')"
@@ -82,9 +83,10 @@ const columns = [
   {
     name: "teacher",
     required: true,
-    label: t("learning.teacher"),
+    label: t("learning.teachers"),
     align: "left",
-    field: (row) => row.teacher.name,
+    field: (row) =>
+      row.teachers ? row.teachers.map((val) => val.name).join(", ") : "",
     sortable: true,
   },
   { name: "actions", label: t("action") },

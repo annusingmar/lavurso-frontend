@@ -27,7 +27,7 @@
       <q-tab-panel name="general">
         <UserEditGeneral
           :server-user="user"
-          @refresh-user="getUserFromAPI"
+          @refresh-user="getUser"
         ></UserEditGeneral>
       </q-tab-panel>
       <q-tab-panel name="sessions">
@@ -64,7 +64,7 @@ const user = reactive({ user: {} });
 
 const loading = ref(true);
 
-const getUserFromAPI = async () => {
+const getUser = async () => {
   loading.value = true;
   try {
     const response = await api.get("/users/" + props.id);
@@ -83,5 +83,5 @@ const getUserFromAPI = async () => {
     });
   }
 };
-getUserFromAPI();
+getUser();
 </script>

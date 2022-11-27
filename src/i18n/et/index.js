@@ -172,6 +172,7 @@ export default {
     newSubject: "Uus õppeaine",
     noDescription: "Kirjeldus puudub",
     teacher: "Õpetaja",
+    teachers: "Õpetajad",
     students: "Õpilased",
     noStudentsInJournal: "Päevikus pole õpilasi",
     noStudentsInClass: "Klassis pole õpilasi",
@@ -280,6 +281,7 @@ export default {
     classes: {
       createClass: "Loo klass",
       editClass: "Muuda klassi",
+      classYears: "Klassi õppeaastad",
     },
     years: {
       startNewYear: "Alusta uut õppeaastat",

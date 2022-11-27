@@ -1,7 +1,7 @@
 <template>
   <q-expansion-item
     :label="classs.display_name"
-    :caption="classs.teacher.name"
+    :caption="teacherNames"
     group="students"
     @show="onShow"
   >
@@ -26,7 +26,7 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
@@ -44,6 +44,14 @@ const onShow = () => {
     getStudents();
   }
 };
+
+const teacherNames = computed(() => {
+  if (props.classs.teachers) {
+    return props.classs.teachers.map((val) => val.name).join(", ");
+  } else {
+    return "";
+  }
+});
 
 const students = ref(null);
 const loading = ref(true);
