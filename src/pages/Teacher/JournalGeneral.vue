@@ -38,13 +38,13 @@
             @submit.prevent="submitJournal"
           >
             <q-input
-              v-model.trim="journal.content.name"
+              v-model.trim="journal.name"
               filled
               :label="t('name')"
               :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
             ></q-input>
             <q-select
-              v-model="journal.content.subject"
+              v-model="journal.subject"
               filled
               :label="t('learning.subject')"
               :options="subjects"
@@ -54,19 +54,19 @@
               option-label="name"
             ></q-select>
             <q-select
-              v-if="!isCreate && role === 'admin'"
-              v-model="journal.content.teacher"
+              v-if="!isCreate"
+              v-model="journal.teachers"
               filled
-              :label="t('learning.teacher')"
+              multiple
+              use-chips
               use-input
-              hide-selected
-              fill-input
-              input-debounce
-              :hint="t('minimumNCharacters', [4])"
+              input-debounce="200"
+              stack-label
+              :label="t('learning.teachers')"
               :options="teachers"
               option-label="name"
               option-value="id"
-              :rules="[(val) => val || t('mandatoryField')]"
+              :hint="t('minimumNCharacters', ['4'])"
               @filter="teachersFilter"
             ></q-select>
             <div class="row justify-end q-mt-sm">
@@ -88,7 +88,7 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
-import { reactive, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
@@ -106,6 +106,7 @@ const props = defineProps({
     default: null,
   },
 });
+
 const emit = defineEmits(["refreshJournal"]);
 
 const { role } = useUserStore();
@@ -133,13 +134,13 @@ const getSubjects = async () => {
   }
 };
 
-const journal = reactive({ content: {} });
+const journal = ref({});
 
 // existing
 const resetData = () => {
-  journal.content.name = props.serverJournal.content.name;
-  journal.content.subject = props.serverJournal.content.subject;
-  journal.content.teacher = props.serverJournal.content.teacher;
+  journal.value.name = props.serverJournal.content.name;
+  journal.value.subject = props.serverJournal.content.subject;
+  journal.value.teachers = props.serverJournal.content.teachers;
 };
 if (!props.isCreate) {
   watch(props.serverJournal, resetData, { immediate: true });
@@ -149,14 +150,16 @@ const submitLoading = ref(false);
 const submitJournal = async () => {
   submitLoading.value = true;
   let data = {
-    name: journal.content.name,
+    name: journal.value.name,
   };
   if (props.isCreate) {
-    data.subject_id = journal.content.subject.id;
+    data.subject_id = journal.value.subject.id;
+  } else {
+    data.teacher_ids = journal.value.teachers
+      ? journal.value.teachers.map((t) => t.id)
+      : [];
   }
-  if (!props.isCreate && role === "admin") {
-    data.teacher_id = journal.content.teacher.id;
-  }
+
   try {
     if (!props.isCreate) {
       await api.patch("/journals/" + props.serverJournal.content.id, data);

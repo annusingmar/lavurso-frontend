@@ -5,19 +5,26 @@
       <q-item-label>{{ journal.name }}</q-item-label>
     </q-item-section>
     <q-item-section side>
-      <q-item-label caption>{{ journal.teacher.name }}</q-item-label>
+      <q-item-label caption>{{ teacherNames }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
 
-<script>
-export default {
-  name: "JournalListItem",
-  props: {
-    journal: {
-      type: Object,
-      required: true,
-    },
+<script setup>
+import { computed } from "vue";
+
+const props = defineProps({
+  journal: {
+    type: Object,
+    required: true,
   },
-};
+});
+
+const teacherNames = computed(() => {
+  if (props.journal.teachers) {
+    return props.journal.teachers.map((val) => val.name).join(", ");
+  } else {
+    return "";
+  }
+});
 </script>
