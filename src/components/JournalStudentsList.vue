@@ -1,12 +1,28 @@
 <template>
   <q-card>
-    <q-card-section>
+    <q-card-section class="q-pb-none">
       <div class="text-h4">{{ t("learning.students") }}</div>
     </q-card-section>
     <q-card-section>
-      <q-list v-if="students.length > 0" bordered separator>
+      <q-list v-if="students.length > 0" bordered separator dense>
         <q-item v-for="student in students" :key="student.id">
-          <q-item-section>{{ student.name }}</q-item-section>
+          <q-item-section>
+            <q-item-label>
+              <q-badge
+                outline
+                class="q-mr-sm"
+                color="black"
+                :label="
+                  student.student.class.display_name
+                    ? student.student.class.display_name
+                    : student.student.class.name
+                    ? student.student.class.name
+                    : ''
+                "
+              ></q-badge>
+              {{ student.name }}
+            </q-item-label>
+          </q-item-section>
           <q-item-section v-if="role === 'admin'" side>
             <q-btn
               flat

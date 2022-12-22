@@ -31,8 +31,8 @@
                   <q-item-label v-else caption
                     >{{ t(`roles.${scope.opt.role}`)
                     }}{{
-                      scope.opt.class.display_name
-                        ? ` - ${scope.opt.class.display_name}`
+                      scope.opt.student.class.display_name
+                        ? ` - ${scope.opt.student.class.display_name}`
                         : ""
                     }}</q-item-label
                   >

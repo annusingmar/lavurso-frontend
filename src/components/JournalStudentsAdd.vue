@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <q-card-section>
+    <q-card-section class="q-pb-none">
       <div class="text-h4">{{ t("learning.journals.addStudents") }}</div>
       <q-separator></q-separator>
       <div class="text-caption">
@@ -22,7 +22,20 @@
         option-value="id"
         :hint="t('minimumNCharacters', [4])"
         @filter="studentsFilter"
-      ></q-select>
+      >
+        <template #option="scope">
+          <q-item v-bind="scope.itemProps">
+            <q-item-section>
+              <q-item-label>{{ scope.opt.name }}</q-item-label>
+              <q-item-label caption>{{
+                scope.opt.student.class.display_name
+                  ? scope.opt.student.class.display_name
+                  : ""
+              }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
       <q-select
         v-model="chosenClasses"
         filled

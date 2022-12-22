@@ -5,7 +5,7 @@
   >
     <div class="col-md-6 col-xs-10">
       <q-card>
-        <q-card-section>
+        <q-card-section class="q-pb-none">
           <div class="row justify-between items-center">
             <div>
               <div v-if="isCreate" class="text-h4">
@@ -40,6 +40,7 @@
             <q-input
               v-model.trim="journal.name"
               filled
+              hide-bottom-space
               :label="t('name')"
               :rules="[(val) => (val && val.length > 0) || t('mandatoryField')]"
             ></q-input>
@@ -49,6 +50,7 @@
               :label="t('learning.subject')"
               :options="subjects"
               :disable="!isCreate"
+              hide-bottom-space
               :rules="[(val) => val || t('mandatoryField')]"
               option-value="id"
               option-label="name"

@@ -2,7 +2,7 @@
   <div class="row flex-center" style="min-height: 75vh">
     <div class="col-md-6 col-xs-10">
       <q-card>
-        <q-card-section>
+        <q-card-section class="q-pb-none">
           <div class="row justify-between">
             <div class="text-h6">{{ t("learning.assignment_s") }}</div>
             <q-btn
