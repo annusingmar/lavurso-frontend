@@ -83,7 +83,6 @@ const submitYear = async () => {
   loading.value = true;
   const data = {
     display_name: props.details.displayName,
-    courses: Number(props.details.courses),
     new_classes: props.newClasses.map((val) => ({
       name: val.name,
       display_name: val.newDisplayName,

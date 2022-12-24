@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { api } from "src/boot/axios";
 import { useQuasar } from "quasar";
 import { useI18n } from "vue-i18n";
@@ -76,16 +76,9 @@ const step = ref(1);
 
 const details = ref({
   displayName: "",
-  courses: 1,
 });
 const newClasses = ref([]);
 const transferClasses = ref([]);
-
-watch(details, () => {
-  if (details.value.courses < 1) {
-    details.value.courses = 1;
-  }
-});
 
 const loading = ref(true);
 

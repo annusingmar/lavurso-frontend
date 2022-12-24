@@ -60,14 +60,6 @@ const columns = [
     sortable: false,
   },
   {
-    name: "courses",
-    required: true,
-    label: t("learning.courses"),
-    align: "left",
-    field: (row) => row.courses,
-    sortable: false,
-  },
-  {
     name: "student_count",
     required: true,
     label: t("user.student.studentCount"),

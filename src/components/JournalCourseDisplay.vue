@@ -12,7 +12,6 @@
       square
       color="primary"
       icon="arrow_forward"
-      :disabled="course > journal.content.year.courses - 1"
       @click="emit('changeCourse', 'up')"
     ></q-btn>
   </div>

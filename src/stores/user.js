@@ -18,7 +18,7 @@ export const useUserStore = defineStore("user", {
   actions: {
     setSession(session) {
       this.session_id = session.id;
-      this.token = session.token;
+      this.token = session.token.value;
       this.expires = new Date(session.expires);
       LocalStorage.set("lav_session_session_id", this.session_id);
       LocalStorage.set("lav_session_token", this.token);

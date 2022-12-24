@@ -6,13 +6,6 @@
       :label="t('name')"
       filled
     ></q-input>
-    <q-input
-      v-model="details.courses"
-      class="col-5"
-      :label="t('learning.courses')"
-      type="number"
-      filled
-    ></q-input>
   </div>
   <q-btn
     class="q-mt-md"
@@ -42,9 +35,7 @@ const emit = defineEmits(["next"]);
 // check `NewYearPage.vue` for comment
 const details = ref({ ...props.propDetails });
 
-const nextDisabled = computed(
-  () => !(details.value.displayName !== "" && details.value.courses > 0)
-);
+const nextDisabled = computed(() => details.value.displayName == "");
 
 const next = () => {
   emit("next", details.value);
