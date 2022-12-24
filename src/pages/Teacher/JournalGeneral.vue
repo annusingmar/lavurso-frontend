@@ -68,6 +68,7 @@
               :options="teachers"
               option-label="name"
               option-value="id"
+              :option-disable="(t) => t.id === id && role !== 'admin'"
               :hint="t('minimumNCharacters', ['4'])"
               @filter="teachersFilter"
             ></q-select>
@@ -111,7 +112,7 @@ const props = defineProps({
 
 const emit = defineEmits(["refreshJournal"]);
 
-const { role } = useUserStore();
+const { id, name, role } = useUserStore();
 
 const subjectsLoading = ref(true);
 const subjects = ref([]);
@@ -272,5 +273,11 @@ const deleteJournalPrompt = () => {
 
 if (props.isCreate) {
   getSubjects();
+} else {
+  watch(journal.value, () => {
+    if (!journal.value.teachers.some((t) => t.id === id) && role != "admin") {
+      journal.value.teachers.push({ id: id, name: name });
+    }
+  });
 }
 </script>
