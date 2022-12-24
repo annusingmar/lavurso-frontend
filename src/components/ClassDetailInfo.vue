@@ -1,8 +1,11 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h4">
+      <div v-if="!isCreate" class="text-h4">
         {{ t("learning.classes.editClass") }}
+      </div>
+      <div v-else class="text-h4">
+        {{ t("learning.classes.createClass") }}
       </div>
     </q-card-section>
     <q-card-section>
@@ -56,14 +59,22 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
+const router = useRouter();
 
 const props = defineProps({
   id: {
     type: Number,
-    required: true,
+    required: false,
+    default: 0,
+  },
+  isCreate: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 
@@ -136,8 +147,15 @@ const submitClass = async () => {
       ? classs.value.teachers.map((t) => t.id)
       : [],
   };
+
+  let newID;
   try {
-    await api.patch("/classes/" + props.id, data);
+    if (!props.isCreate) {
+      await api.patch("/classes/" + props.id, data);
+    } else {
+      const response = await api.post("/classes", data);
+      newID = response.data.class.id;
+    }
     $q.notify({
       type: "positive",
       position: "top",
@@ -145,7 +163,11 @@ const submitClass = async () => {
       timeout: 3000,
     });
     submitLoading.value = false;
-    getClass();
+    if (props.isCreate) {
+      router.replace("/admin/classes/" + newID);
+    } else {
+      getClass();
+    }
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
       return;
@@ -164,5 +186,7 @@ const buttonDisabled = computed(
   () => !classs.value || classs.value.name === ""
 );
 
-getClass();
+if (!props.isCreate) {
+  getClass();
+}
 </script>

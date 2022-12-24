@@ -188,6 +188,7 @@ export default {
     removingExcuseConfirm: "@:areYouSure selle põhjenduse eemaldada?",
     schoolYear: "Õppeaasta",
     schoolYears: "Õppeaastad",
+    noSchoolYears: "Pole loodud õppeaastaid",
     lessons: {
       createLesson: "Loo tund",
       editLesson: "Muuda tundi",

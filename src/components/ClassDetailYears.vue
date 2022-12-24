@@ -5,7 +5,7 @@
         {{ t("learning.classes.classYears") }}
       </div>
     </q-card-section>
-    <q-card-section>
+    <q-card-section v-if="years">
       <q-markup-table dense flat>
         <thead>
           <tr>
@@ -30,6 +30,9 @@
           @click="submitYears"
         ></q-btn>
       </div>
+    </q-card-section>
+    <q-card-section v-else>
+      <div class="row justify-center">{{ t("learning.noSchoolYears") }}</div>
     </q-card-section>
     <q-inner-loading :showing="loading"></q-inner-loading>
   </q-card>

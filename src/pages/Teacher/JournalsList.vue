@@ -106,7 +106,9 @@ const getYears = async () => {
   }
 };
 
-const newButtonDisabled = computed(() => year.value.id != current_year.id);
+const newButtonDisabled = computed(
+  () => !current_year || year.value.id != current_year.id
+);
 
 const yearsFilter = async (_, update) => {
   if (years.value !== null) {
@@ -118,5 +120,15 @@ const yearsFilter = async (_, update) => {
   update();
 };
 
-watch(year, getJournals, { immediate: true });
+watch(
+  year,
+  () => {
+    if (year.value !== null) {
+      getJournals();
+    } else {
+      loading.value = false;
+    }
+  },
+  { immediate: true }
+);
 </script>

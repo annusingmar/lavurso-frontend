@@ -188,6 +188,7 @@ export default {
     removingExcuseConfirm: "@:areYouSure remove this excuse?",
     schoolYear: "Year",
     schoolYears: "Years",
+    noSchoolYears: "No school years created",
     lessons: {
       createLesson: "Create Lesson",
       editLesson: "Edit Lesson",
