@@ -17,7 +17,6 @@
           <q-card-section class="q-pt-sm">
             <q-table
               :rows="subjects"
-              :columns="columns"
               :loading="loading"
               :pagination="{ rowsPerPage: 0 }"
               hide-header
@@ -66,17 +65,6 @@ import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
-
-const columns = [
-  {
-    name: "name",
-    required: true,
-    label: t("name"),
-    align: "left",
-    field: (row) => row.name,
-    sortable: false,
-  },
-];
 
 const loading = ref(true);
 const subjects = ref([]);
