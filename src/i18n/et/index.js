@@ -278,6 +278,7 @@ export default {
       value: "Väärtus",
       createGrade: "Loo hinne",
       editGrade: "Muuda hinnet",
+      identifierAlreadyExists: "Tunnus on juba kasutuses",
     },
     classes: {
       createClass: "Loo klass",

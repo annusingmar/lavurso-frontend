@@ -6,7 +6,7 @@
     <q-card-section>
       <q-form
         greedy
-        class="q-gutter-y-xs"
+        class="q-gutter-y-sm"
         autocorrect="off"
         autocapitalize="off"
         autocomplete="off"
@@ -18,13 +18,13 @@
           v-model.trim="user.name"
           filled
           :label="t('name')"
-          :rules="[() => true]"
           disable
         ></q-input>
         <q-input
           v-model.trim="user.email"
           filled
           :label="t('email')"
+          hide-bottom-space
           :rules="[
             (val) => (val && val.length > 0) || t('mandatoryField'),
             validateEmail,
@@ -34,7 +34,6 @@
           v-model="user.phone_number"
           filled
           :label="t('user.phoneNumber')"
-          :rules="[() => true]"
         >
         </q-input>
         <q-input
@@ -43,7 +42,6 @@
           filled
           :label="t('user.idCode')"
           disable
-          :rules="[(val) => true]"
         >
         </q-input>
         <q-input

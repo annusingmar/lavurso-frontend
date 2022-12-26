@@ -14,7 +14,10 @@
           v-model.trim="grade.identifier"
           filled
           :label="t('learning.grades.identifier')"
+          :error="identifierError"
+          :error-message="t('learning.grades.identifierAlreadyExists')"
           :hint="t('mustBeLessThanNCharsLong', [4])"
+          @update:model-value="clearError"
         ></q-input>
         <q-input
           v-model.number="grade.value"
@@ -71,16 +74,15 @@ const saveClicked = async () => {
 const saveGrade = async () => {
   saveLoading.value = true;
   try {
+    const data = {
+      identifier: grade.value.identifier,
+      value: grade.value.value,
+    };
+
     if (isUpdateDialog.value) {
-      await api.patch("/grades/" + props.existingGrade.id, {
-        identifier: grade.value.identifier,
-        value: grade.value.value,
-      });
+      await api.patch("/grades/" + props.existingGrade.id, data);
     } else {
-      await api.post("/grades", {
-        identifier: grade.value.identifier,
-        value: grade.value.value,
-      });
+      await api.post("/grades", data);
     }
     $q.notify({
       type: "positive",
@@ -90,16 +92,23 @@ const saveGrade = async () => {
     });
     saveLoading.value = false;
   } catch (error) {
-    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+    if (error.response && error.response.status == 409) {
+      identifierError.value = true;
+    } else if (
+      error.response &&
+      [401, 403, 404].indexOf(error.response.status) > -1
+    ) {
       return;
+    } else {
+      $q.notify({
+        type: "negative",
+        position: "top",
+        message: t("savingFailed"),
+        timeout: 6000,
+      });
     }
-    $q.notify({
-      type: "negative",
-      position: "top",
-      message: t("savingFailed"),
-      timeout: 6000,
-    });
     saveLoading.value = false;
+    throw new Error(error);
   }
 };
 
@@ -116,7 +125,14 @@ const saveButtonDisabled = computed(
 );
 
 const saveLoading = ref(false);
+const identifierError = ref(false);
 const grade = ref({});
+
+const clearError = () => {
+  if (identifierError.value) {
+    identifierError.value = false;
+  }
+};
 
 const initialData = () => {
   grade.value.identifier = props.existingGrade.identifier;

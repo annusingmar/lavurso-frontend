@@ -278,6 +278,7 @@ export default {
       value: "Value",
       createGrade: "Create Grade",
       editGrade: "Edit Grade",
+      identifierAlreadyExists: "Identifier already exists",
     },
     classes: {
       createClass: "Create Class",

@@ -13,7 +13,7 @@ export const useUserStore = defineStore("user", {
     current_year: null,
   }),
   getters: {
-    isAuthenticated: (state) => state.token && state.expires > new Date(),
+    isAuthenticated: (state) => state.token,
   },
   actions: {
     setSession(session) {
