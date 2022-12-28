@@ -4,29 +4,61 @@
       class="row flex-center q-py-lg q-col-gutter-md"
       style="min-height: inherit; align-content: center"
     >
-      <div class="col-md-5 col-xs-10">
+      <div class="col-md-8 col-xs-10">
         <LessonDetailInfo
           v-if="lesson && lesson.id"
           :lesson="lesson"
-          @refresh-lesson="getLessonData"
+          @refresh-lesson="getData(true, false, false)"
         ></LessonDetailInfo>
       </div>
-      <div class="flex-break"></div>
-      <div class="col-md-5 col-xs-10">
+      <div class="col-md-8 col-xs-10">
         <q-card>
-          <q-card-section>
-            <StudentsMarksList
-              v-if="students && students.length > 0"
-              :id="lesson.id"
-              :students="students"
-              :editable="true"
-              type="lesson"
-              @refresh-above="getLessonData(true)"
-            ></StudentsMarksList>
-            <div v-else-if="!loading">
-              {{ t("learning.noStudentsInJournal") }}
-            </div>
-          </q-card-section>
+          <q-form
+            greedy
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="off"
+            spellcheck="false"
+            @submit.prevent="saveMarks"
+            @reset="getData(false, false, true)"
+          >
+            <q-card-section>
+              <div
+                v-if="students && students.length > 0"
+                class="q-gutter-y-sm q-mx-sm"
+              >
+                <StudentsMarksNewListItem
+                  v-for="(s, i) in students"
+                  :key="s.id"
+                  :model-value="students[i]"
+                  :separator="i != students.length - 1"
+                  :lesson-options="true"
+                  @update-toggle="
+                    (field, val) => (students[i].lesson[field] = val)
+                  "
+                  @add-mark="addMark(i)"
+                  @update-mark="
+                    (mi, field, val) =>
+                      (students[i].lesson.marks[mi][field] = val)
+                  "
+                ></StudentsMarksNewListItem>
+              </div>
+              <div v-else-if="!loading">
+                {{ t("learning.noStudentsInJournal") }}
+              </div>
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <div class="row justify-end q-gutter-x-md">
+                <q-btn label="Cancel" type="reset"></q-btn>
+                <q-btn
+                  label="Save"
+                  color="primary"
+                  type="submit"
+                  :loading="saving"
+                ></q-btn>
+              </div>
+            </q-card-section>
+          </q-form>
         </q-card>
       </div>
     </div>
@@ -37,10 +69,10 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { ref, provide } from "vue";
 import { useI18n } from "vue-i18n";
 import LessonDetailInfo from "src/components/LessonDetailInfo.vue";
-import StudentsMarksList from "src/components/StudentsMarksList.vue";
+import StudentsMarksNewListItem from "src/components/StudentsMarksNewListItem.vue";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
@@ -52,20 +84,46 @@ const props = defineProps({
 });
 
 const loading = ref(true);
+const saving = ref(false);
 const lesson = ref({});
+const grades = ref([]);
+provide("grades", grades);
 const students = ref([]);
-const getLessonData = async (u) => {
-  if (!u) {
-    loading.value = true;
+
+const addMark = (i) => {
+  if (!students.value[i].lesson.marks) {
+    students.value[i].lesson.marks = [{ type: "grade" }];
+  } else {
+    students.value[i].lesson.marks.push({ type: "grade" });
   }
+};
+
+const getData = async (fetchLesson, fetchGrades, fetchMarks) => {
+  loading.value = true;
   try {
-    const lessonResponse = await api.get("/lessons/" + props.id);
-    lesson.value = lessonResponse.data.lesson;
-    const studentsResponse = await api.get("/lessons/" + props.id + "/marks");
-    students.value =
-      studentsResponse.data.students !== null
-        ? studentsResponse.data.students
-        : [];
+    if (fetchLesson) {
+      const lessonResponse = await api.get("/lessons/" + props.id);
+      lesson.value = lessonResponse.data.lesson;
+    }
+    if (fetchGrades) {
+      const gradesResponse = await api.get("/grades");
+      grades.value = gradesResponse.data.grades;
+    }
+    if (fetchMarks) {
+      const studentsResponse = await api.get("/lessons/" + props.id + "/marks");
+      students.value =
+        studentsResponse.data.students !== null
+          ? studentsResponse.data.students
+          : [];
+      students.value.forEach((_, i) => {
+        if (
+          !students.value[i].lesson.marks ||
+          students.value[i].lesson.marks.length === 0
+        ) {
+          addMark(i);
+        }
+      });
+    }
     loading.value = false;
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
@@ -81,11 +139,62 @@ const getLessonData = async (u) => {
   }
 };
 
-getLessonData();
-</script>
+const saveMarks = async () => {
+  const send = students.value.map((s) => {
+    return {
+      student_id: s.id,
+      absent: s.lesson.absent,
+      late: s.lesson.late,
+      not_done: s.lesson.not_done,
+      marks: s.lesson.marks.flatMap((m) => {
+        if (
+          (m.type !== "grade" && (!m.comment || m.comment.trim() === "")) ||
+          (m.type === "grade" && (!m.grade || m.grade.trim() === ""))
+        ) {
+          if (m.id) {
+            return [{ id: m.id, remove: true }];
+          } else {
+            return [];
+          }
+        } else {
+          if (m.type === "grade") {
+            return [
+              {
+                ...m,
+                grade: grades.value.find((g) => g.identifier === m.grade).id,
+              },
+            ];
+          } else {
+            return [{ ...m, grade: null }];
+          }
+        }
+      }),
+    };
+  });
 
-<style scoped>
-.flex-break {
-  flex: 1 0 100% !important;
-}
-</style>
+  try {
+    await api.patch("/lessons/" + props.id + "/marks", send);
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: t("savingSucceeded"),
+      timeout: 3000,
+    });
+    saving.value = false;
+    getData(false, false, true);
+  } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    }
+    $q.notify({
+      type: "negative",
+      position: "top",
+      message: t("savingFailed"),
+      timeout: 6000,
+    });
+    saving.value = false;
+  }
+};
+
+getData(true, true, true);
+</script>
