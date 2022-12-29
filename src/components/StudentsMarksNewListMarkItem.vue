@@ -1,43 +1,54 @@
 <template>
-  <div style="flex: 1 1 30%">
-    <q-select
-      v-if="lessonOptions"
-      :model-value="modelValue.type"
-      :options="markTypes"
-      filled
-      dense
-      options-dense
-      map-options
-      emit-value
-      @update:model-value="(val) => emit('update:modelValue', 'type', val)"
-    ></q-select>
-  </div>
-  <div v-if="modelValue.type === 'grade'" style="flex: 0 0 50px">
-    <q-input
-      :model-value="modelValue.grade"
-      filled
-      dense
-      no-error-icon
-      hide-bottom-space
-      :rules="[(val) => validateGrade(val)]"
-      @update:model-value="(val) => emit('update:modelValue', 'grade', val)"
-    ></q-input>
-  </div>
   <div
-    :style="{ flex: modelValue.type === 'grade' ? '9999 0 35%' : '9999 0 50%' }"
+    class="row items-center justify-between q-col-gutter-x-sm q-col-gutter-y-xs"
   >
-    <q-input
-      :model-value="modelValue.comment"
-      filled
-      dense
-      autogrow
-      @update:model-value="(val) => emit('update:modelValue', 'comment', val)"
-    ></q-input>
-  </div>
-  <div v-if="first" style="flex: 0 1 42px">
-    <q-btn flat round icon="add_circle" size="md" @click="emit('addMark')">
-      <q-tooltip>{{ t("learning.marks.addAMark") }}</q-tooltip>
-    </q-btn>
+    <div v-if="lessonOptions" style="flex: 1 1 30%">
+      <q-select
+        :model-value="modelValue.type"
+        :options="markTypes"
+        filled
+        dense
+        options-dense
+        map-options
+        emit-value
+        @update:model-value="(val) => emit('update:modelValue', 'type', val)"
+      ></q-select>
+    </div>
+    <div
+      v-if="modelValue.type === 'grade' || !lessonOptions"
+      style="flex: 0 0 50px"
+    >
+      <q-input
+        :model-value="modelValue.grade"
+        filled
+        dense
+        no-error-icon
+        hide-bottom-space
+        :rules="[(val) => validateGrade(val)]"
+        @update:model-value="(val) => emit('update:modelValue', 'grade', val)"
+      ></q-input>
+    </div>
+    <div
+      :style="{
+        flex:
+          modelValue.type === 'grade' || !lessonOptions
+            ? '9999 0 35%'
+            : '9999 0 50%',
+      }"
+    >
+      <q-input
+        :model-value="modelValue.comment"
+        filled
+        dense
+        autogrow
+        @update:model-value="(val) => emit('update:modelValue', 'comment', val)"
+      ></q-input>
+    </div>
+    <div v-if="first" style="flex: 0 1 42px">
+      <q-btn flat round icon="add_circle" size="md" @click="emit('addMark')">
+        <q-tooltip>{{ t("learning.marks.addAMark") }}</q-tooltip>
+      </q-btn>
+    </div>
   </div>
 </template>
 

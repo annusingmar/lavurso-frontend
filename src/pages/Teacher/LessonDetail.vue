@@ -32,14 +32,12 @@
                   :key="s.id"
                   :model-value="students[i]"
                   :separator="i != students.length - 1"
-                  :lesson-options="true"
                   @update-toggle="
                     (field, val) => (students[i].lesson[field] = val)
                   "
                   @add-mark="addMark(i)"
                   @update-mark="
-                    (mi, field, val) =>
-                      (students[i].lesson.marks[mi][field] = val)
+                    (mi, field, val) => (students[i].marks[mi][field] = val)
                   "
                 ></StudentsMarksNewListItem>
               </div>
@@ -49,9 +47,9 @@
             </q-card-section>
             <q-card-section class="q-pt-none">
               <div class="row justify-end q-gutter-x-md">
-                <q-btn label="Cancel" type="reset"></q-btn>
+                <q-btn :label="t('cancel')" type="reset"></q-btn>
                 <q-btn
-                  label="Save"
+                  :label="t('save')"
                   color="primary"
                   type="submit"
                   :loading="saving"
@@ -91,10 +89,10 @@ provide("grades", grades);
 const students = ref([]);
 
 const addMark = (i) => {
-  if (!students.value[i].lesson.marks) {
-    students.value[i].lesson.marks = [{ type: "grade" }];
+  if (!students.value[i].marks) {
+    students.value[i].marks = [{ type: "grade" }];
   } else {
-    students.value[i].lesson.marks.push({ type: "grade" });
+    students.value[i].marks.push({ type: "grade" });
   }
 };
 
@@ -116,10 +114,7 @@ const getData = async (fetchLesson, fetchGrades, fetchMarks) => {
           ? studentsResponse.data.students
           : [];
       students.value.forEach((_, i) => {
-        if (
-          !students.value[i].lesson.marks ||
-          students.value[i].lesson.marks.length === 0
-        ) {
+        if (!students.value[i].marks || students.value[i].marks.length === 0) {
           addMark(i);
         }
       });
@@ -140,39 +135,38 @@ const getData = async (fetchLesson, fetchGrades, fetchMarks) => {
 };
 
 const saveMarks = async () => {
-  const send = students.value.map((s) => {
-    return {
-      student_id: s.id,
-      absent: s.lesson.absent,
-      late: s.lesson.late,
-      not_done: s.lesson.not_done,
-      marks: s.lesson.marks.flatMap((m) => {
-        if (
-          (m.type !== "grade" && (!m.comment || m.comment.trim() === "")) ||
-          (m.type === "grade" && (!m.grade || m.grade.trim() === ""))
-        ) {
-          if (m.id) {
-            return [{ id: m.id, remove: true }];
-          } else {
-            return [];
-          }
-        } else {
-          if (m.type === "grade") {
-            return [
-              {
-                ...m,
-                grade: grades.value.find((g) => g.identifier === m.grade).id,
-              },
-            ];
-          } else {
-            return [{ ...m, grade: null }];
-          }
-        }
-      }),
-    };
-  });
-
   try {
+    const send = students.value.map((s) => {
+      return {
+        student_id: s.id,
+        absent: s.lesson.absent,
+        late: s.lesson.late,
+        not_done: s.lesson.not_done,
+        marks: s.marks.flatMap((m) => {
+          if (
+            (m.type !== "grade" && (!m.comment || m.comment.trim() === "")) ||
+            (m.type === "grade" && (!m.grade || m.grade.trim() === ""))
+          ) {
+            if (m.id) {
+              return [{ id: m.id, remove: true }];
+            } else {
+              return [];
+            }
+          } else {
+            if (m.type === "grade") {
+              return [
+                {
+                  ...m,
+                  grade: grades.value.find((g) => g.identifier === m.grade).id,
+                },
+              ];
+            } else {
+              return [{ ...m, grade: null }];
+            }
+          }
+        }),
+      };
+    });
     await api.patch("/lessons/" + props.id + "/marks", send);
     $q.notify({
       type: "positive",
