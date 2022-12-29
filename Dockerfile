@@ -14,4 +14,4 @@ RUN quasar build
 
 WORKDIR /app/dist/spa
 
-CMD ["quasar", "serve"]
+CMD ["quasar", "serve", "-p", "9000"]
