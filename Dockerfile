@@ -10,4 +10,8 @@ RUN npm install
 
 COPY . .
 
-CMD ["quasar", "dev"]
+RUN quasar build
+
+WORKDIR /app/dist/spa
+
+CMD ["quasar", "serve"]
