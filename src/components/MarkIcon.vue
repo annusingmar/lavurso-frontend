@@ -1,16 +1,15 @@
 <template>
-  <div :class="{ clickable: editable || extraInfo }">
-    <div v-if="icon !== ''" class="mark" :class="markType" @click="editMark">
+  <div :class="{ clickable: extraInfo }">
+    <div v-if="icon !== ''" class="mark" :class="markType">
       <q-icon :name="icon" size="sm"></q-icon>
     </div>
     <span
       v-else
       class="mark"
       :class="[markType, { 'bad-grade': isBadGrade }]"
-      @click="editMark"
       >{{ mark.grade.identifier }}</span
     >
-    <q-popup-proxy v-if="!editable && extraInfo">
+    <q-popup-proxy v-if="extraInfo">
       <MarkExtraInfo
         :mark="mark"
         :show-lesson="showLesson"
@@ -21,20 +20,12 @@
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
 import { computed } from "vue";
-import MarkDialog from "./MarkDialog.vue";
 import MarkExtraInfo from "./MarkExtraInfo.vue";
-
-const $q = useQuasar();
 
 const props = defineProps({
   mark: {
     type: Object,
-    required: true,
-  },
-  editable: {
-    type: Boolean,
     required: true,
   },
   extraInfo: {
@@ -92,19 +83,6 @@ const isBadGrade = computed(() => {
     return false;
   }
 });
-
-const editMark = () => {
-  if (props.editable) {
-    $q.dialog({
-      component: MarkDialog,
-      componentProps: {
-        existingMark: props.mark,
-      },
-    }).onOk(() => {
-      emit("refreshAbove");
-    });
-  }
-};
 </script>
 
 <style scoped lang="scss">
