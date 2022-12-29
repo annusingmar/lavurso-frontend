@@ -117,7 +117,7 @@
                 ></q-input>
                 <q-select
                   v-if="user.role === 'student'"
-                  v-model="user.class"
+                  v-model="user.student.class"
                   filled
                   use-input
                   hide-selected
@@ -232,7 +232,7 @@ const saveUser = async () => {
   }
 
   if (user.value.role === "student") {
-    data.class_id = user.value.class.id;
+    data.class_id = user.value.student.class.id;
   }
 
   if (user.value.password) {
