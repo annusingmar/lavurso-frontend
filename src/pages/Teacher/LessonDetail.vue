@@ -13,50 +13,49 @@
       </div>
       <div class="col-md-8 col-xs-10">
         <q-card>
-          <q-form
-            greedy
-            autocorrect="off"
-            autocapitalize="off"
-            autocomplete="off"
-            spellcheck="false"
-            @submit.prevent="saveMarks"
-            @reset="getData(false, false, true)"
-          >
-            <q-card-section>
-              <div
-                v-if="students && students.length > 0"
-                class="q-gutter-y-sm q-mx-sm"
-              >
-                <StudentsMarksStudentItem
-                  v-for="(s, i) in students"
-                  :key="s.id"
-                  :model-value="students[i]"
-                  :separator="i != students.length - 1"
-                  @update-toggle="
-                    (field, val) => (students[i].lesson[field] = val)
-                  "
-                  @add-mark="addMark(i)"
-                  @update-mark="
-                    (mi, field, val) => (students[i].marks[mi][field] = val)
-                  "
-                ></StudentsMarksStudentItem>
-              </div>
-              <div v-else-if="!loading">
-                {{ t("learning.noStudentsInJournal") }}
-              </div>
-            </q-card-section>
-            <q-card-section class="q-pt-none">
-              <div class="row justify-end q-gutter-x-md">
-                <q-btn :label="t('cancel')" type="reset"></q-btn>
-                <q-btn
-                  :label="t('save')"
-                  color="primary"
-                  type="submit"
-                  :loading="saving"
-                ></q-btn>
-              </div>
-            </q-card-section>
-          </q-form>
+          <template v-if="students && students.length > 0">
+            <q-form
+              greedy
+              autocorrect="off"
+              autocapitalize="off"
+              autocomplete="off"
+              spellcheck="false"
+              @submit.prevent="saveMarks"
+              @reset="getData(false, false, true)"
+            >
+              <q-card-section>
+                <div class="q-gutter-y-sm q-mx-sm">
+                  <StudentsMarksStudentItem
+                    v-for="(s, i) in students"
+                    :key="s.id"
+                    :model-value="students[i]"
+                    :separator="i != students.length - 1"
+                    @update-toggle="
+                      (field, val) => (students[i].lesson[field] = val)
+                    "
+                    @add-mark="addMark(i)"
+                    @update-mark="
+                      (mi, field, val) => (students[i].marks[mi][field] = val)
+                    "
+                  ></StudentsMarksStudentItem>
+                </div>
+              </q-card-section>
+              <q-card-section class="q-pt-none">
+                <div class="row justify-end q-gutter-x-md">
+                  <q-btn :label="t('cancel')" type="reset"></q-btn>
+                  <q-btn
+                    :label="t('save')"
+                    color="primary"
+                    type="submit"
+                    :loading="saving"
+                  ></q-btn>
+                </div>
+              </q-card-section>
+            </q-form>
+          </template>
+          <q-card-section v-else-if="!loading">{{
+            t("learning.noStudentsInJournal")
+          }}</q-card-section>
         </q-card>
       </div>
     </div>
@@ -113,11 +112,16 @@ const getData = async (fetchLesson, fetchGrades, fetchMarks) => {
         studentsResponse.data.students !== null
           ? studentsResponse.data.students
           : [];
-      students.value.forEach((_, i) => {
-        if (!students.value[i].marks || students.value[i].marks.length === 0) {
-          addMark(i);
-        }
-      });
+      if (students.value) {
+        students.value.forEach((_, i) => {
+          if (
+            !students.value[i].marks ||
+            students.value[i].marks.length === 0
+          ) {
+            addMark(i);
+          }
+        });
+      }
     }
     loading.value = false;
   } catch (error) {
