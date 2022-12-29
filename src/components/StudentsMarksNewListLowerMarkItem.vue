@@ -63,7 +63,9 @@ const displayType = computed(() => {
     case "lesson_grade":
       return t("learning.marks.lessonGrade");
     case "course_grade":
-      return t("learning.marks.courseGrade");
+      return `${t("learning.marks.courseGrade")} (${props.mark.course}. ${t(
+        "learning.course"
+      )})`;
     case "subject_grade":
       return t("learning.marks.subjectGrade");
     case "not_done":
