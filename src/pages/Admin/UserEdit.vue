@@ -34,7 +34,10 @@
         <UserEditSessions :id="user.user.id"></UserEditSessions>
       </q-tab-panel>
       <q-tab-panel v-if="user.user.role === 'student'" name="parents">
-        <UserEditParents :id="user.user.id"></UserEditParents>
+        <UserEditParents
+          :student="user"
+          @refresh-user="getUser"
+        ></UserEditParents>
       </q-tab-panel>
     </q-tab-panels>
     <q-inner-loading :showing="loading"></q-inner-loading>

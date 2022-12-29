@@ -9,8 +9,18 @@
           <div class="text-h4">{{ t("roles.parents") }}</div>
         </q-card-section>
         <q-card-section>
-          <q-list v-if="studentParents.length > 0" bordered separator>
-            <q-item v-for="parent in studentParents" :key="parent.id">
+          <q-list
+            v-if="
+              student.user.student.parents &&
+              student.user.student.parents.length > 0
+            "
+            bordered
+            separator
+          >
+            <q-item
+              v-for="parent in student.user.student.parents"
+              :key="parent.id"
+            >
               <q-item-section>{{ parent.name }}</q-item-section>
               <q-item-section side>
                 <q-btn
@@ -74,13 +84,13 @@ import { useI18n } from "vue-i18n";
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
 const props = defineProps({
-  id: {
-    type: Number,
+  student: {
+    type: Object,
     required: true,
   },
 });
 
-const studentParents = ref([]);
+const emit = defineEmits(["refreshUser"]);
 const filteredParents = ref(null);
 const chosenParent = ref(null);
 const addingLoading = ref(false);
@@ -96,34 +106,17 @@ const getParents = async (search) => {
     filteredParents.value =
       response.data.result !== null
         ? response.data.result.filter((user) => {
-            if (user.role === "parent" && !studentParents.value) {
+            if (user.role === "parent" && !props.student.user.student.parents) {
               return true;
             } else if (user.role === "parent") {
-              return !studentParents.value.some((sp) => sp.id == user.id);
+              return !props.student.user.student.parents.value.some(
+                (sp) => sp.id == user.id
+              );
             } else {
               return false;
             }
           })
         : [];
-  } catch (error) {
-    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
-      return;
-    }
-    $q.notify({
-      type: "negative",
-      position: "top",
-      message: t("dataLoadingFail"),
-      timeout: 0,
-      actions: [{ label: t("dismiss"), color: "white" }],
-    });
-  }
-};
-
-const getStudentParents = async () => {
-  try {
-    const response = await api.get("/students/" + props.id);
-    studentParents.value =
-      response.data.parents !== null ? response.data.parents : [];
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
       return;
@@ -150,7 +143,7 @@ const filter = async (val, update, abort) => {
 const addParent = async () => {
   addingLoading.value = true;
   try {
-    await api.put("/students/" + props.id + "/parents", {
+    await api.put("/students/" + props.student.user.id + "/parents", {
       parent_id: chosenParent.value.id,
     });
     $q.notify({
@@ -161,7 +154,7 @@ const addParent = async () => {
     });
     chosenParent.value = null;
     filteredParents.value = null;
-    getStudentParents();
+    emit("refreshUser");
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
       return;
@@ -179,7 +172,7 @@ const addParent = async () => {
 
 const removeParent = async (pid) => {
   try {
-    await api.delete("/students/" + props.id + "/parents", {
+    await api.delete("/students/" + props.student.user.id + "/parents", {
       data: {
         parent_id: pid,
       },
@@ -190,7 +183,7 @@ const removeParent = async (pid) => {
       message: t("user.student.removingParentSucceeded"),
       timeout: 3000,
     });
-    getStudentParents();
+    emit("refreshUser");
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
       return;
@@ -205,6 +198,4 @@ const removeParent = async (pid) => {
     filteredParents.value = null;
   }
 };
-
-getStudentParents();
 </script>
