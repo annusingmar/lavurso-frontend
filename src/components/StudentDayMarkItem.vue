@@ -9,9 +9,12 @@
       ></MarkIcon>
     </q-item-section>
     <q-item-section>
-      <q-item-label class="text-weight-bold">{{
-        mark.subject.name
-      }}</q-item-label>
+      <div class="row justify-between q-item__label">
+        <q-item-label class="text-weight-bold">{{
+          mark.subject.name
+        }}</q-item-label>
+        <q-item-label caption>{{ mark.teacher.name }}</q-item-label>
+      </div>
       <q-item-label v-if="mark.comment" style="white-space: pre">{{
         mark.comment
       }}</q-item-label>

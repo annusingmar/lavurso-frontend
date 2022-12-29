@@ -69,12 +69,12 @@ const emit = defineEmits(["refreshAbove"]);
 
 const summaryMarks = computed(() =>
   props.marks.filter((m) => {
-    return !m.lesson.id;
+    return !m.lesson || !m.lesson.id;
   })
 );
 const lessonMarks = computed(() =>
   props.marks.filter((m) => {
-    return m.lesson.id;
+    return m.lesson && m.lesson.id;
   })
 );
 
