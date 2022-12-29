@@ -44,7 +44,7 @@
       :class="[modelValue.lesson ? 'col-5' : 'col-7']"
       class="q-gutter-y-sm"
     >
-      <StudentsMarksNewListMarkItem
+      <StudentsMarksMarkItem
         v-for="(_, i) in modelValue.marks"
         :key="i"
         :model-value="modelValue.marks[i]"
@@ -52,16 +52,16 @@
         :first="i === 0"
         @add-mark="emit('addMark')"
         @update:model-value="(field, val) => emit('updateMark', i, field, val)"
-      ></StudentsMarksNewListMarkItem>
+      ></StudentsMarksMarkItem>
     </div>
   </div>
   <div v-if="showLowerMarks && modelValue.lower_marks">
     <q-list>
-      <StudentsMarksNewListLowerMarkItem
+      <StudentsMarksLowerMarkItem
         v-for="m in modelValue.lower_marks"
         :key="m.id"
         :mark="m"
-      ></StudentsMarksNewListLowerMarkItem>
+      ></StudentsMarksLowerMarkItem>
     </q-list>
   </div>
   <q-separator v-if="separator"></q-separator>
@@ -70,8 +70,8 @@
 <script setup>
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-import StudentsMarksNewListLowerMarkItem from "./StudentsMarksNewListLowerMarkItem.vue";
-import StudentsMarksNewListMarkItem from "./StudentsMarksNewListMarkItem.vue";
+import StudentsMarksLowerMarkItem from "./StudentsMarksLowerMarkItem.vue";
+import StudentsMarksMarkItem from "./StudentsMarksMarkItem.vue";
 
 const { t } = useI18n({ useScope: "global" });
 

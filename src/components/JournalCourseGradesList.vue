@@ -20,7 +20,7 @@
           v-if="students && students.length > 0"
           class="q-gutter-y-sm q-mx-sm"
         >
-          <StudentsMarksNewListItem
+          <StudentsMarksStudentItem
             v-for="(s, i) in students"
             :key="s.id"
             :model-value="students[i]"
@@ -29,7 +29,7 @@
             @update-mark="
               (mi, field, val) => (students[i].marks[mi][field] = val)
             "
-          ></StudentsMarksNewListItem>
+          ></StudentsMarksStudentItem>
         </div>
         <div v-else-if="!loading">{{ t("learning.noStudentsInJournal") }}</div>
       </q-card-section>
@@ -54,7 +54,7 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch, provide } from "vue";
 import { useI18n } from "vue-i18n";
-import StudentsMarksNewListItem from "./StudentsMarksNewListItem.vue";
+import StudentsMarksStudentItem from "./StudentsMarksStudentItem.vue";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
