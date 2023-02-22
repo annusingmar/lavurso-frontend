@@ -136,6 +136,7 @@ export default {
     },
     student: {
       subjectsAndMarks: "Ained ja hinded",
+      gradesByYear: "Hinded aastate kaupa",
     },
   },
   login: {

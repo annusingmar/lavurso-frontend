@@ -2,6 +2,7 @@
   <q-page>
     <q-tabs v-model="tab" active-color="primary" indicator-color="primary">
       <q-tab name="journals" :label="t('learning.journal_s')"></q-tab>
+      <q-tab name="grades" :label="t('learning.grade_s')"></q-tab>
       <q-tab name="info" :label="t('info')"></q-tab>
     </q-tabs>
     <q-separator />
@@ -19,6 +20,9 @@
           :name="student.name"
         ></StudentJournals>
       </q-tab-panel>
+      <q-tab-panel name="grades">
+        <StudentGrades :id="student.id" :name="student.name"></StudentGrades>
+      </q-tab-panel>
       <q-tab-panel name="info">
         <StudentInfo :student="student" :parents="parents"></StudentInfo>
       </q-tab-panel>
@@ -34,6 +38,7 @@ import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import StudentJournals from "src/components/StudentJournals.vue";
 import StudentInfo from "src/components/StudentInfo.vue";
+import StudentGrades from "src/components/StudentGrades.vue";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });

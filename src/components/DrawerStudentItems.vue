@@ -10,6 +10,13 @@
     :caption="name"
     :to="'/students/' + id + '/journals'"
     icon="grade"
+    :separator="false"
+  ></DrawerListItem>
+  <DrawerListItem
+    :title="t('sidebar.student.gradesByYear')"
+    :caption="name"
+    :to="'/students/' + id + '/grades'"
+    icon="assignment_turned_in"
     :separator="true"
   ></DrawerListItem>
 </template>

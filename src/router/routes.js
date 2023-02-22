@@ -141,6 +141,11 @@ const routes = [
         props: true,
       },
       {
+        path: "students/:id/grades",
+        component: () => import("pages/Student/GradesList.vue"),
+        props: true,
+      },
+      {
         path: "students/:id",
         component: () =>
           Platform.is.mobile

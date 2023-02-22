@@ -136,6 +136,7 @@ export default {
     },
     student: {
       subjectsAndMarks: "Subjects and Marks",
+      gradesByYear: "Grades by Year",
     },
   },
   login: {
