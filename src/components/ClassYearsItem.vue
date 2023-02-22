@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td>{{ modelValue.year_name }}</td>
+    <td>{{ modelValue.display_name }}</td>
     <td>
       <q-input
         :model-value="modelValue.class_name"

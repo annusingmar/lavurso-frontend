@@ -81,7 +81,7 @@ const submitLoading = ref(false);
 const submitYears = async () => {
   submitLoading.value = true;
   const data = years.value.map((val) => ({
-    year_id: val.year_id,
+    year_id: val.id,
     name: val.class_name,
   }));
   try {
