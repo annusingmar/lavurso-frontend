@@ -19,7 +19,6 @@
           v-for="mark in lesson.marks"
           :key="mark.id"
           :mark="mark"
-          :editable="false"
           :extra-info="true"
           :show-lesson="false"
           @refresh-above="emit('refreshAbove')"

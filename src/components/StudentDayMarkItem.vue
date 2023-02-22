@@ -1,12 +1,7 @@
 <template>
   <q-item>
     <q-item-section avatar>
-      <MarkIcon
-        :mark="mark"
-        :editable="false"
-        :extra-info="true"
-        :show-lesson="true"
-      ></MarkIcon>
+      <MarkIcon :mark="mark" :extra-info="true" :show-lesson="true"></MarkIcon>
     </q-item-section>
     <q-item-section>
       <div class="row justify-between q-item__label">

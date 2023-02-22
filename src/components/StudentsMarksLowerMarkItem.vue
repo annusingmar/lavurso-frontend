@@ -3,7 +3,6 @@
     <q-item-section avatar>
       <MarkIcon
         :mark="mark"
-        :editable="false"
         :extra-info="false"
         :show-lesson="false"
       ></MarkIcon>

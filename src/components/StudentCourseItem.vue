@@ -16,7 +16,6 @@
         <MarkIcon
           v-for="mark in lessonMarks"
           :key="mark.id"
-          :editable="false"
           :extra-info="true"
           :mark="mark"
           @refresh-above="emit('refreshAbove')"
@@ -26,7 +25,6 @@
         <MarkIcon
           v-for="mark in summaryMarks"
           :key="mark.id"
-          :editable="false"
           :extra-info="true"
           :mark="mark"
         ></MarkIcon>

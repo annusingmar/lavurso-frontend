@@ -2,7 +2,7 @@
   <div class="row flex-center">
     <div class="col-md-6 col-xs-10">
       <q-card>
-        <q-card-section class="row justify-between">
+        <q-card-section class="row justify-between q-pb-none">
           <div class="text-h5">{{ topText }}</div>
           <q-select
             v-model="year"
