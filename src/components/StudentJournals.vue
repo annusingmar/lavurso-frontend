@@ -11,7 +11,12 @@
             dense
             dense-options
             option-value="id"
-            option-label="display_name"
+            :option-label="
+              (item) =>
+                item.class_name
+                  ? `${item.display_name} (${item.class_name})`
+                  : item.display_name
+            "
           ></q-select>
         </q-card-section>
         <q-card-section>
