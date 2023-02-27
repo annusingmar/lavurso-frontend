@@ -85,7 +85,11 @@ module.exports = configure(function (/* ctx */) {
           },
         ],
       ],
-      env: { API: "http://localhost:8888" },
+      env: {
+        API: process.env.API_URL
+          ? process.env.API_URL
+          : "http://localhost:8888",
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer

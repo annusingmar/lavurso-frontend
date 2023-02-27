@@ -10,8 +10,5 @@ RUN npm install
 
 COPY . .
 
-RUN quasar build
-
-WORKDIR /app/dist/spa
-
+ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["quasar", "serve", "-p", "9000"]
