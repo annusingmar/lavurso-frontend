@@ -83,7 +83,8 @@ const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 
-const { id, name, role, session_id, children, clearUser } = useUserStore();
+const { id, name, role, session_id, children, clearUser, setDark, getDark } =
+  useUserStore();
 
 defineProps({
   open: {
@@ -93,7 +94,10 @@ defineProps({
 });
 const emit = defineEmits(["setLeftDrawer"]);
 
-const changeDarkMode = (val) => $q.dark.set(val);
+const changeDarkMode = (val) => {
+  $q.dark.set(val);
+  setDark(val);
+};
 
 const drawerStateChange = (val) => {
   emit("setLeftDrawer", val);
@@ -124,4 +128,9 @@ const logOut = async () => {
     logoutLoading.value = false;
   }
 };
+
+const dark = getDark();
+if (dark !== null) {
+  changeDarkMode(dark);
+}
 </script>
