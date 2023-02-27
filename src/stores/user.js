@@ -29,6 +29,12 @@ export const useUserStore = defineStore("user", {
       this.token = LocalStorage.getItem("lav_session_token");
       this.expires = new Date(LocalStorage.getItem("lav_session_expires"));
     },
+    setDark(val) {
+      LocalStorage.set("dark", val);
+    },
+    getDark() {
+      return LocalStorage.getItem("dark");
+    },
     clearUser() {
       LocalStorage.clear();
       this.id = null;
