@@ -18,6 +18,9 @@
       <q-item-label v-if="lessonDescription" style="white-space: pre" caption>{{
         lessonDescription
       }}</q-item-label>
+      <q-item-label v-else-if="journalAndYear" caption>{{
+        journalAndYear
+      }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
@@ -52,6 +55,19 @@ const lessonDescription = computed(() => {
     return lessonDate.value + "\n" + props.mark.lesson.description;
   } else if (props.mark.lesson) {
     return lessonDate.value;
+  } else {
+    return null;
+  }
+});
+
+const journalAndYear = computed(() => {
+  if (
+    props.mark.journal &&
+    props.mark.journal.name &&
+    props.mark.journal.year &&
+    props.mark.journal.year.display_name
+  ) {
+    return `${props.mark.journal.name} (${props.mark.journal.year.display_name})`;
   } else {
     return null;
   }
