@@ -171,7 +171,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["refreshUser"]);
 
-const user = ref({});
+const user = ref({ student: {} });
 const saveLoading = ref(false);
 const hidePwd = ref(true);
 
@@ -180,7 +180,7 @@ const resetData = () => {
     user.value = { ...props.serverUser.user };
     user.value.password = null;
   } else {
-    user.value = {};
+    user.value = { student: {} };
   }
 };
 
