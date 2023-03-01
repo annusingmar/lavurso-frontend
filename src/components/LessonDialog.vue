@@ -47,7 +47,7 @@
           :disabled="saveButtonDisabled"
           @click="saveClicked"
         ></q-btn>
-        <q-btn label="cancel" @click="cancelClicked"></q-btn>
+        <q-btn :label="t('cancel')" @click="cancelClicked"></q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>

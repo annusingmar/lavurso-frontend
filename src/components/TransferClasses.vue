@@ -31,8 +31,8 @@
     </q-markup-table>
   </q-form>
   <div class="row justify-between q-mt-sm">
-    <q-btn color="primary" label="Next" @click="go('next')"></q-btn>
-    <q-btn label="back" @click="go('back')"></q-btn>
+    <q-btn color="primary" :label="t('next')" @click="go('next')"></q-btn>
+    <q-btn :label="t('back')" @click="go('back')"></q-btn>
   </div>
 </template>
 
