@@ -52,5 +52,8 @@ export const useUserStore = defineStore("user", {
       this.children = data.children;
       this.current_year = data.current_year;
     },
+    setYear(year) {
+      this.current_year = year;
+    },
   },
 });

@@ -76,7 +76,7 @@ const journalAndYear = computed(() => {
 const displayType = computed(() => {
   switch (props.mark.type) {
     case "lesson_grade":
-      return t("learning.marks.lessonGrade");
+      return t("learning.marks.grade");
     case "course_grade":
       return `${t("learning.marks.courseGrade")} (${props.mark.course}. ${t(
         "learning.course"

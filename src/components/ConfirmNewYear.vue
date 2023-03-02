@@ -49,10 +49,12 @@ import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
+import { useUserStore } from "src/stores/user";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
+const { setYear } = useUserStore();
 
 const props = defineProps({
   details: {
@@ -94,13 +96,14 @@ const submitYear = async () => {
   };
 
   try {
-    await api.post("/years/new", data);
+    const response = await api.post("/years/new", data);
     $q.notify({
       type: "positive",
       position: "top",
       message: t("learning.years.creatingYearSucceeded"),
       timeout: 10000,
     });
+    setYear(response.data.year);
     router.replace("/admin/years");
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
