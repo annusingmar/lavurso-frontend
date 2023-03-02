@@ -148,7 +148,7 @@ const removeMembers = async () => {
 
 const removeMembersPrompt = () => {
   $q.dialog({
-    title: "Confirm",
+    title: t("confirm"),
     message: t("messages.removeMembersConfirm"),
     cancel: true,
     persistent: true,

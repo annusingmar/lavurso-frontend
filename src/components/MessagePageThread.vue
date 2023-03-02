@@ -134,7 +134,7 @@ const deleteThread = async () => {
 
 const deleteThreadPrompt = () => {
   $q.dialog({
-    title: "Confirm",
+    title: t("confirm"),
     message: t("messages.deleteThreadConfirm"),
     cancel: true,
     persistent: true,

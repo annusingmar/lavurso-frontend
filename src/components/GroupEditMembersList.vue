@@ -63,7 +63,7 @@ const columns = [
   {
     name: "role",
     required: true,
-    label: t("role"),
+    label: t("user.role"),
     align: "left",
     field: (row) => row.role,
     format: (val) => t(`roles.${val}`),
