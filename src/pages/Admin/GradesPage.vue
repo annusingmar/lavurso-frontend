@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="row flex-center q-py-lg" style="min-height: inherit">
-      <div class="col-md-8 col-xs-10">
+      <div class="col-md-6 col-xs-10">
         <q-card>
           <q-card-section class="q-pb-none">
             <div class="row justify-between">
