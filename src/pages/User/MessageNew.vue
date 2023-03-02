@@ -110,7 +110,7 @@ const { t } = useI18n({ useScope: "global" });
 const { id } = useUserStore();
 
 const usersFilter = async (val, update, abort) => {
-  if (val.length < 4) {
+  if (val.trim().length < 4) {
     abort();
     return;
   }

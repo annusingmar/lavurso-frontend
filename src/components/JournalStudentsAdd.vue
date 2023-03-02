@@ -87,7 +87,7 @@ const chosenStudents = ref([]);
 const chosenClasses = ref([]);
 
 const studentsFilter = async (val, update, abort) => {
-  if (val.length < 4) {
+  if (val.trim().length < 4) {
     abort();
     return;
   }
