@@ -6,7 +6,7 @@
     elevated
     @update:model-value="drawerStateChange"
   >
-    <q-img src="~assets/winter.jpg" style="height: 200px">
+    <q-img src="~assets/spring.jpg" style="height: 200px">
       <div class="absolute-bottom row items-end">
         <div class="col">
           <div class="text-weight-bold">{{ name }}</div>
