@@ -13,7 +13,6 @@
                   :label="t('onlyCurrentYear')"
                   @update:model-value="updateCurrent"
                 ></q-checkbox>
-                <!-- todo -->
                 <q-btn
                   color="primary"
                   :label="t('new')"

@@ -275,7 +275,11 @@ if (props.isCreate) {
   getSubjects();
 } else {
   watch(journal.value, () => {
-    if (!journal.value.teachers.some((t) => t.id === id) && role != "admin") {
+    if (
+      journal.value.teachers &&
+      !journal.value.teachers.some((t) => t.id === id) &&
+      role != "admin"
+    ) {
       journal.value.teachers.push({ id: id, name: name });
     }
   });
