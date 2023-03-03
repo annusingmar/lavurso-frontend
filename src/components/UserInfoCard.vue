@@ -27,30 +27,25 @@
         <span>{{ user.birth_date }}</span>
       </div>
       <div
-        v-if="user.class && user.class.id"
+        v-if="user.student && user.student.class.id"
         class="row justify-between q-mt-sm"
       >
         <span class="q-mr-sm">{{ t("learning.class") }}</span>
-        <span v-if="user.class.display_name">{{
-          user.class.display_name
+        <span v-if="user.student.class.display_name">{{
+          user.student.class.display_name
         }}</span>
-        <span v-else>{{ user.class.name }}</span>
-      </div>
-      <div v-if="role" class="row justify-between q-mt-sm">
-        <span class="q-mr-sm">{{ t("user.role") }}</span>
-        <span>{{ role }}</span>
+        <span v-else>{{ user.student.class.name }}</span>
       </div>
     </q-card-section>
   </q-card>
 </template>
 
 <script setup>
-import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n({ useScope: "global" });
 
-const props = defineProps({
+defineProps({
   user: {
     type: Object,
     required: true,
@@ -63,12 +58,4 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["setEdit"]);
-
-const role = computed(() => {
-  if (props.user.role) {
-    return t(`roles.${props.user.role}`);
-  } else {
-    return null;
-  }
-});
 </script>
