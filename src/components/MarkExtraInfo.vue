@@ -110,6 +110,7 @@ import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
+import { useMarkLabel } from "src/composables/useMarkLabel";
 
 const { t } = useI18n({ useScope: "global" });
 const { role } = useUserStore();
@@ -170,30 +171,7 @@ const excusedAt = computed(() =>
 );
 
 const markDisplayType = computed(() => {
-  switch (props.mark.type) {
-    case "lesson_grade":
-      return t("learning.marks.lessonGrade");
-    case "course_grade":
-      return `${t("learning.marks.courseGrade")} (${props.mark.course}. ${t(
-        "learning.course"
-      )})`;
-    case "subject_grade":
-      return t("learning.marks.subjectGrade");
-    case "not_done":
-      return t("learning.marks.notDone");
-    case "notice_good":
-      return t("learning.marks.noticeGood");
-    case "notice_neutral":
-      return t("learning.marks.noticeNeutral");
-    case "notice_bad":
-      return t("learning.marks.noticeBad");
-    case "absent":
-      return t("learning.marks.absent");
-    case "late":
-      return t("learning.marks.late");
-    default:
-      return null;
-  }
+  return useMarkLabel(props.mark);
 });
 
 const canExcuse = computed(

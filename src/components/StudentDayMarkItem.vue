@@ -5,9 +5,12 @@
     </q-item-section>
     <q-item-section>
       <div class="row justify-between q-item__label">
-        <q-item-label class="text-weight-bold">{{
-          mark.subject.name
-        }}</q-item-label>
+        <div>
+          <q-item-label overline>{{ markDisplayType }}</q-item-label>
+          <q-item-label class="text-weight-bold">{{
+            mark.subject.name
+          }}</q-item-label>
+        </div>
         <q-item-label caption>{{ mark.teacher.name }}</q-item-label>
       </div>
       <q-item-label v-if="mark.comment" style="white-space: pre">{{
@@ -24,11 +27,17 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useMarkLabel } from "../composables/useMarkLabel";
 import MarkIcon from "./MarkIcon.vue";
-defineProps({
+const props = defineProps({
   mark: {
     type: Object,
     required: true,
   },
+});
+
+const markDisplayType = computed(() => {
+  return useMarkLabel(props.mark);
 });
 </script>
