@@ -3,8 +3,8 @@
     <q-card-section class="q-pb-none">
       <div class="text-h6">{{ t("user.password.changePassword") }}</div>
       <div>{{ t("user.password.passwordChangeDescription") }}</div>
-      <q-separator></q-separator>
     </q-card-section>
+    <q-separator></q-separator>
     <q-card-section>
       <q-form
         ref="formRef"

@@ -4,7 +4,7 @@
       class="row flex-center q-py-lg q-col-gutter-md"
       style="min-height: inherit; align-content: center"
     >
-      <div class="col-md-5 col-xs-10">
+      <div class="col-md-3 col-xs-10">
         <UserInfoCard
           v-if="!edit"
           :user="user"
@@ -18,8 +18,15 @@
           @refresh-user="getUserInfo"
         ></UserInfoEditCard>
       </div>
-      <div class="col-md-5 col-xs-10">
+      <div class="col-md-3 col-xs-10">
         <UserPasswordChange :id="user.id"></UserPasswordChange>
+      </div>
+      <div class="col-md-3 col-xs-10">
+        <User2FA
+          :id="user.id"
+          :enabled="user.totp_enabled"
+          @refresh-user="getUserInfo"
+        ></User2FA>
       </div>
     </div>
     <q-inner-loading :showing="loading"></q-inner-loading>
@@ -35,6 +42,7 @@ import { useI18n } from "vue-i18n";
 import UserInfoCard from "src/components/UserInfoCard.vue";
 import UserInfoEditCard from "src/components/UserInfoEditCard.vue";
 import UserPasswordChange from "src/components/UserPasswordChange.vue";
+import User2FA from "src/components/User2FA.vue";
 
 const { id } = useUserStore();
 const { t } = useI18n({ useScope: "global" });

@@ -64,6 +64,8 @@ export default {
   next: "Edasi",
   back: "Tagasi",
   selected: "Valitud",
+  activate: "Aktiveeri",
+  remove: "Eemalda",
   user: {
     role: "Roll",
     createUser: "Loo kasutaja",
@@ -89,6 +91,11 @@ export default {
     twofa: {
       invalidOTP: "Vale 2-astmelise autentimise kood",
       OTP: "2-astmelise autentimise kood",
+      manage2FA: "Halda 2-astmelist autentimist",
+      enabledMessage: "2-astmeline autentimine on aktiveeritud",
+      disabledMessage: "2-astmeline autentimine ei ole aktiveeritud",
+      howToMessage:
+        "Skaneeri QR-kood 2-astmelise autentimise rakendusse ja sisesta kood.",
     },
     student: {
       studentCount: "Õpilaste arv",

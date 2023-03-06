@@ -64,6 +64,8 @@ export default {
   next: "Next",
   back: "Back",
   selected: "Selected",
+  activate: "Activate",
+  remove: "Remove",
   user: {
     role: "Role",
     createUser: "Create User",
@@ -89,6 +91,11 @@ export default {
     twofa: {
       invalidOTP: "Invalid two factor authentication code",
       OTP: "Two factor authentication code",
+      manage2FA: "Manage two factor authentication",
+      enabledMessage: "Two factor authentication is enabled",
+      disabledMessage: "Two factor authentication is disabled",
+      howToMessage:
+        "Scan the QR code into your two faction authentication app and enter the code.",
     },
     student: {
       studentCount: "Student count",
