@@ -12,25 +12,40 @@
         </q-card-section>
         <q-form ref="formRef" greedy @submit.prevent="submitLogin">
           <q-card-section class="q-pb-none">
-            <q-input
-              v-model="email"
-              :label="t('email')"
-              :rules="[
-                (val) => val.length > 0 || t('mandatoryField'),
-                validateEmail,
-              ]"
-              lazy-rules
-              outlined
-            ></q-input>
-            <q-input
-              v-model="password"
-              :label="t('password')"
-              type="password"
-              :rules="[(val) => val.length > 0 || t('mandatoryField')]"
-              lazy-rules
-              outlined
-              class="q-mt-sm"
-            ></q-input>
+            <template v-if="!totpNeeded">
+              <q-input
+                v-model="email"
+                :label="t('email')"
+                :rules="[
+                  (val) => val.length > 0 || t('mandatoryField'),
+                  validateEmail,
+                ]"
+                lazy-rules
+                outlined
+              ></q-input>
+              <q-input
+                v-model="password"
+                :label="t('password')"
+                type="password"
+                :rules="[(val) => val.length > 0 || t('mandatoryField')]"
+                lazy-rules
+                outlined
+                class="q-mt-sm"
+              ></q-input>
+            </template>
+            <template v-else>
+              <q-input
+                v-model="totp"
+                :label="t('user.twofa.OTP')"
+                mask="### ###"
+                fill-mask
+                unmasked-value
+                :rules="[(val) => val.length === 6]"
+                hide-bottom-space
+                lazy-rules
+                outlined
+              ></q-input>
+            </template>
           </q-card-section>
           <q-card-actions class="row justify-between">
             <LanguagePicker class="q-ml-md" />
@@ -77,25 +92,43 @@ const email = ref("");
 const password = ref("");
 const errorText = ref(null);
 const formRef = ref(null);
+const totpNeeded = ref(false);
+const totp = ref("");
 
 const loading = ref(false);
 const submitLogin = async () => {
   loading.value = true;
   errorText.value = null;
+
+  let data = {
+    email: email.value,
+    password: password.value,
+  };
+
+  if (totp.value) {
+    data["otp"] = Number(totp.value);
+  }
+
   try {
-    const response = await api.post("/authenticate", {
-      email: email.value,
-      password: password.value,
-    });
+    const response = await api.post("/authenticate", data);
+
     userStore.setSession(response.data.session);
     router.replace(props.redirect);
   } catch (error) {
     formRef.value.resetValidation();
-    password.value = "";
     if (error.response && error.response.status == 403) {
-      errorText.value = t("login.incorrectEmailPassword");
+      if (error.response.data.error === "missing OTP") {
+        totpNeeded.value = true;
+      } else if (error.response.data.error === "invalid OTP") {
+        errorText.value = t("user.twofa.invalidOTP");
+        totp.value = "";
+      } else {
+        errorText.value = t("login.incorrectEmailPassword");
+        password.value = "";
+      }
     } else {
       errorText.value = t("login.loginFailed");
+      password.value = "";
     }
   } finally {
     loading.value = false;

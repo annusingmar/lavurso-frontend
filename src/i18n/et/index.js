@@ -86,6 +86,10 @@ export default {
       passwordChangeDescription:
         "Parooli muutmine logib sind välja kõigis seadmetes peale praeguse.",
     },
+    twofa: {
+      invalidOTP: "Vale 2-astmelise autentimise kood",
+      OTP: "2-astmelise autentimise kood",
+    },
     student: {
       studentCount: "Õpilaste arv",
       addParent: "Lisa lapsevanem",

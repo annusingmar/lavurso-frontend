@@ -86,6 +86,10 @@ export default {
       passwordChangeDescription:
         "Changing your password will log you out of all devices except the current one.",
     },
+    twofa: {
+      invalidOTP: "Invalid two factor authentication code",
+      OTP: "Two factor authentication code",
+    },
     student: {
       studentCount: "Student count",
       addParent: "Add Parent",
