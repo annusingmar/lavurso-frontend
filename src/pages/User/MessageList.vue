@@ -52,7 +52,6 @@
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, watch } from "vue";
-import { useUserStore } from "src/stores/user";
 import { useI18n } from "vue-i18n";
 import MessageListItem from "src/components/MessageListItem.vue";
 
@@ -60,7 +59,6 @@ const $q = useQuasar();
 const loading = ref(true);
 const messages = ref([]);
 const { t } = useI18n({ useScope: "global" });
-const { id } = useUserStore();
 
 const search = ref("");
 
@@ -73,7 +71,7 @@ const getMessages = async () => {
       opts = { params: { search: search.value } };
     }
 
-    const response = await api.get("/users/" + id + "/threads", opts);
+    const response = await api.get("/me/threads", opts);
     messages.value =
       response.data.threads !== null ? response.data.threads : [];
     loading.value = false;

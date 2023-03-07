@@ -73,8 +73,8 @@
                 ></q-checkbox>
                 <q-checkbox
                   v-if="!isCreate"
-                  :disable="!user.has_totp_secret"
                   v-model="user.totp_enabled"
+                  :disable="!user.has_totp_secret"
                   label="2FA"
                 ></q-checkbox>
               </div>

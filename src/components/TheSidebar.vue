@@ -105,7 +105,7 @@ const drawerStateChange = (val) => {
 
 const checkUnread = () =>
   api
-    .get("/users/" + id + "/unread")
+    .get("/me/unread")
     .then((response) => (unread.value = response.data.unread))
     .catch(() => console.log("failed to check if user has unread messages"));
 
