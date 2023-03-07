@@ -122,12 +122,13 @@ export default {
       loginBrowser: "Sisselogimise veebilehitseja",
       loggedIn: "Sisselogimise aeg",
       lastSeen: "Viimati nähtud",
-      deletingSession: "Sessiooni eemaldamine",
-      deletingSessionSucceeded: "@:user.session.deletingSession @:succeeded",
-      deletingSessionFailed: "@:user.session.deletingSession @:succeeded",
-      deleteAllSessions: "Kustuta kõik",
-      deletingAllSessionsConfirm:
-        "@:areYouSure kustutada KÕIK selle kasutaja sessioonid?",
+      cancellingSession: "Sessiooni tühistamine",
+      cancellingSessionSucceeded:
+        "@:user.session.cancellingSession @:succeeded",
+      cancellingSessionFailed: "@:user.session.cancellingSession @:succeeded",
+      cancelAllSessions: "Tühista kõik",
+      cancellingAllSessionsConfirm:
+        "@:areYouSure tühistada KÕIK selle kasutaja sessioonid?",
     },
   },
   group: {

@@ -1,6 +1,6 @@
 <template>
   <div class="row flex-center" style="min-height: 75vh">
-    <div class="col-md-8 col-xs-10" style="min-width: 0px">
+    <div class="col-md-10 col-xs-10" style="min-width: 0px">
       <q-table
         :title="t('user.session.sessions')"
         :rows="sessions"
@@ -13,7 +13,7 @@
             <div class="col-auto">
               <q-btn
                 color="negative"
-                :label="t('user.session.deleteAllSessions')"
+                :label="t('user.session.cancelAllSessions')"
                 @click="removeAllSessionsPrompt"
               >
               </q-btn>
@@ -26,6 +26,7 @@
             <q-btn
               flat
               icon="clear"
+              :disable="new Date(actionProps.row.expires) < new Date()"
               @click="removeUserSession(actionProps.row.id)"
             ></q-btn>
           </q-td>
@@ -53,6 +54,11 @@ const props = defineProps({
 const sessions = ref([]);
 const loading = ref(true);
 
+const expiredStyle = (row) =>
+  new Date(row.expires) < new Date()
+    ? { background: "rgba(255, 0, 0, 0.100)" }
+    : "";
+
 const columns = [
   {
     name: "expires",
@@ -62,6 +68,7 @@ const columns = [
     field: (row) => row.expires,
     format: (val) => formatDate(val),
     sortable: true,
+    style: expiredStyle,
   },
   {
     name: "login_ip",
@@ -128,7 +135,7 @@ const removeUserSession = async (id) => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: t("user.session.deletingSessionSucceeded"),
+      message: t("user.session.cancellingSessionSucceeded"),
       timeout: 3000,
     });
     getUserSessions();
@@ -139,7 +146,7 @@ const removeUserSession = async (id) => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: t("user.session.deletingSessionFailed"),
+      message: t("user.session.cancellingSessionFailed"),
       timeout: 6000,
     });
   }
@@ -151,7 +158,7 @@ const removeAllSessions = async () => {
     $q.notify({
       type: "positive",
       position: "top",
-      message: t("user.session.deletingSessionSucceeded"),
+      message: t("user.session.cancellingSessionSucceeded"),
       timeout: 3000,
     });
     getUserSessions();
@@ -162,7 +169,7 @@ const removeAllSessions = async () => {
     $q.notify({
       type: "negative",
       position: "top",
-      message: t("user.session.deletingSessionFailed"),
+      message: t("user.session.cancellingSessionFailed"),
       timeout: 6000,
     });
   }
@@ -171,7 +178,7 @@ const removeAllSessions = async () => {
 const removeAllSessionsPrompt = () => {
   $q.dialog({
     title: t("confirm"),
-    message: t("user.session.deletingAllSessionsConfirm"),
+    message: t("user.session.cancellingAllSessionsConfirm"),
     cancel: true,
     persistent: true,
   }).onOk(() => {

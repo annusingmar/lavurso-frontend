@@ -83,7 +83,7 @@ const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
 
-const { id, name, role, session_id, children, clearUser, setDark, getDark } =
+const { id, name, role, children, clearUser, setDark, getDark } =
   useUserStore();
 
 defineProps({
@@ -118,7 +118,7 @@ const logOut = async () => {
   logoutLoading.value = true;
   clearInterval(unreadInterval);
   try {
-    await api.delete("/sessions/" + session_id);
+    await api.post("/me/logout");
   } catch (error) {
     console.log("fail");
   } finally {

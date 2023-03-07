@@ -122,12 +122,13 @@ export default {
       loginBrowser: "Login Browser",
       loggedIn: "Logged in",
       lastSeen: "Last seen",
-      deletingSession: "Deleting session",
-      deletingSessionSucceeded: "@:user.session.deletingSession @:succeeded",
-      deletingSessionFailed: "@:user.session.deletingSession @:succeeded",
-      deleteAllSessions: "Delete all",
-      deletingAllSessionsConfirm:
-        "@:areYouSure delete ALL the sessions for this user?",
+      cancellingSession: "Cancelling session",
+      cancellingSessionSucceeded:
+        "@:user.session.cancellingSession @:succeeded",
+      cancellingSessionFailed: "@:user.session.cancellingSession @:succeeded",
+      cancelAllSessions: "Cancel all",
+      cancellingAllSessionsConfirm:
+        "@:areYouSure cancel ALL sessions for this user?",
     },
   },
   group: {
