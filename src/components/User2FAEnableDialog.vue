@@ -5,7 +5,12 @@
         <div>
           {{ t("user.twofa.howToMessage") }}
         </div>
-        <div>{{ uri }}</div>
+        <!--eslint-disable vue/no-v-html-->
+        <!-- we generate this ourselves in assets/qr.js -->
+        <a :href="uri">
+          <div v-html="qr"></div>
+        </a>
+        <!--eslint-enable-->
       </q-card-section>
       <q-separator></q-separator>
       <q-card-section class="q-pb-none">
@@ -41,6 +46,7 @@ import { useDialogPluginComponent, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { useQRSvg } from "../composables/qr";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
@@ -69,11 +75,13 @@ const saveClicked = async () => {
 
 const uri = ref("");
 const loading = ref(true);
+const qr = ref("");
 const start2FA = async () => {
   loading.value = true;
   try {
     const response = await api.post("/users/" + props.id + "/2fa");
     uri.value = response.data.uri;
+    qr.value = useQRSvg(uri.value);
     loading.value = false;
   } catch (error) {
     if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
