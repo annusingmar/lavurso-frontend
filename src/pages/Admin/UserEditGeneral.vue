@@ -220,7 +220,6 @@ const saveUser = async () => {
 
   data.name = user.value.name;
   data.email = user.value.email;
-  data.totp_enabled = user.value.totp_enabled;
 
   if (user.value.id_code) {
     data.id_code = user.value.id_code;
@@ -248,6 +247,10 @@ const saveUser = async () => {
 
   if (user.value.archived !== null && user.value.archived !== undefined) {
     data.archived = user.value.archived;
+  }
+
+  if (user.value.has_totp_secret) {
+    data.totp_enabled = user.value.totp_enabled;
   }
 
   saveLoading.value = true;
