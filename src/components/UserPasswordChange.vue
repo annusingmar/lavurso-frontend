@@ -64,13 +64,6 @@ import { useI18n } from "vue-i18n";
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
 
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
-  },
-});
-
 const formRef = ref(null);
 
 const currentPassword = ref("");
@@ -96,7 +89,7 @@ const submitLoading = ref(false);
 const changePassword = async () => {
   submitLoading.value = true;
   try {
-    await api.post("/users/" + props.id + "/password", {
+    await api.post("/me/password", {
       current_password: currentPassword.value,
       new_password: newPassword.value,
     });

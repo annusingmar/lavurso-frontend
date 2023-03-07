@@ -34,11 +34,7 @@ import User2FAEnableDialog from "./User2FAEnableDialog.vue";
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
 
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
-  },
+defineProps({
   enabled: {
     type: Boolean,
     required: true,
@@ -49,9 +45,6 @@ const emit = defineEmits(["refreshUser"]);
 const enable2FA = () => {
   $q.dialog({
     component: User2FAEnableDialog,
-    componentProps: {
-      id: props.id,
-    },
   }).onOk(() => emit("refreshUser"));
 };
 
@@ -66,7 +59,7 @@ const disable2FADialog = () => {
 
 const disable2FA = async () => {
   try {
-    api.delete("/users/" + props.id + "/2fa");
+    api.delete("/me/2fa");
     $q.notify({
       type: "positive",
       position: "top",

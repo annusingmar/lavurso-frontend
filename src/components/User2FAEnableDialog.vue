@@ -53,13 +53,6 @@ const { t } = useI18n({ useScope: "global" });
 
 defineEmits([...useDialogPluginComponent.emits]);
 
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
-  },
-});
-
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
   useDialogPluginComponent();
 
@@ -79,7 +72,7 @@ const qr = ref("");
 const start2FA = async () => {
   loading.value = true;
   try {
-    const response = await api.post("/users/" + props.id + "/2fa");
+    const response = await api.post("/me/2fa");
     uri.value = response.data.uri;
     qr.value = useQRSvg(uri.value);
     loading.value = false;
@@ -103,7 +96,7 @@ const invalidOTP = ref(false);
 const finish2FA = async () => {
   saveLoading.value = true;
   try {
-    await api.post("/users/" + props.id + "/2fa/finish", {
+    await api.post("/me/2fa/finish", {
       code: Number(totp.value),
     });
     saveLoading.value = false;

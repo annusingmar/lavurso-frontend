@@ -102,7 +102,7 @@ const updateUser = async () => {
   }
 
   try {
-    await api.put("/users/" + props.serverUser.id, data);
+    await api.put("/me", data);
     $q.notify({
       type: "positive",
       position: "top",
