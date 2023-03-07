@@ -96,6 +96,8 @@ export default {
       disabledMessage: "2-astmeline autentimine ei ole aktiveeritud",
       howToMessage:
         "Skaneeri QR-kood 2-astmelise autentimise rakendusse ja sisesta kood.",
+      disableConfirmMessage:
+        "Oled kindel, et soovid eemaldada 2-astmelise autentimise?",
     },
     student: {
       studentCount: "Õpilaste arv",

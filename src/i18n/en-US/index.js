@@ -95,7 +95,9 @@ export default {
       enabledMessage: "Two factor authentication is enabled",
       disabledMessage: "Two factor authentication is disabled",
       howToMessage:
-        "Scan the QR code into your two faction authentication app and enter the code.",
+        "Scan the QR code into your two factor authentication app and enter the code.",
+      disableConfirmMessage:
+        "Are you sure you want to remove two factor authentication?",
     },
     student: {
       studentCount: "Student count",

@@ -13,8 +13,13 @@
           @click="enable2FA"
         ></q-btn>
       </div>
-      <div v-else>
-        <div>{{ t("user.twofa.enableMessage") }}</div>
+      <div v-else class="row justify-between items-center">
+        <div>{{ t("user.twofa.enabledMessage") }}</div>
+        <q-btn
+          color="negative"
+          :label="t('remove')"
+          @click="disable2FADialog"
+        ></q-btn>
       </div>
     </q-card-section>
   </q-card>
@@ -22,6 +27,7 @@
 
 <script setup>
 import { useQuasar } from "quasar";
+import { api } from "src/boot/axios";
 import { useI18n } from "vue-i18n";
 import User2FAEnableDialog from "./User2FAEnableDialog.vue";
 
@@ -47,5 +53,39 @@ const enable2FA = () => {
       id: props.id,
     },
   }).onOk(() => emit("refreshUser"));
+};
+
+const disable2FADialog = () => {
+  $q.dialog({
+    title: t("confirm"),
+    message: t("user.twofa.disableConfirmMessage"),
+    cancel: true,
+    persistent: true,
+  }).onOk(disable2FA);
+};
+
+const disable2FA = async () => {
+  try {
+    api.delete("/users/" + props.id + "/2fa");
+    $q.notify({
+      type: "positive",
+      position: "top",
+      message: t("savingSucceeded"),
+      timeout: 3000,
+    });
+    emit("refreshUser");
+  } catch (error) {
+    if (error.response && [401, 403, 404].indexOf(error.response.status) > -1) {
+      return;
+    } else {
+      $q.notify({
+        type: "negative",
+        position: "top",
+        message: t("savingFailed"),
+        timeout: 0,
+        actions: [{ label: t("dismiss"), color: "white" }],
+      });
+    }
+  }
 };
 </script>
