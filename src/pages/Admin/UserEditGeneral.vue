@@ -71,6 +71,12 @@
                   v-model="user.archived"
                   :label="t('archived')"
                 ></q-checkbox>
+                <q-checkbox
+                  v-if="!isCreate"
+                  :disable="!user.has_totp_secret"
+                  v-model="user.totp_enabled"
+                  label="2FA"
+                ></q-checkbox>
               </div>
               <div class="col-sm-6 col-xs-12 q-gutter-y-sm">
                 <q-select
@@ -214,6 +220,7 @@ const saveUser = async () => {
 
   data.name = user.value.name;
   data.email = user.value.email;
+  data.totp_enabled = user.value.totp_enabled;
 
   if (user.value.id_code) {
     data.id_code = user.value.id_code;

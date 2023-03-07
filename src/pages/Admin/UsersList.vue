@@ -98,6 +98,15 @@ const columns = [
     format: (val) => t(`roles.${val}`),
     sortable: true,
   },
+  {
+    name: "2FA",
+    required: true,
+    label: "2FA",
+    align: "left",
+    field: (row) => row.totp_enabled,
+    format: (val) => t(String(val)),
+    sortable: true,
+  },
   { name: "actions", label: t("action") },
 ];
 

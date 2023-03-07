@@ -66,6 +66,8 @@ export default {
   selected: "Valitud",
   activate: "Aktiveeri",
   remove: "Eemalda",
+  true: "Jah",
+  false: "Ei",
   user: {
     role: "Roll",
     createUser: "Loo kasutaja",

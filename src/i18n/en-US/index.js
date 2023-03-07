@@ -66,6 +66,8 @@ export default {
   selected: "Selected",
   activate: "Activate",
   remove: "Remove",
+  true: "Yes",
+  false: "No",
   user: {
     role: "Role",
     createUser: "Create User",
