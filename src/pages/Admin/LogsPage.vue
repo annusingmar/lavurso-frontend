@@ -5,9 +5,13 @@
         <q-card>
           <q-card-section class="q-pb-sm">
             <div class="row justify-between items-center">
-              <div class="text-h4">Logs</div>
+              <div class="text-h4">{{ t("logs.logs") }}</div>
               <div class="row q-gutter-x-md items-center">
-                <q-btn label="refresh" color="primary" @click="refresh"></q-btn>
+                <q-btn
+                  :label="t('messages.refresh')"
+                  color="primary"
+                  @click="refresh"
+                ></q-btn>
                 <q-input
                   v-model="filter"
                   dense

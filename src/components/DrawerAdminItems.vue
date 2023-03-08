@@ -29,6 +29,11 @@
     to="/admin/years"
     icon="edit_calendar"
   ></DrawerListItem>
+  <DrawerListItem
+    :title="t('logs.logs')"
+    to="/admin/logs"
+    icon="feed"
+  ></DrawerListItem>
 </template>
 
 <script setup>

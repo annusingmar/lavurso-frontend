@@ -371,6 +371,7 @@ export default {
     deleteThreadConfirm: "Kas oled kindel, et soovid selle kirja kustutada?",
   },
   logs: {
+    logs: "Logid",
     method: "Meetod",
     target: "Siht",
     response_code: "Vastuskood",

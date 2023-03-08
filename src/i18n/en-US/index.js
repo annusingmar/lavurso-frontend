@@ -371,6 +371,7 @@ export default {
     deleteThreadConfirm: "@:areYouSure delete this thread?",
   },
   logs: {
+    logs: "Logs",
     method: "Method",
     target: "Target",
     response_code: "Response Code",
