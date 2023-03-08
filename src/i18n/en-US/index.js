@@ -370,4 +370,11 @@ export default {
     removeMembersConfirm: "@:areYouSure remove these members?",
     deleteThreadConfirm: "@:areYouSure delete this thread?",
   },
+  logs: {
+    method: "Method",
+    target: "Target",
+    response_code: "Response Code",
+    duration: "Duration",
+    at: "At",
+  },
 };

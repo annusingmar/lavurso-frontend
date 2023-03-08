@@ -370,4 +370,11 @@ export default {
     removeMembersConfirm: "Kas oled kindel, et soovid eemaldada need liikmed?",
     deleteThreadConfirm: "Kas oled kindel, et soovid selle kirja kustutada?",
   },
+  logs: {
+    method: "Meetod",
+    target: "Siht",
+    response_code: "Vastuskood",
+    duration: "Kestus",
+    at: "Aeg",
+  },
 };
