@@ -62,7 +62,7 @@ const $q = useQuasar();
 const router = useRouter();
 const { t } = useI18n({ useScope: "global" });
 
-const columns = [
+const columns = computed(() => [
   {
     name: "name",
     required: true,
@@ -80,7 +80,7 @@ const columns = [
     sortable: true,
   },
   { name: "actions", label: t("action") },
-];
+]);
 
 const tableRef = ref(null);
 

@@ -55,14 +55,14 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
 const router = useRouter();
-const columns = [
+const columns = computed(() => [
   {
     name: "name",
     required: true,
@@ -89,7 +89,7 @@ const columns = [
     sortable: true,
   },
   { name: "actions", label: t("action") },
-];
+]);
 
 const tableRef = ref(null);
 

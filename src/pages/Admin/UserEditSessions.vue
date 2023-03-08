@@ -39,7 +39,7 @@
 <script setup>
 import { date, useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
@@ -59,7 +59,7 @@ const expiredStyle = (row) =>
     ? { background: "rgba(255, 0, 0, 0.100)" }
     : "";
 
-const columns = [
+const columns = computed(() => [
   {
     name: "expires",
     required: true,
@@ -105,7 +105,7 @@ const columns = [
     sortable: true,
   },
   { name: "actions", label: t("action") },
-];
+]);
 
 const getUserSessions = async () => {
   loading.value = true;

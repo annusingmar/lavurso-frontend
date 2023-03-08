@@ -44,13 +44,13 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
 
-const columns = [
+const columns = computed(() => [
   {
     name: "display_name",
     required: true,
@@ -81,7 +81,7 @@ const columns = [
     label: t("status"),
     sortable: false,
   },
-];
+]);
 
 const loading = ref(true);
 const years = ref([]);

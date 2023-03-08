@@ -40,14 +40,14 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { api } from "src/boot/axios";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import AdminGradeEditDialog from "src/components/AdminGradeEditDialog.vue";
 
 const $q = useQuasar();
 const { t } = useI18n({ useScope: "global" });
 
-const columns = [
+const columns = computed(() => [
   {
     name: "identifier",
     required: true,
@@ -65,7 +65,7 @@ const columns = [
     sortable: false,
   },
   { name: "actions", label: t("action") },
-];
+]);
 const loading = ref(true);
 const grades = ref([]);
 const getGrades = async () => {
