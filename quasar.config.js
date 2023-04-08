@@ -89,7 +89,7 @@ module.exports = configure(function (/* ctx */) {
       env: {
         API: process.env.API_URL
           ? process.env.API_URL
-          : "http://localhost:8888",
+          : "http://localhost:9000/api/",
       },
     },
 
